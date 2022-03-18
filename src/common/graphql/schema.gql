@@ -1,0 +1,50 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: String!
+  nickname: String!
+  email: String!
+  profilePic: String
+  coverPid: String
+  password: String!
+  phoneNum: String!
+  ratingAvg: Int!
+  accountOwner: String
+  accountNumber: Int
+  bank: String
+  income: Int
+}
+
+type Brand {
+  id: String!
+  name: String!
+  img: String
+}
+
+type MainCategory {
+  id: String!
+  name: String!
+}
+
+type SubCategory {
+  id: String!
+  name: String!
+  mainCategory: MainCategory!
+}
+
+type Product {
+  id: String!
+  name: String!
+  description: String!
+  price: Int!
+  views: Int!
+  likes: Int!
+  brand: Brand!
+  subCategory: SubCategory!
+}
+
+type Query {
+  getHello: String!
+}
