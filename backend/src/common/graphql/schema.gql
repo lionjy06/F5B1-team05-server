@@ -1,0 +1,74 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: String!
+  nickname: String!
+  email: String!
+  profilePic: String!
+  coverPic: String!
+  password: String!
+  phoneNum: String!
+  ratingSum: Int!
+  accountOwner: String
+  accountNum: Int
+  bank: String
+  isAdmin: Boolean!
+  income: Int
+}
+
+type Brand {
+  id: String!
+  name: String!
+}
+
+type ProductMaincategory {
+  id: String!
+  name: String!
+}
+
+type ProductSubcategory {
+  id: String!
+  name: String!
+  productMaincategory: ProductMaincategory!
+}
+
+type Product {
+  id: String!
+  name: String!
+  description: String!
+  price: Int!
+  likes: Int!
+  views: Int!
+  brand: Brand!
+  productSubcategory: ProductSubcategory!
+}
+
+type Query {
+  getHello: String!
+  fetchUsers: [User!]!
+  fetchUser: User!
+}
+
+type Mutation {
+  login(email: String!, password: String!): String!
+  logout: String!
+  restoreAccessToken: String!
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(email: String!, updateUserInput: UpdateUserInput!): User!
+  deleteUser(email: String!): Boolean!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+  name: String!
+  nickname: String!
+  phoneNum: String!
+}
+
+input UpdateUserInput {
+  email: String!
+  password: String!
+}
