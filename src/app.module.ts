@@ -9,7 +9,7 @@ import { ProductModule } from './apis/product/product.module';
 import { MainCategoryModule } from './apis/mainCategory/mainCategory.module';
 import { SubCategoryModule } from './apis/subCategory/subCategory.module';
 import { BrandModule } from './apis/brand/brand.module';
-import { ProductImgModule } from './apis/productImg/productImg.module';
+
 import { UserModule } from './apis/user/user.module';
 import { AuthModule } from './apis/auth/auth.module';
 
@@ -17,7 +17,7 @@ import { AuthModule } from './apis/auth/auth.module';
   imports: [
     AuthModule,
     UserModule,
-    ProductImgModule,
+    
     BrandModule,
     SubCategoryModule,
     MainCategoryModule,

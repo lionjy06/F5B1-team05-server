@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { getRepository, Repository } from "typeorm";
 import { MainCategory } from "./entities/mainCategory.entity";
 
 
@@ -10,7 +10,6 @@ export class MainCategoryService{
     private readonly mainCategoryRepository:Repository<MainCategory>
 
     async create({name}){
-        
         return await this.mainCategoryRepository.save({name})
     }
 
@@ -31,4 +30,6 @@ export class MainCategoryService{
     async findById({id:mainCategoryId}){
         return this.mainCategoryRepository.findOne({id:mainCategoryId})
     }
+
+   
 }

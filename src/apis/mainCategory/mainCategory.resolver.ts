@@ -14,11 +14,11 @@ export class MainCategoryResolver{
     async createMainCategory(
         @Args('name') name:string
     ){  
-            const category = await this.mainCategoryService.findOne({name})
-            if(category){
-                throw new ConflictException('이미 존재하는 카테고리 입니다.')
-            }
-            return await this.mainCategoryService.create({name})
+        const category = await this.mainCategoryService.findOne({name})
+        if(category){
+            throw new ConflictException('이미 존재하는 카테고리 입니다.')
+        }
+        return await this.mainCategoryService.create({name})
     }
 
     @Mutation(() => Boolean)

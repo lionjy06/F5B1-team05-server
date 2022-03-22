@@ -1,5 +1,6 @@
 import { Field, ObjectType } from "@nestjs/graphql";
-import { Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { SubCategory } from "src/apis/subCategory/entities/subCategory.entity";
+import { Column, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity()
@@ -16,5 +17,6 @@ export class MainCategory{
     @DeleteDateColumn()
     deletedAt:Date
 
-    
+    @OneToMany((type) => SubCategory, (subCategory) => subCategory.mainCategory)
+    subCategory:SubCategory[]
 }
