@@ -7,9 +7,16 @@ type Brand {
   name: String!
 }
 
-type MainCategory {
+type Product {
   id: String!
   name: String!
+  description: String!
+  price: Int!
+  views: Int!
+  likes: Int!
+  urls: String
+  brand: Brand!
+  subCategory: SubCategory!
 }
 
 type SubCategory {
@@ -18,22 +25,9 @@ type SubCategory {
   mainCategory: MainCategory!
 }
 
-type Product {
+type MainCategory {
   id: String!
   name: String!
-  description: String!
-  price: Int!
-  views: Int!
-  likes: Int!
-  brand: Brand!
-  subCategory: SubCategory!
-}
-
-type ProductImg {
-  id: String!
-  urls: String
-  isMain: Boolean!
-  product: Product!
 }
 
 type User {
@@ -54,13 +48,15 @@ type User {
 
 type Query {
   fetchUser: User!
-  fetchImg(productImgId: String!): String!
   fetchBrand(name: String!): Brand!
   fetchBrands: [Brand!]!
-  fetchSubCategory(name: String!): SubCategory!
+  fetchSubCategory(mainCategory: String!): SubCategory!
   fetchSubCategorys: [SubCategory!]!
   fetchMainCategory(name: String!): MainCategory!
   fetchMainCategorys: [MainCategory!]!
+  fetchProducts: [Product!]!
+  fetchProduct(name: String!): Product!
+  fetchProductRelateMainCategory(mainCategory: String!): [Product!]!
 }
 
 type Mutation {
@@ -69,7 +65,6 @@ type Mutation {
   tokenMaker(phoneNum: String!): String!
   tokenValidate(phoneNum: String!, token: String!): Boolean!
   createUser(email: String!, password: String!, nickname: String!, name: String!, phoneNum: String!): User!
-  createImgs(urls: String!): ProductImg!
   createBrand(name: String!): Brand!
   deleteBrand(productImgId: String!): Boolean!
   createSubCategory(name: String!, mainCategoryId: String!): SubCategory!
@@ -83,6 +78,7 @@ input CreateProductInput {
   name: String!
   description: String!
   price: Int!
+  urls: String!
   brandId: String!
   subCategoryId: String!
 }

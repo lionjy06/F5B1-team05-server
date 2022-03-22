@@ -14,10 +14,13 @@ export class CreateProductInput{
     price:number
 
     @Field(() => String)
+    urls:string
+
+    @Field(() => String)
     brandId:string
 
     @Field(() => String)
     subCategoryId:string
 
- 
+    
 }

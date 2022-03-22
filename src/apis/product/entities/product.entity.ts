@@ -32,17 +32,22 @@ export class Product{
     @Field(() => Int)
     likes:number
 
+    @Column({nullable:true})
+    @Field(() => String,{nullable:true})
+    urls?: string
+
     @CreateDateColumn()
     createdAt:Date
 
     @DeleteDateColumn()
     deletedAt:Date
 
-    @ManyToOne(() => Brand)
+    @ManyToOne(() => Brand,{cascade:true, onDelete: 'CASCADE' })
     @Field(() => Brand)
     brand:Brand
 
-    @ManyToOne(() => SubCategory)
+
+    @ManyToOne(() => SubCategory, (subCategory) => subCategory.product)
     @Field(() => SubCategory)
     subCategory:SubCategory
 }

@@ -1,6 +1,7 @@
-import { Field, Int, ObjectType } from "@nestjs/graphql";
+import { Field,  ObjectType } from "@nestjs/graphql";
 import { MainCategory } from "src/apis/mainCategory/entities/mainCategory.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Product } from "src/apis/product/entities/product.entity";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity()
@@ -14,7 +15,14 @@ export class SubCategory{
     @Field(() => String)
     name:string
 
-    @ManyToOne(() => MainCategory)
+    // {cascade:true, onDelete: 'CASCADE' ,eager:true}
+    // 
+    
+
+    @OneToMany((type)=>Product, (product) => product.subCategory)
+    product:Product[]
+
+    @ManyToOne(() => MainCategory, (mainCategory)=>mainCategory.subCategory)
     @Field(() => MainCategory)
     mainCategory:MainCategory
 }
