@@ -2,25 +2,9 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  id: String!
-  nickname: String!
-  email: String!
-  profilePic: String
-  coverPid: String
-  password: String!
-  phoneNum: String!
-  ratingAvg: Int!
-  accountOwner: String
-  accountNumber: Int
-  bank: String
-  income: Int
-}
-
 type Brand {
   id: String!
   name: String!
-  img: String
 }
 
 type MainCategory {
@@ -45,6 +29,60 @@ type Product {
   subCategory: SubCategory!
 }
 
+type ProductImg {
+  id: String!
+  urls: String
+  isMain: Boolean!
+  product: Product!
+}
+
+type User {
+  id: String!
+  nickname: String
+  name: String!
+  email: String!
+  profilePic: String
+  coverPic: String
+  password: String!
+  phoneNum: String!
+  ratingAvg: Int!
+  accountOwner: String
+  accountNumber: Int
+  bank: String
+  income: Int
+}
+
 type Query {
-  getHello: String!
+  fetchUser: User!
+  fetchImg(productImgId: String!): String!
+  fetchBrand(name: String!): Brand!
+  fetchBrands: [Brand!]!
+  fetchSubCategory(name: String!): SubCategory!
+  fetchSubCategorys: [SubCategory!]!
+  fetchMainCategory(name: String!): MainCategory!
+  fetchMainCategorys: [MainCategory!]!
+}
+
+type Mutation {
+  login(email: String!, password: String!): String!
+  restoreAccessToken: String!
+  tokenMaker(phoneNum: String!): String!
+  tokenValidate(phoneNum: String!, token: String!): Boolean!
+  createUser(email: String!, password: String!, nickname: String!, name: String!, phoneNum: String!): User!
+  createImgs(urls: String!): ProductImg!
+  createBrand(name: String!): Brand!
+  deleteBrand(productImgId: String!): Boolean!
+  createSubCategory(name: String!, mainCategoryId: String!): SubCategory!
+  deleteSubCategory(SubCategoryId: String!): Boolean!
+  createMainCategory(name: String!): MainCategory!
+  deleteMainCategory(mainCategoryId: String!): Boolean!
+  createProduct(createProductInput: CreateProductInput!): Product!
+}
+
+input CreateProductInput {
+  name: String!
+  description: String!
+  price: Int!
+  brandId: String!
+  subCategoryId: String!
 }

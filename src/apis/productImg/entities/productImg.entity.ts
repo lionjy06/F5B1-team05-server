@@ -12,7 +12,7 @@ export class ProductImg{
 
     @Column()
     @Field(()=>String,{nullable:true})
-    img?:string
+    urls?:string
 
     @Column({default:false})
     @Field(()=>Boolean)

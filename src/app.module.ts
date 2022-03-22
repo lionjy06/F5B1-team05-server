@@ -6,9 +6,21 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ConfigModule } from '@nestjs/config';
 import { ProductModule } from './apis/product/product.module';
+import { MainCategoryModule } from './apis/mainCategory/mainCategory.module';
+import { SubCategoryModule } from './apis/subCategory/subCategory.module';
+import { BrandModule } from './apis/brand/brand.module';
+import { ProductImgModule } from './apis/productImg/productImg.module';
+import { UserModule } from './apis/user/user.module';
+import { AuthModule } from './apis/auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
+    UserModule,
+    ProductImgModule,
+    BrandModule,
+    SubCategoryModule,
+    MainCategoryModule,
     ProductModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,

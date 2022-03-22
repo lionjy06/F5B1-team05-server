@@ -13,10 +13,6 @@ export class Brand{
     @Field(() => String)
     name:string
 
-    @Column()
-    @Field(() => String,{nullable:true})
-    img?:string
-
     @DeleteDateColumn()
     deltedAt:Date
 }

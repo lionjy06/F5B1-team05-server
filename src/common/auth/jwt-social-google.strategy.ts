@@ -16,15 +16,13 @@ export class JwtGoogleStrategy extends PassportStrategy(Strategy, 'google') {
   }
 
   async validate(accessToken: String, refreshToken: String, profile: Profile) {
-    console.log(profile);
+    
 
-    profile.displayName;
-    profile.emails[0].value;
+    
     return {
       email: profile.emails[0].value,
-      password: profile.id,
       name: profile.displayName,
-      age: 0,
+      
     };
   }
 }

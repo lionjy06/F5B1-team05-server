@@ -10,20 +10,25 @@ export class User{
     id:string
 
     @Column()
+    @Field(()=>String,{nullable:true})
+    nickname?:string
+
+    @Column()
     @Field(()=>String)
-    nickname:string
+    name:string
+
 
     @Column()
     @Field(()=>String)
     email:string
 
-    @Column()
+    @Column({nullable:true})
     @Field(()=>String,{nullable:true})
     profilePic?:string
 
-    @Column()
+    @Column({nullable:true})
     @Field(()=>String,{nullable:true})
-    coverPid?:string
+    coverPic?:string
 
     @Column()
     @Field(()=>String)
@@ -37,19 +42,19 @@ export class User{
     @Field(()=>Int)
     ratingAvg:number
 
-    @Column()
+    @Column({nullable:true})
     @Field(()=>String,{nullable:true})
     accountOwner?:string
 
-    @Column()
+    @Column({nullable:true})
     @Field(()=>Int,{nullable:true})
     accountNumber?:number
 
-    @Column()
+    @Column({nullable:true})
     @Field(()=>String,{nullable:true})
     bank?:string
 
-    @Column()
+    @Column({nullable:true})
     @Field(()=>Int,{nullable:true})
     income?:number
 
