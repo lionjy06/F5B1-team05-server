@@ -3,6 +3,7 @@ import { Product } from "src/apis/product/entities/product.entity";
 import { User } from "src/apis/user/entities/user.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
+type ratings = 0 | 1 | 2 | 3 | 4 | 5  
 
 @Entity()
 @ObjectType()
@@ -10,6 +11,10 @@ export class Review{
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
     id:string
+
+    @Column()
+    @Field(() => String)
+    title:string
 
     @Column()
     @Field(() => String)
@@ -23,16 +28,13 @@ export class Review{
     @Field(() => Int)
     ratings:number
 
-    @Column({default:false})
-    @Field(()=>Boolean)
-    isReplied:boolean
-
     @CreateDateColumn()
     createdAt:Date
 
     @DeleteDateColumn()
     deletedAt:Date
 
+    
     @ManyToOne(() => User)
     @Field(() => User)
     user:User

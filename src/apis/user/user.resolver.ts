@@ -78,4 +78,16 @@ export class UserResolver {
   ) {
     return await this.userService.findOne({ email: currentUser.email });
   }
+
+  @Query(() => [User])
+  async fetchUsers(){
+    return await this.userService.findAll()
+  }
+
+  @Query(()=>User)
+  async fetchUserByEmail(
+    @Args('email') email:string
+  ){
+    return await this.userService.findOne({email})
+  }
 }

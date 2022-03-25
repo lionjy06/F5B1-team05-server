@@ -16,13 +16,15 @@ export class JwtAccessStrategy extends PassportStrategy(Strategy, 'access') {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: 'myAccessKey',
+      secretOrKey: 'myAccesskey',
       passReqToCallback: true,
+    
     });
   }
 
 
   async validate(req, payload: any) {
+    console.log('12312313111333222payload',payload)
     const accessToken = req.headers.authorization.replace('Bearer ', '');
     console.log('111111', accessToken);
     const confirm = await this.cacheManager.get(`accessToken:${accessToken}`);

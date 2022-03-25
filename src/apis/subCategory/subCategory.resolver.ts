@@ -1,6 +1,7 @@
 
-import { ConflictException } from "@nestjs/common";
+import { ConflictException, UseGuards } from "@nestjs/common";
 import { Args, Mutation, Resolver, Query } from "@nestjs/graphql";
+import { GqlAuthRefreshGuard } from "src/common/auth/gql-auth.guard";
 import { getConnection, getRepository } from "typeorm";
 import { MainCategoryService } from "../mainCategory/mainCateory.service";
 import { SubCategory } from "./entities/subCategory.entity";
@@ -30,6 +31,7 @@ export class SubCategoryResolver{
         return await this.subCategoryService.create({name,category})
     }
 
+    @UseGuards(GqlAuthRefreshGuard)
     @Mutation(() => Boolean)
     async deleteSubCategory(
         @Args('SubCategoryId') subCategoryId:string
@@ -38,9 +40,9 @@ export class SubCategoryResolver{
     }
     @Query(() => SubCategory)
     async fetchSubCategory(
-        @Args('mainCategory') mainCategory:string
+        @Args('mainCategoryId') mainCategoryId:string
         ){
-        return this.subCategoryService.findOne({id:mainCategory})
+        return this.subCategoryService.findOne({mainCategoryId})
     }
     @Query(()=>[SubCategory])
     async fetchSubCategorys(){

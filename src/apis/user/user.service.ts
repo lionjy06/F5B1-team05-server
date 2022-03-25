@@ -120,7 +120,7 @@ export class UserService {
     });
   }
 
-  async findOne({ email}) {
+  async findOne({email}) {
     return await this.userRepository.findOne({email});
   }
 
@@ -184,5 +184,9 @@ export class UserService {
   
   
     // console.log(`${name}님 가입을 축하드립니다`)
+  }
+
+  async findAll(){
+    return await this.userRepository.find()
   }
 }

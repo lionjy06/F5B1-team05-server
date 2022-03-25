@@ -1,9 +1,9 @@
-import { Field, InputType, Int } from "@nestjs/graphql";
-import { SubCategory } from "src/apis/subCategory/entities/subCategory.entity";
+import { Field, InputType, Int, PickType } from "@nestjs/graphql";
+import { Product } from "../entities/product.entity";
 
 
 @InputType()
-export class CreateProductInput{
+export class UpdateProductInput{
     @Field(() => String)
     name:string
 
@@ -21,6 +21,4 @@ export class CreateProductInput{
 
     @Field(() => String)
     subCategoryId:string
-
-  
 }

@@ -27,7 +27,7 @@ export class SubCategoryService{
         return await this.subCategoryRepository.find()
     }
 
-    async findOne({id:mainCategory}){
+    async findOne({mainCategoryId}){
         // const result1 = await getConnection()
         // .createQueryBuilder()
         // .select('sub_category')
@@ -39,11 +39,11 @@ export class SubCategoryService{
             .createQueryBuilder('product')
             .leftJoinAndSelect('product.subCategory','subCategory')
             .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
-            .where('mainCategory.id = :id', {id:mainCategory})
+            .where('mainCategory.id = :id', {id:mainCategoryId})
             .getMany()
 
         console.log('123123',result1)
-        const result = await this.subCategoryRepository.findOne({where:{mainCategory:mainCategory},relations:["mainCategory"]})
+        const result = await this.subCategoryRepository.findOne({where:{mainCategory:mainCategoryId},relations:["mainCategory"]})
         
        
         return result

@@ -7,6 +7,9 @@ export class GqlAuthAccessGuard extends AuthGuard(`access`) {
   getRequest(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
     return ctx.getContext().req;
+    
+
+    
   }
 }
 
