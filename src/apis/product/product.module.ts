@@ -4,6 +4,7 @@ import { Brand } from "../brand/entities/brand.entity";
 import { MainCategory } from "../mainCategory/entities/mainCategory.entity";
 
 import { SubCategory } from "../subCategory/entities/subCategory.entity";
+import { User } from "../user/entities/user.entity";
 import { Product } from "./entities/product.entity";
 import { ProductResolver } from "./product.resolver";
 import { ProductService } from "./product.service";
@@ -14,7 +15,7 @@ import { ProductService } from "./product.service";
         TypeOrmModule.forFeature([
             Product,
             SubCategory,
-            
+            User,
             MainCategory,
             Brand
         ])

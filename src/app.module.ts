@@ -12,12 +12,17 @@ import { BrandModule } from './apis/brand/brand.module';
 
 import { UserModule } from './apis/user/user.module';
 import { AuthModule } from './apis/auth/auth.module';
+import { ReviewModule } from './apis/review/review.module';
+import { AdminCateogryModule } from './apis/adminCategory/adminCategory.module';
+import { AdminQueryModule } from './apis/adminQuery/adminQuery.module';
 
 @Module({
   imports: [
+    AdminCateogryModule,
+    AdminQueryModule,
     AuthModule,
     UserModule,
-    
+    ReviewModule,
     BrandModule,
     SubCategoryModule,
     MainCategoryModule,

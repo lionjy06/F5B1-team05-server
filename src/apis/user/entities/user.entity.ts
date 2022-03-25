@@ -1,5 +1,7 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Product } from "src/apis/product/entities/product.entity";
+import { Review } from "src/apis/review/entities/review.entity";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity()
@@ -31,7 +33,6 @@ export class User{
     coverPic?:string
 
     @Column()
-    @Field(()=>String)
     password:string
 
     @Column()
@@ -68,4 +69,10 @@ export class User{
 
     @DeleteDateColumn()
     deletedAt:Date
-}
+
+    @OneToMany((type)=>Product,(product) => product.user)
+    product:Product[]
+
+    @OneToMany((type) => Review,(review) => review.user)
+    review:Review[]
+}    
