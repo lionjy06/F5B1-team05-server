@@ -18,7 +18,7 @@ export class OrderResolver{
         if(category){
             throw new ConflictException('이미 존재하는 카테고리 입니다.') // 수정할 곳 : 오류내용
         }
-        return await this.orderService.create({name})
+        return await this.orderService.create(category)
     }
 
     @Mutation(() => Boolean)

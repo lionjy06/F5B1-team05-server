@@ -78,7 +78,23 @@ type AdminQuery {
   user: User!
 }
 
+type Order {
+  id: String!
+  impUid: String!
+  price: Int
+  status: PAYMENT_STATUS_ENUM!
+  product: Product!
+  user: User!
+}
+
+enum PAYMENT_STATUS_ENUM {
+  PAYMENT
+  CANCEL
+}
+
 type Query {
+  fetchOrder(name: String!): Order!
+  fetchOrders: [Order!]!
   fetchAdminQuerys: [AdminQuery!]!
   fetchAdminQuery(adminQueryId: String!, adminCategoryId: String!, userId: String!): AdminQuery!
   fetchUser: User!
@@ -89,14 +105,16 @@ type Query {
   fetchBrands: [Brand!]!
   fetchSubCategory(mainCategoryId: String!): SubCategory!
   fetchSubCategorys: [SubCategory!]!
-  fetchMainCategory(name: String!): MainCategory!
-  fetchMainCategorys: [MainCategory!]!
+  fetchMainCategoryItem(name: String!): MainCategory!
+  fetchMainCategorysItem: [MainCategory!]!
   fetchProducts: [Product!]!
   fetchProduct(name: String!): Product!
   fetchProductRelateMainCategory(mainCategory: String!): [Product!]!
 }
 
 type Mutation {
+  createMainCategory(name: String!): Order!
+  deleteOrder(orderId: String!): Boolean!
   createAdminCategory(name: String!): AdminCategory!
   deleteAdminCategory(adminCategoryId: String!): Boolean!
   createAdminQuery(title: String!, contents: String!, img: String!, adminCategoryId: String!): AdminQuery!
@@ -112,8 +130,8 @@ type Mutation {
   deleteBrand(productImgId: String!): Boolean!
   createSubCategory(name: String!, mainCategoryId: String!): SubCategory!
   deleteSubCategory(SubCategoryId: String!): Boolean!
-  createMainCategory(name: String!): MainCategory!
-  deleteMainCategory(mainCategoryId: String!): Boolean!
+  createMainCategoryItem(name: String!): MainCategory!
+  deleteMainCategoryItem(mainCategoryId: String!): Boolean!
   createProduct(createProductInput: CreateProductInput!): Product!
   updateProduct(productId: String!, updateProductInput: UpdateProductInput!): Product!
 }

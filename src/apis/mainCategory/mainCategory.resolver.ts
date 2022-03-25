@@ -11,7 +11,7 @@ export class MainCategoryResolver{
         private readonly mainCategoryService:MainCategoryService
     ){}
     @Mutation(() => MainCategory)
-    async createMainCategory(
+    async createMainCategoryItem(
         @Args('name') name:string
     ){  
         const category = await this.mainCategoryService.findOne({name})
@@ -22,19 +22,19 @@ export class MainCategoryResolver{
     }
 
     @Mutation(() => Boolean)
-    async deleteMainCategory(
+    async deleteMainCategoryItem(
         @Args('mainCategoryId') mainCategoryId:string
     ){
         return await this.mainCategoryService.delete({mainCategoryId})
     }
     @Query(() => MainCategory)
-    async fetchMainCategory(
+    async fetchMainCategoryItem(
         @Args('name') name:string
         ){
         return this.mainCategoryService.findOne({name})
     }
     @Query(()=>[MainCategory])
-    async fetchMainCategorys(){
+    async fetchMainCategorysItem(){
         return this.mainCategoryService.findAll()
     }
 }

@@ -6,11 +6,14 @@ import { Order } from "./entities/order.entity";
 
 @Injectable()
 export class OrderService{
-    @InjectRepository(Order)
-    private readonly orderRepository:Repository<Order>
+    constructor(
+        @InjectRepository(Order)
+        private readonly orderRepository:Repository<Order>
+    ){}
+    
 
-    async create({name}){ // 수정할 곳 : 파라미터를 수정하기. 엔터티를 참고
-        return await this.orderRepository.save({name})
+    async create(category){ // 수정할 곳 : 파라미터를 수정하기. 엔터티를 참고
+        return await this.orderRepository.save(category)
     }
 
     async delete({orderId}){
