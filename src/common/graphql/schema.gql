@@ -37,8 +37,8 @@ type Product {
   name: String!
   description: String!
   price: Int!
-  views: Int!
-  likes: Int!
+  view: Int!
+  like: Int!
   urls: String
   brand: Brand!
   subCategory: SubCategory!

@@ -1,10 +1,11 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Brand } from "src/apis/brand/entities/brand.entity";
+import { ProductLike } from "src/apis/productLike/entities/productLike.entity";
 import { Review } from "src/apis/review/entities/review.entity";
 import { SubCategory } from "src/apis/subCategory/entities/subCategory.entity";
 import { User } from "src/apis/user/entities/user.entity";
 
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity()
@@ -28,11 +29,11 @@ export class Product{
 
     @Column({default:0})
     @Field(() => Int)
-    views:number
+    view:number
 
     @Column({default:0})
     @Field(() => Int)
-    likes:number
+    like:number
 
     @Column({nullable:true})
     @Field(() => String,{nullable:true})
@@ -56,4 +57,7 @@ export class Product{
     @ManyToOne(() => User,{cascade:true, onDelete: 'CASCADE' })
     @Field(() => User)
     user:User
+
+    @OneToMany((type) => ProductLike, (productLike) => productLike.product)
+    productLike: ProductLike[];
 }
