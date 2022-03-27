@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Product } from "src/apis/product/entities/product.entity";
+import { ProductLike } from "src/apis/productLike/entities/productLike.entity";
 import { Review } from "src/apis/review/entities/review.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -75,4 +76,7 @@ export class User{
 
     @OneToMany((type) => Review,(review) => review.user)
     review:Review[]
+
+    @OneToMany((type) => ProductLike, (productLike) => productLike.user)
+    productLike: ProductLike[];
 }    
