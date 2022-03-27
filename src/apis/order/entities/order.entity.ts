@@ -7,6 +7,8 @@ export enum PAYMENT_STATUS_ENUM {
     PAYMENT = 'PAYMENT',
     CANCEL = 'CANCEL',
   }
+  
+
   registerEnumType(PAYMENT_STATUS_ENUM, {
     name: 'PAYMENT_STATUS_ENUM',
   });
