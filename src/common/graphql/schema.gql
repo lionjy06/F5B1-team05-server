@@ -93,7 +93,7 @@ enum PAYMENT_STATUS_ENUM {
 }
 
 type Query {
-  fetchOrder(name: String!): Order!
+  fetchOrder(impUid: String!): Order!
   fetchOrders: [Order!]!
   fetchAdminQuerys: [AdminQuery!]!
   fetchAdminQuery(adminQueryId: String!, adminCategoryId: String!, userId: String!): AdminQuery!
@@ -113,7 +113,7 @@ type Query {
 }
 
 type Mutation {
-  createMainCategory(name: String!): Order!
+  createOrder(impUid: String!, price: Float!): Order!
   deleteOrder(orderId: String!): Boolean!
   createAdminCategory(name: String!): AdminCategory!
   deleteAdminCategory(adminCategoryId: String!): Boolean!
