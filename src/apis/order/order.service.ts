@@ -1,6 +1,5 @@
 import { ConflictException, Inject, Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-// import { CurrentUser } from "src/common/auth/gql-user.param";
+import { InjectRepository } from "@nestjs/typeorm"; 
 import { Connection, getRepository, Repository } from "typeorm";
 import { Product } from "../product/entities/product.entity";
 import { User } from "../user/entities/user.entity";
@@ -23,16 +22,17 @@ export class OrderService{
     ){}
     
 
-    async create({impUid, productId, price, status}){ // 수정할 곳 : 파라미터를 수정하기. 엔터티를 참고
+    async create({currentUser, impUid, productId, price, status}){ // 수정할 곳 : 파라미터를 수정하기. 엔터티를 참고
 
         const queryRunner = await this.connection.createQueryRunner();
         await queryRunner.connect();
         await queryRunner.startTransaction('READ COMMITTED');    
         try{
             // user 있는 건지 확인
-            // if(!user) throw new ConflictException('없는 유저입니다.')
+            const user = await this.userRepository.findOne({email:currentUser.email});
+            if(!currentUser) throw new ConflictException('없는 유저입니다.')
     
-            // 물품 찾기
+            // 물품 있는 건지 확인
             const product = await this.productRepository.findOne({id:productId});
             if(!product) throw new ConflictException('물품이 없습니다');
 
@@ -43,13 +43,13 @@ export class OrderService{
             else if(status === "ONTHEWAY") statusEnum = ORDER_STATUS_ENUM.ONTHEWAY;
             else if(status === "DELIVERED") statusEnum = ORDER_STATUS_ENUM.DELIVERED;
             else if(status === "CANCEL") statusEnum = ORDER_STATUS_ENUM.CANCEL; 
-            else queryRunner.rollbackTransaction();
+            else throw new ConflictException("적절한 OrderEnum이 아닙니다");
 
             const orderTransaction = await this.orderRepository.create({
+                user : currentUser,
                 impUid,
+                product,
                 price,
-                //user : currentUser,
-                product : product,
                 status: statusEnum //결제완료일 때
             });
             await this.orderRepository.save(orderTransaction) 
@@ -63,8 +63,17 @@ export class OrderService{
     }
 
     async delete({orderId}){
-        const result = await this.orderRepository.softDelete({id:orderId})
-        return result.affected ? true: false
+        const queryRunner = await this.connection.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction('READ COMMITTED'); 
+        try{
+            const result = await this.orderRepository.softDelete({id:orderId})
+            return result.affected ? true: false
+        }catch(error){
+            queryRunner.rollbackTransaction();
+        }finally{
+            await queryRunner.release();
+        } 
     }
 
     async findAll(){
