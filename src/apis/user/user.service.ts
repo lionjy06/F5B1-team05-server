@@ -5,7 +5,13 @@ import { User } from './entities/user.entity';
 import axios from 'axios'
 import dotenv from 'dotenv'
 import { Cache } from 'cache-manager';
+import { UpdateUserAccountInput } from './dto/updateUserAccountInput';
 
+
+interface IUpdateAccount{
+  userId:string
+  updateUserAccountInput: UpdateUserAccountInput
+}
 
 @Injectable()
 export class UserService {
@@ -120,7 +126,11 @@ export class UserService {
     });
   }
 
-  async findOne({email}) {
+  async findOne({userId}) {
+    return await this.userRepository.findOne({id:userId});
+  }
+
+  async findEmail({email}) {
     return await this.userRepository.findOne({email});
   }
 
@@ -188,5 +198,12 @@ export class UserService {
 
   async findAll(){
     return await this.userRepository.find()
+  }
+
+  async updateAccount({userId,updateUserAccountInput}:IUpdateAccount){
+    const user = await this.userRepository.findOne({id:userId});
+    const newUser = {...user, ...updateUserAccountInput};
+    const updatedAccount = await this.userRepository.save(newUser)
+    return updatedAccount
   }
 }

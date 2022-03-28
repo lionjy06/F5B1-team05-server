@@ -27,9 +27,9 @@ export class ProductResolver{
 
     @Query(() => Product)
     async fetchProduct(
-        @Args('name') name:string
+        @Args('productId') productId:string
     ){
-        return await this.productSerivce.findOne({name})
+        return await this.productSerivce.findOne({productId})
     }
 
     @UseGuards(GqlAuthAccessGuard)
@@ -44,16 +44,26 @@ export class ProductResolver{
     }
     @Query(() => [Product])
     async fetchProductRelateMainCategory(
-        @Args('mainCategory') mainCategory:string
+        @Args('mainCategoryId') mainCategoryId:string
     ){
-        return await this.productSerivce.findProductRelateMainCategory({mainCategory})
+        return await this.productSerivce.findProductRelateMainCategory({mainCategoryId})
     }
 
+    @UseGuards(GqlAuthAccessGuard)
     @Mutation(() => Product)
     async updateProduct(
       @Args(`productId`) productId: string,
       @Args(`updateProductInput`) updateProductInput: UpdateProductInput,
     ) {
       return this.productSerivce.update({ productId, updateProductInput });
+    }
+
+    @UseGuards(GqlAuthAccessGuard)
+    @Mutation(() => Boolean)
+    async deleteProduct(
+        @Args('productId') productId:string
+        
+    ){
+        return await this.productSerivce.delete({productId})
     }
 }

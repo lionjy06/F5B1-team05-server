@@ -51,8 +51,8 @@ export class ProductService{
         })
     } 
     
-    async findOne({name}){
-        return await this.productRepository.findOne({name})
+    async findOne({productId}){
+        return await this.productRepository.findOne({id:productId})
     }
 
     
@@ -68,7 +68,7 @@ export class ProductService{
         return await this.productRepository.save({brand,subCategory,user,...rest})
     }
 
-    async findProductRelateMainCategory({mainCategory}){
+    async findProductRelateMainCategory({mainCategoryId}){
         // const result1 = await getConnection()
         // .createQueryBuilder()
         // .select('sub_category')
@@ -80,7 +80,7 @@ export class ProductService{
             .createQueryBuilder('product')
             .leftJoinAndSelect('product.subCategory','subCategory')
             .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
-            .where('mainCategory.id = :id', {id:mainCategory})
+            .where('mainCategory.id = :id', {id:mainCategoryId})
             .orderBy('product.createdAt','ASC')
             .getMany()
 
@@ -91,11 +91,16 @@ export class ProductService{
         return result1
     }
 
-    @UseGuards(GqlAuthAccessGuard)
+    
     async update({productId,updateProductInput}:IUdate){
         const product = await this.productRepository.findOne({id:productId})
         const newProduct = {...product, ...updateProductInput};
         const updatedProduct = await this.productRepository.save(newProduct)
         return updatedProduct;
+    }
+
+    async delete({productId}){
+        const result = await this.userRepository.softDelete({id:productId})
+        return result.affected ? true: false
     }
 }

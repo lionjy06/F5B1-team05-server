@@ -13,8 +13,8 @@ export class User{
     id:string
 
     @Column()
-    @Field(()=>String,{nullable:true})
-    nickname?:string
+    @Field(()=>String)
+    nickname:string
 
     @Column()
     @Field(()=>String)
