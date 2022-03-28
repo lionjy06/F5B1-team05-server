@@ -8,6 +8,10 @@ import { GqlAuthAccessGuard } from 'src/common/auth/gql-auth.guard';
 import { CACHE_MANAGER, ConflictException, Inject, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Cache } from 'cache-manager';
+import { UpdateUserAccountInput } from './dto/updateUserAccountInput';
+
+
+
 
 
 @Resolver()
@@ -45,8 +49,9 @@ export class UserResolver {
     @Args('nickname') nickname: string,
     @Args('name') name: string,
     @Args('phoneNum') phoneNum: string,
+    @Args('userId') userId:string
   ) {
-    const user = await this.userService.findOne({email})
+    const user = await this.userService.findOne({userId})
     const nick = await this.userService.findNick({nickname})
     
     if(user){
@@ -76,7 +81,7 @@ export class UserResolver {
   async fetchUser(
     @CurrentUser() currentUser: ICurrentUser, //
   ) {
-    return await this.userService.findOne({ email: currentUser.email });
+    return await this.userService.findOne({ userId: currentUser.id });
   }
 
   @Query(() => [User])
@@ -86,8 +91,17 @@ export class UserResolver {
 
   @Query(()=>User)
   async fetchUserByEmail(
-    @Args('email') email:string
+    @Args('userId') userId:string
   ){
-    return await this.userService.findOne({email})
+    return await this.userService.findOne({userId})
+  }
+
+  @UseGuards(GqlAuthAccessGuard)
+  @Mutation(() => User)
+  async updateAccount(
+    @Args('userId') userId:string,
+    @Args('updateUserAccountInput') updateUserAccountInput: UpdateUserAccountInput
+  ){
+    const user = await this.userService.updateAccount({userId,updateUserAccountInput})
   }
 }

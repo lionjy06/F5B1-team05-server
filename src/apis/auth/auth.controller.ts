@@ -23,7 +23,7 @@ export class AuthController {
 
 
   async combine(req, res) {
-    let user = await this.userService.findOne({ email: req.user.email });
+    let user = await this.userService.findEmail({ email: req.user.email });
 
     if (!user) {
       const { password, ...rest } = req.user;
@@ -45,7 +45,7 @@ export class AuthController {
     @Args('password') password:string
   ) {
     
-    let user = await this.userService.findOne({ email: req.user.email });
+    let user = await this.userService.findEmail({ email: req.user.email });
     console.log('12312333322',req.user)
 
     //페이지 리다이렉션 => 비번, 폰번호(토큰api,확인api재사용 하면 될듯), 닉네임 입력해야하는곳

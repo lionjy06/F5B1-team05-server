@@ -14,10 +14,10 @@ export class AuthService {
     );
     console.log('111111aaa11');
     res.setHeader('Set-Cookie', `refreshToken=${refreshToken}`);
-    // res.setHeader('Access-Control-Allow-Origin', 'https://localhost:3000');
-    // res.setHeader(
-    //   'Set-Cookie',
-    //   `refreshToken=${refreshToken}; path=/; domain=.mybacksite.com; SameSite=None; Secure;httpOnly`,) 
+    res.setHeader('Access-Control-Allow-Origin', 'https://localhost:3000');
+    res.setHeader(
+      'Set-Cookie',
+      `refreshToken=${refreshToken}; path=/; domain=.project5-sos.shop; SameSite=None; Secure;httpOnly`,) 
   }
 
   getAccessToken({ user }) {
