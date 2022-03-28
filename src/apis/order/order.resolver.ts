@@ -1,6 +1,8 @@
 
-import { ConflictException } from "@nestjs/common";
+import { ConflictException, UseGuards } from "@nestjs/common";
 import { Args, Mutation, Resolver,Query } from "@nestjs/graphql";
+import { GqlAuthAccessGuard } from "src/common/auth/gql-auth.guard";
+import { CurrentUser, ICurrentUser } from "src/common/auth/gql-user.param";
 import { Order } from "./entities/order.entity";
 import { OrderService } from "./order.service";
 
@@ -9,19 +11,19 @@ import { OrderService } from "./order.service";
 export class OrderResolver{
     constructor(
         private readonly orderService:OrderService
-    ){}
+    ){} 
 
     
-
-    //@UseGuards(GqlAuthAccessGuard)테스트 편의성을 위해 주석
+    @UseGuards(GqlAuthAccessGuard)//테스트 편의성을 위해 주석
     @Mutation(() => Order)
-    async createOrder(
-        @Args('impUid') impUid: string, // 수정할 곳 : 파라미터 적절하지 않음--완료
-        @Args('productId') productId : string, // 물품ID 
+    async createOrder( 
+        @CurrentUser() currentUser: ICurrentUser,
+        @Args('impUid') impUid: string,  
+        @Args('productId') productId : string,  
         @Args('price') price: number, 
         @Args('status') status:string, // 설명을 graphql에 써놓으면 좋겠다
     ){  
-        return await this.orderService.create({impUid, productId, price, status})
+        return await this.orderService.create({currentUser, impUid, productId, price, status})
     }
  
     @Mutation(() => Boolean)
