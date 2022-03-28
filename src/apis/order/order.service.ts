@@ -22,7 +22,7 @@ export class OrderService{
     ){}
     
 
-    async create({currentUser, impUid, productId, price, status}){ // 수정할 곳 : 파라미터를 수정하기. 엔터티를 참고
+    async create({currentUser, impUid, productId, status}){ // 수정할 곳 : 파라미터를 수정하기. 엔터티를 참고
 
         const queryRunner = await this.connection.createQueryRunner();
         await queryRunner.connect();
@@ -37,7 +37,7 @@ export class OrderService{
             if(!product) throw new ConflictException('물품이 없습니다');
 
             status = status.toUpperCase();
-            let statusEnum = null;
+            let statusEnum:ORDER_STATUS_ENUM;
             if(status === "PAYMENT") statusEnum = ORDER_STATUS_ENUM.PAYMENT;
             else if(status === "EXAMINATION") statusEnum = ORDER_STATUS_ENUM.EXAMINATION;
             else if(status === "ONTHEWAY") statusEnum = ORDER_STATUS_ENUM.ONTHEWAY;
@@ -46,10 +46,9 @@ export class OrderService{
             else throw new ConflictException("적절한 OrderEnum이 아닙니다");
 
             const orderTransaction = await this.orderRepository.create({
-                user : currentUser,
+                user,
                 impUid,
-                product,
-                price,
+                product, 
                 status: statusEnum //결제완료일 때
             });
             await this.orderRepository.save(orderTransaction) 

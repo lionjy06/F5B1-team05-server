@@ -19,7 +19,7 @@ type Review {
 
 type User {
   id: String!
-  nickname: String
+  nickname: String!
   name: String!
   email: String!
   profilePic: String
@@ -82,24 +82,27 @@ type Order {
   id: String!
   impUid: String!
   price: Int
-  status: PAYMENT_STATUS_ENUM!
+  status: ORDER_STATUS_ENUM!
   product: Product!
   user: User!
 }
 
-enum PAYMENT_STATUS_ENUM {
+enum ORDER_STATUS_ENUM {
   PAYMENT
+  EXAMINATION
+  ONTHEWAY
+  DELIVERED
   CANCEL
 }
 
 type Query {
-  fetchOrder(impUid: String!): Order!
+  fetchOrder(orderId: String!): Order!
   fetchOrders: [Order!]!
   fetchAdminQuerys: [AdminQuery!]!
   fetchAdminQuery(adminQueryId: String!, adminCategoryId: String!, userId: String!): AdminQuery!
   fetchUser: User!
   fetchUsers: [User!]!
-  fetchUserByEmail(email: String!): User!
+  fetchUserByEmail(userId: String!): User!
   fetchReview(userId: String!): SellerInfo!
   fetchBrand(name: String!): Brand!
   fetchBrands: [Brand!]!
@@ -108,23 +111,24 @@ type Query {
   fetchMainCategoryItem(name: String!): MainCategory!
   fetchMainCategorysItem: [MainCategory!]!
   fetchProducts: [Product!]!
-  fetchProduct(name: String!): Product!
-  fetchProductRelateMainCategory(mainCategory: String!): [Product!]!
+  fetchProduct(productId: String!): Product!
+  fetchProductRelateMainCategory(mainCategoryId: String!): [Product!]!
 }
 
 type Mutation {
-  createOrder(impUid: String!, price: Float!): Order!
+  createOrder(impUid: String!, productId: String!, price: Float!, status: String!): Order!
   deleteOrder(orderId: String!): Boolean!
   createAdminCategory(name: String!): AdminCategory!
   deleteAdminCategory(adminCategoryId: String!): Boolean!
   createAdminQuery(title: String!, contents: String!, img: String!, adminCategoryId: String!): AdminQuery!
   deleteAdminQuery(adminQueryId: String!): Boolean!
   updateAdminQuery(adminQueryId: String!, updatedAdminQueryInput: UpdateAdminQueryInput!): AdminQuery!
-  login(email: String!, password: String!): String!
+  login(userId: String!, password: String!): String!
   restoreAccessToken: String!
   tokenMaker(phoneNum: String!): String!
   tokenValidate(phoneNum: String!, token: String!): Boolean!
-  createUser(email: String!, password: String!, nickname: String!, name: String!, phoneNum: String!): User!
+  createUser(email: String!, password: String!, nickname: String!, name: String!, phoneNum: String!, userId: String!): User!
+  updateAccount(userId: String!, updateUserAccountInput: UpdateUserAccountInput!): User!
   createReview(title: String!, content: String!, img: String!, ratings: Float!, productId: String!): Review!
   createBrand(name: String!): Brand!
   deleteBrand(productImgId: String!): Boolean!
@@ -134,6 +138,7 @@ type Mutation {
   deleteMainCategoryItem(mainCategoryId: String!): Boolean!
   createProduct(createProductInput: CreateProductInput!): Product!
   updateProduct(productId: String!, updateProductInput: UpdateProductInput!): Product!
+  deleteProduct(productId: String!): Boolean!
 }
 
 input UpdateAdminQueryInput {
@@ -141,6 +146,12 @@ input UpdateAdminQueryInput {
   contents: String!
   adminCateogryId: String!
   userId: String!
+}
+
+input UpdateUserAccountInput {
+  bank: String!
+  accountNumber: Int!
+  accountOwner: String!
 }
 
 input CreateProductInput {

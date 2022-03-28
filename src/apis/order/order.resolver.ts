@@ -17,13 +17,12 @@ export class OrderResolver{
     @UseGuards(GqlAuthAccessGuard)//테스트 편의성을 위해 주석
     @Mutation(() => Order)
     async createOrder( 
-        @CurrentUser() currentUser: ICurrentUser,
-        @Args('impUid') impUid: string,  
-        @Args('productId') productId : string,  
-        @Args('price') price: number, 
+        @CurrentUser() currentUser: ICurrentUser, //구매자
+        @Args('impUid') impUid: string,  // IamPort id
+        @Args('productId') productId : string,  // 물품 ID
         @Args('status') status:string, // 설명을 graphql에 써놓으면 좋겠다
     ){  
-        return await this.orderService.create({currentUser, impUid, productId, price, status})
+        return await this.orderService.create({currentUser, impUid, productId, status})
     }
  
     @Mutation(() => Boolean)
