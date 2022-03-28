@@ -26,7 +26,7 @@ export class OrderService{
 
         const queryRunner = await this.connection.createQueryRunner();
         await queryRunner.connect();
-        await queryRunner.startTransaction('READ COMMITTED');    
+        await queryRunner.startTransaction('REPEATABLE READ');    
         try{
             // user 있는 건지 확인
             const user = await this.userRepository.findOne({email:currentUser.email});
@@ -42,7 +42,7 @@ export class OrderService{
             else if(status === "EXAMINATION") statusEnum = ORDER_STATUS_ENUM.EXAMINATION;
             else if(status === "ONTHEWAY") statusEnum = ORDER_STATUS_ENUM.ONTHEWAY;
             else if(status === "DELIVERED") statusEnum = ORDER_STATUS_ENUM.DELIVERED;
-            else if(status === "CANCEL") statusEnum = ORDER_STATUS_ENUM.CANCEL; 
+            else if(status === "CANCEL") {statusEnum = ORDER_STATUS_ENUM.CANCEL; }
             else throw new ConflictException("적절한 OrderEnum이 아닙니다");
 
             const orderTransaction = await this.orderRepository.create({
@@ -64,7 +64,7 @@ export class OrderService{
     async delete({orderId}){
         const queryRunner = await this.connection.createQueryRunner();
         await queryRunner.connect();
-        await queryRunner.startTransaction('READ COMMITTED'); 
+        await queryRunner.startTransaction('REPEATABLE READ'); 
         try{
             const result = await this.orderRepository.softDelete({id:orderId})
             return result.affected ? true: false
@@ -78,7 +78,7 @@ export class OrderService{
     async findAll(){
         const queryRunner = await this.connection.createQueryRunner();
         await queryRunner.connect();
-        await queryRunner.startTransaction('READ COMMITTED'); 
+        await queryRunner.startTransaction('REPEATABLE READ'); 
         try{
             return await this.orderRepository.find() 
         }catch(error){
@@ -91,7 +91,7 @@ export class OrderService{
     async findOneById({orderId}){  
         const queryRunner = await this.connection.createQueryRunner();
         await queryRunner.connect();
-        await queryRunner.startTransaction('READ COMMITTED'); 
+        await queryRunner.startTransaction('REPEATABLE READ'); 
         try{
             return await this.orderRepository.findOne({id: orderId}) 
         }catch(error){

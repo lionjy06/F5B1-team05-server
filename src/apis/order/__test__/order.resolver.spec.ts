@@ -100,7 +100,7 @@ describe("오더 그룹", ()=>{
                 price:3000,
                 urls:"productURLS",
             }, 
-            status: ORDER_STATUS_ENUM.PAYMENT
+            status: "PAYMENT"
         }
         const currentUser = myDB.user;
         const {impUid} = myDB;
