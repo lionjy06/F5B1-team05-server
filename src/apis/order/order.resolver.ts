@@ -11,19 +11,17 @@ export class OrderResolver{
         private readonly orderService:OrderService
     ){}
 
+    
+
+    //@UseGuards(GqlAuthAccessGuard)테스트 편의성을 위해 주석
     @Mutation(() => Order)
     async createOrder(
         @Args('impUid') impUid: string, // 수정할 곳 : 파라미터 적절하지 않음--완료
-        @Args('price') price: number,
-        // @Args('status') status:enum // enum은 프론트에서 안받아오면 어디서 받아오나?
-        // 무슨 물품인지 product를 프론트에서 받아오나?
-        // currentUser는 @UseGuards(GqlAuthAccessGuard)를 통해 받아오자
+        @Args('productId') productId : string, // 물품ID 
+        @Args('price') price: number, 
+        @Args('status') status:string, // 설명을 graphql에 써놓으면 좋겠다
     ){  
-        const order = await this.orderService.findOne({impUid})
-        if(order){
-            throw new ConflictException('이미 존재하는 주문 입니다.') // 수정할 곳 : 오류내용--완료
-        }
-        return await this.orderService.create({impUid, price})
+        return await this.orderService.create({impUid, productId, price, status})
     }
  
     @Mutation(() => Boolean)
@@ -35,9 +33,9 @@ export class OrderResolver{
 
     @Query(() => Order)
     async fetchOrder(
-        @Args('impUid') impUid:string // 수정할 곳 : 파라미터 적절하지 않음--완료
+        @Args('orderId') orderId:string // 수정할 곳 : 파라미터 적절하지 않음--완료
         ){
-        return this.orderService.findOne({impUid})
+        return this.orderService.findOneById({orderId})
     }
     @Query(()=>[Order])
     async fetchOrders(){

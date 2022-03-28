@@ -3,14 +3,17 @@ import { Product } from "src/apis/product/entities/product.entity";
 import { User } from "src/apis/user/entities/user.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-export enum PAYMENT_STATUS_ENUM {
+export enum ORDER_STATUS_ENUM {
+  // 결재완료, 검수중, 배송중, 배송완료, 취소 
     PAYMENT = 'PAYMENT',
-    CANCEL = 'CANCEL',
+    EXAMINATION = 'EXAMINATION',
+    ONTHEWAY = 'ONTHEWAY',
+    DELIVERED = 'DELIVERED', 
+    CANCEL = 'CANCEL', 
   }
-  
-
-  registerEnumType(PAYMENT_STATUS_ENUM, {
-    name: 'PAYMENT_STATUS_ENUM',
+   
+  registerEnumType(ORDER_STATUS_ENUM, {
+    name: 'ORDER_STATUS_ENUM',
   });
 
 @Entity()
@@ -28,10 +31,10 @@ export class Order{
     @Field(() => Int,{nullable:true})
     price?:number
 
-    @Column({ type: 'enum', enum: PAYMENT_STATUS_ENUM })
-    @Field(() => PAYMENT_STATUS_ENUM)
-    status: PAYMENT_STATUS_ENUM;
-
+    @Column({ type: 'enum', enum: ORDER_STATUS_ENUM })
+    @Field(() => ORDER_STATUS_ENUM)
+    status: ORDER_STATUS_ENUM;
+ 
     @CreateDateColumn()
     createdAt:Date
 

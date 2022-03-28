@@ -1,9 +1,10 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { ConflictException, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 // import { CurrentUser } from "src/common/auth/gql-user.param";
-import { getRepository, Repository } from "typeorm";
+import { Connection, getRepository, Repository } from "typeorm";
+import { Product } from "../product/entities/product.entity";
 import { User } from "../user/entities/user.entity";
-import { Order, PAYMENT_STATUS_ENUM } from "./entities/order.entity";
+import { Order, ORDER_STATUS_ENUM } from "./entities/order.entity";
 
 
 @Injectable()
@@ -13,24 +14,52 @@ export class OrderService{
         private readonly orderRepository:Repository<Order>,
 
         @InjectRepository(User)
-        private readonly userRepository: Repository<User>
+        private readonly userRepository: Repository<User>,
+
+        @InjectRepository(Product)
+        private readonly productRepository: Repository<Product>,
+
+        private readonly connection: Connection
     ){}
     
 
-    async create({impUid, price}){ // 수정할 곳 : 파라미터를 수정하기. 엔터티를 참고
+    async create({impUid, productId, price, status}){ // 수정할 곳 : 파라미터를 수정하기. 엔터티를 참고
 
-        // user 있는 건지 확인
-        // if(!user) throw new ConflictException('없는 유저입니다.')
+        const queryRunner = await this.connection.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction('READ COMMITTED');    
+        try{
+            // user 있는 건지 확인
+            // if(!user) throw new ConflictException('없는 유저입니다.')
+    
+            // 물품 찾기
+            const product = await this.productRepository.findOne({id:productId});
+            if(!product) throw new ConflictException('물품이 없습니다');
 
-        const orderTransaction = await this.orderRepository.create({
-            impUid,
-            price,
-            //user : currentUser,
-            status: PAYMENT_STATUS_ENUM.PAYMENT
-        }); 
-        await this.orderRepository.save(orderTransaction) 
+            status = status.toUpperCase();
+            let statusEnum = null;
+            if(status === "PAYMENT") statusEnum = ORDER_STATUS_ENUM.PAYMENT;
+            else if(status === "EXAMINATION") statusEnum = ORDER_STATUS_ENUM.EXAMINATION;
+            else if(status === "ONTHEWAY") statusEnum = ORDER_STATUS_ENUM.ONTHEWAY;
+            else if(status === "DELIVERED") statusEnum = ORDER_STATUS_ENUM.DELIVERED;
+            else if(status === "CANCEL") statusEnum = ORDER_STATUS_ENUM.CANCEL; 
+            else queryRunner.rollbackTransaction();
 
-        return
+            const orderTransaction = await this.orderRepository.create({
+                impUid,
+                price,
+                //user : currentUser,
+                product : product,
+                status: statusEnum //결제완료일 때
+            });
+            await this.orderRepository.save(orderTransaction) 
+    
+            return orderTransaction;
+        }catch(error){
+            queryRunner.rollbackTransaction();
+        }finally{
+            await queryRunner.release();
+        } 
     }
 
     async delete({orderId}){
@@ -39,20 +68,28 @@ export class OrderService{
     }
 
     async findAll(){
-        return await this.orderRepository.find()
+        const queryRunner = await this.connection.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction('READ COMMITTED'); 
+        try{
+            return await this.orderRepository.find() 
+        }catch(error){
+            queryRunner.rollbackTransaction();
+        }finally{
+            await queryRunner.release();
+        }
     }
 
-    async findOne({impUid}){ 
-        // 다양한 조건으로 사용자는 찾는다.
-        // 검색조건은 피그마에서 확인
-        // 조건 : 물품이름, 자기가 산 물건, 산 날짜,
-        // 물품의 이름으로 찾는 방법으로 바꾸자, 보통 우리는 물품이름으로 찾는다
-        //
-        let result = await this.orderRepository.findOne({impUid : impUid})
-        return result
-    }
-
-    async findById({id:mainCategoryId}){
-        return this.orderRepository.findOne({id:mainCategoryId})
+    async findOneById({orderId}){  
+        const queryRunner = await this.connection.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction('READ COMMITTED'); 
+        try{
+            return await this.orderRepository.findOne({id: orderId}) 
+        }catch(error){
+            queryRunner.rollbackTransaction();
+        }finally{
+            await queryRunner.release();
+        }
     } 
 }
