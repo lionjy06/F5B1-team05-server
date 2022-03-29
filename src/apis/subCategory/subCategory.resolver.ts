@@ -17,13 +17,10 @@ export class SubCategoryResolver{
     ){}
     @Mutation(() => SubCategory)
     async createSubCategory(
-        @Args('name') name:string,
-        
+        @Args('name') name:string, 
         @Args('mainCategoryId') mainCategoryId:string
         
-    ){
-        
-        
+    ){ 
         const category = await this.mainCategoryService.findById({id:mainCategoryId})
         // if(category){
         //     throw new ConflictException('이미 존재하는 카테고리 입니다.')

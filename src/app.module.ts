@@ -1,6 +1,6 @@
 import { Module, CacheModule } from '@nestjs/common';
 import type { RedisClientOptions } from 'redis';
-import * as redisStore from 'cache-manager-redis-store';;
+import * as redisStore from 'cache-manager-redis-store';
 import { GraphQLModule, GqlModuleOptions } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
