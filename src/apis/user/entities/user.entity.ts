@@ -1,9 +1,15 @@
-import { Field, Int, ObjectType } from "@nestjs/graphql";
+import { Field, Int, ObjectType, registerEnumType } from "@nestjs/graphql";
 import { Product } from "src/apis/product/entities/product.entity";
 import { ProductLike } from "src/apis/productLike/entities/productLike.entity";
 import { Review } from "src/apis/review/entities/review.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
+export enum Role {
+    USER = 'USER',
+    ADMIN = 'ADMIN'
+}
+
+registerEnumType(Role,{name:'Role'})
 
 @Entity()
 @ObjectType()
@@ -11,6 +17,11 @@ export class User{
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
     id:string
+
+
+    @Column({type:'enum', enum:Role, default: Role.USER})
+    @Field(() => Role)
+    role:Role
 
     @Column()
     @Field(()=>String)
@@ -59,12 +70,7 @@ export class User{
     @Column({nullable:true})
     @Field(()=>Int,{nullable:true})
     income?:number
-
-    // 나중에 롤가드 하면서 구현하겠음
-    // @Column()
-    // @Field(() => Enum)
-    // role:enum
-
+    
     @CreateDateColumn()
     createdAt:Date
 

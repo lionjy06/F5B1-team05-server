@@ -9,12 +9,12 @@ export class AuthService {
 
   setRefreshToken({ user, res }) {
     const refreshToken = this.jwtService.sign(
-      { email: user.email, sub: user.id },
+      { email: user.email, sub: user.id, role:user.role },
       { secret: 'myRefreshKey', expiresIn: '2w' },
     );
     console.log('111111aaa11');
     res.setHeader('Set-Cookie', `refreshToken=${refreshToken}`);
-    res.setHeader('Access-Control-Allow-Origin', 'https://localhost:3000');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader(
       'Set-Cookie',
       `refreshToken=${refreshToken}; path=/; domain=.project5-sos.shop; SameSite=None; Secure;httpOnly`,) 
@@ -23,7 +23,7 @@ export class AuthService {
   getAccessToken({ user }) {
     const accessToken = this.jwtService.sign(
       
-      { email: user.email, sub: user.id },
+      { email: user.email, sub: user.id, role:user.role },
       { secret: 'myAccesskey', expiresIn: '5h' },
       
     );

@@ -18,11 +18,11 @@ import { AdminQueryModule } from './apis/adminQuery/adminQuery.module';
 import { OrderModule } from './apis/order/order.module';
 
 import { FileModule } from './apis/file/file.module';
-import { ChatModule } from './apis/chat/chat.module';
+// import { ChatModule } from './apis/chat/chat.module';
 
 @Module({
   imports: [
-    ChatModule,
+    // ChatModule,
     FileModule,
     OrderModule,
     AdminCateogryModule,
@@ -38,6 +38,7 @@ import { ChatModule } from './apis/chat/chat.module';
       driver: ApolloDriver,
       autoSchemaFile: 'src/common/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
+      cors:{origin:["http://mybackend.project5-sos.shop","http://localhost:3000"], credential:true}
     }),
     ConfigModule.forRoot({
       isGlobal: true,

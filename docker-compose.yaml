@@ -3,7 +3,7 @@ version: '3.3'
 services:
   my_backend:
     platform: linux/amd64
-    image: asia.gcr.io/codecamp-sos/my_backend:1.0
+    # image: asia.gcr.io/codecamp-sos/my_backend:1.0
     build:
       context: .
       dockerfile: Dockerfile

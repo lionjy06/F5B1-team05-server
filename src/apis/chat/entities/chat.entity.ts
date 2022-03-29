@@ -1,6 +1,17 @@
-import { Field, ObjectType } from "@nestjs/graphql";
+import { Field, ObjectType, registerEnumType } from "@nestjs/graphql";
 import { User } from "src/apis/user/entities/user.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+
+export enum CHAT_ENUM {
+      BUYER = 'BUYER',
+      SELLER = 'SELLER',
+      
+    }
+     
+    registerEnumType(CHAT_ENUM, {
+      name: 'CHAT_ENUM',
+    });
+  
 
 
 @Entity()
@@ -17,9 +28,9 @@ export class Chat{
     @CreateDateColumn()
     createdAt:Date
 
-    @Column()
-    @Field(() => String)
-    sellerEmail:string
+    @Column({ type: 'enum', enum: CHAT_ENUM })
+    @Field(() => CHAT_ENUM)
+    sellerEmail:CHAT_ENUM
 
     @ManyToOne(() => User)
     @Field(() => User)

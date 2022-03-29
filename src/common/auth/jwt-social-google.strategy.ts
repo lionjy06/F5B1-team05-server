@@ -12,7 +12,7 @@ export class JwtGoogleStrategy extends PassportStrategy(Strategy, 'google') {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: 'http://localhost:3000/login/google',
       scope: ['email', 'profile'],
-    });
+    }); 
   }
 
   async validate(accessToken: String, refreshToken: String, profile: Profile) {
@@ -21,8 +21,9 @@ export class JwtGoogleStrategy extends PassportStrategy(Strategy, 'google') {
     
     return {
       email: profile.emails[0].value,
-      name: profile.displayName,
+      name: profile.displayName
+    }
       
     };
   }
-}
+
