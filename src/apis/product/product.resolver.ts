@@ -46,9 +46,9 @@ export class ProductResolver{
     }
     @Query(() => [Product])
     async fetchProductRelateMainCategory(
-        @Args('mainCategoryId') mainCategoryId:string
+        @Args('name') name:string
     ){
-        return await this.productSerivce.findProductRelateMainCategory({mainCategoryId})
+        return await this.productSerivce.findProductRelateMainCategory({name})
     }
 
     @Query(() => [Product])

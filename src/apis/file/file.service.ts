@@ -10,6 +10,8 @@ interface IUpload {
   files: FileUpload[];
 }
 
+ 
+
 @Injectable()
 export class FileService {
   async upload({ files }: IUpload) {
@@ -19,9 +21,10 @@ export class FileService {
       projectId: process.env.STORAGE_PROJECT_ID,
     }).bucket(process.env.STORAGE_BUCKET);
 
+    
     //일단 파일들을 먼저 받아야함
     const waitedFiles = await Promise.all(files);
-
+    
     //받은 이미지들을 구글 스토리지에 올리기
     const urls = await Promise.all(
       waitedFiles.map((file) => {
