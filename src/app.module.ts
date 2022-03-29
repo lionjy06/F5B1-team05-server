@@ -18,9 +18,11 @@ import { AdminQueryModule } from './apis/adminQuery/adminQuery.module';
 import { OrderModule } from './apis/order/order.module';
 
 import { FileModule } from './apis/file/file.module';
+import { ChatModule } from './apis/chat/chat.module';
 
 @Module({
   imports: [
+    ChatModule,
     FileModule,
     OrderModule,
     AdminCateogryModule,

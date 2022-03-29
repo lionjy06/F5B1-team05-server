@@ -94,6 +94,13 @@ enum ORDER_STATUS_ENUM {
   CANCEL
 }
 
+type Chat {
+  id: String!
+  content: String!
+  sellerEmail: String!
+  user: User!
+}
+
 type Query {
   fetchOrder(orderId: String!): Order!
   fetchOrders: [Order!]!
@@ -110,12 +117,13 @@ type Query {
   fetchMainCategoryItem(name: String!): MainCategory!
   fetchMainCategorysItem: [MainCategory!]!
   fetchProducts: [Product!]!
-  fetchProduct(productId: String!, userId: String!, subCategoryId: String!): Product!
+  fetchProduct(productId: String!): Product!
   fetchProductRelateMainCategory(name: String!): [Product!]!
   fetchSellerProduct(userId: String!): [Product!]!
 }
 
 type Mutation {
+  createChat(content: String!, productId: String!): Chat!
   uploadFile(files: [Upload!]!): [String!]!
   createOrder(impUid: String!, productId: String!, status: String!): Order!
   deleteOrder(orderId: String!): Boolean!
@@ -163,8 +171,8 @@ input CreateProductInput {
   description: String!
   price: Int!
   urls: String!
-  brandId: String!
-  subCategoryId: String!
+  brandName: String!
+  subCategoryName: String!
 }
 
 input UpdateProductInput {
