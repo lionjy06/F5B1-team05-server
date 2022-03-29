@@ -1,0 +1,181 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Brand {
+  id: String!
+  name: String!
+}
+
+type Review {
+  id: String!
+  content: String!
+  img: String
+  ratings: Int!
+  user: User!
+  product: Product!
+}
+
+type User {
+  id: String!
+  nickname: String!
+  name: String!
+  email: String!
+  profilePic: String
+  coverPic: String
+  phoneNum: String!
+  ratingAvg: Int!
+  accountOwner: String
+  accountNumber: Int
+  bank: String
+  income: Int
+}
+
+type Product {
+  id: String!
+  name: String!
+  description: String!
+  price: Int!
+  view: Int!
+  like: Int!
+  urls: String
+  brand: Brand!
+  subCategory: SubCategory!
+  user: User!
+}
+
+type SubCategory {
+  id: String!
+  name: String!
+  mainCategory: MainCategory!
+}
+
+type MainCategory {
+  id: String!
+  name: String!
+}
+
+type SellerInfo {
+  reviewNum: Int!
+  ratings: Int!
+  nickname: String!
+  productNum: Int!
+  img: String!
+  profilePic: String
+}
+
+type AdminCategory {
+  id: String!
+  name: String!
+}
+
+type AdminQuery {
+  id: String!
+  title: String!
+  contents: String!
+  adminCategory: AdminCategory!
+  user: User!
+}
+
+type Order {
+  id: String!
+  impUid: String!
+  price: Int
+  status: PAYMENT_STATUS_ENUM!
+  product: Product!
+  user: User!
+}
+
+enum PAYMENT_STATUS_ENUM {
+  PAYMENT
+  CANCEL
+}
+
+type Image {
+  id: String!
+  url: String!
+  product: Product!
+}
+
+type Query {
+  fetchOrder(impUid: String!): Order!
+  fetchOrders: [Order!]!
+  fetchAdminQuerys: [AdminQuery!]!
+  fetchAdminQuery(adminQueryId: String!, adminCategoryId: String!, userId: String!): AdminQuery!
+  fetchUser: User!
+  fetchUsers: [User!]!
+  fetchUserByEmail(userId: String!): User!
+  fetchReview(userId: String!): SellerInfo!
+  fetchBrand(name: String!): Brand!
+  fetchBrands: [Brand!]!
+  fetchSubCategory(mainCategoryId: String!): SubCategory!
+  fetchSubCategorys: [SubCategory!]!
+  fetchMainCategoryItem(name: String!): MainCategory!
+  fetchMainCategorysItem: [MainCategory!]!
+  fetchProducts: [Product!]!
+  fetchProduct(productId: String!, userId: String!, subCategoryId: String!): Product!
+  fetchProductRelateMainCategory(mainCategoryId: String!): [Product!]!
+}
+
+type Mutation {
+  uploadImage(files: [Upload!]!): [String!]!
+  createImage(url: [String!]!, productId: String!): Image!
+  updateImage(prductId: String!, url: [String!]!): [Image!]!
+  createOrder(impUid: String!, price: Float!): Order!
+  deleteOrder(orderId: String!): Boolean!
+  createAdminCategory(name: String!): AdminCategory!
+  deleteAdminCategory(adminCategoryId: String!): Boolean!
+  createAdminQuery(title: String!, contents: String!, img: String!, adminCategoryId: String!): AdminQuery!
+  deleteAdminQuery(adminQueryId: String!): Boolean!
+  updateAdminQuery(adminQueryId: String!, updatedAdminQueryInput: UpdateAdminQueryInput!): AdminQuery!
+  login(email: String!, password: String!): String!
+  restoreAccessToken: String!
+  tokenMaker(phoneNum: String!): String!
+  tokenValidate(phoneNum: String!, token: String!): Boolean!
+  createUser(email: String!, password: String!, nickname: String!, name: String!, phoneNum: String!): User!
+  updateAccount(userId: String!, updateUserAccountInput: UpdateUserAccountInput!): User!
+  createReview(content: String!, img: String!, ratings: Float!, productId: String!): Review!
+  createBrand(name: String!): Brand!
+  deleteBrand(productImgId: String!): Boolean!
+  createSubCategory(name: String!, mainCategoryId: String!): SubCategory!
+  deleteSubCategory(SubCategoryId: String!): Boolean!
+  createMainCategoryItem(name: String!): MainCategory!
+  deleteMainCategoryItem(mainCategoryId: String!): Boolean!
+  createProduct(createProductInput: CreateProductInput!): Product!
+  updateProduct(productId: String!, updateProductInput: UpdateProductInput!): Product!
+  deleteProduct(productId: String!): Boolean!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input UpdateAdminQueryInput {
+  title: String!
+  contents: String!
+  adminCateogryId: String!
+  userId: String!
+}
+
+input UpdateUserAccountInput {
+  bank: String!
+  accountNumber: Int!
+  accountOwner: String!
+}
+
+input CreateProductInput {
+  name: String!
+  description: String!
+  price: Int!
+  urls: String!
+  brandId: String!
+  subCategoryId: String!
+}
+
+input UpdateProductInput {
+  name: String!
+  description: String!
+  price: Int!
+  urls: String!
+  brandId: String!
+  subCategoryId: String!
+}

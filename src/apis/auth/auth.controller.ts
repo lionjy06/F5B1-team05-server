@@ -22,17 +22,17 @@ export class AuthController {
   ) {}
 
 
-  async combine(req, res) {
-    let user = await this.userService.findEmail({ email: req.user.email });
+  // async combine(req, res) {
+  //   let user = await this.userService.findEmail({ email: req.user.email });
 
-    if (!user) {
-      const { password, ...rest } = req.user;
-      const createUser = { ...rest, hashedPassword: password };
+  //   if (!user) {
+  //     const { password, ...rest } = req.user;
+  //     const createUser = { ...rest, hashedPassword: password };
 
-      user = await this.userService.create({ ...createUser });
-    }
-    console.log(user);
-  }
+  //     user = await this.userService.create({ ...createUser });
+  //   }
+  //   console.log(user);
+  // }
 
 
   @Get('/login/google')
@@ -46,8 +46,10 @@ export class AuthController {
   ) {
     
     let user = await this.userService.findEmail({ email: req.user.email });
-    console.log('12312333322',req.user)
+    console.log('thios is req.email',req.user.email)
+    console.log('123123123',user)
 
+    
     //페이지 리다이렉션 => 비번, 폰번호(토큰api,확인api재사용 하면 될듯), 닉네임 입력해야하는곳
 
     const hashedPassword = await bcrypt.hash(password, 5); 
@@ -70,8 +72,24 @@ export class AuthController {
 
   @Get('/login/kakao')
   @UseGuards(AuthGuard('kakao'))
-  async loginKakao(@Req() req: Request & IOauthUser, @Res() res: Response) {
-    let user = this.combine(req, res);
+  async loginKakao(
+    @Req() req: Request & IOauthUser, 
+    @Res() res: Response,
+    @Args('phoneNum') phoneNum:string,
+    @Args('nickname') nickname:string,
+    @Args('password') password:string
+    ) {
+      let user = await this.userService.findEmail({ email: req.user.email });
+
+      //리다이렉트 되는 페이지 필요
+
+      if (!user) {
+        const { name,email } = req.user;
+        
+  
+        // user = await this.userService.create({ hashedPassword,email,nickname,name,phoneNum});
+      }
+    
     this.authService.setRefreshToken({ user, res });
     res.redirect(
       'http://localhost:5500/main-project/frontend/login/index.html',

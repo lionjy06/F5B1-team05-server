@@ -79,4 +79,6 @@ export class User{
 
     @OneToMany((type) => ProductLike, (productLike) => productLike.user)
     productLike: ProductLike[];
+
+    
 }    

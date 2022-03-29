@@ -16,9 +16,11 @@ import { ReviewModule } from './apis/review/review.module';
 import { AdminCateogryModule } from './apis/adminCategory/adminCategory.module';
 import { AdminQueryModule } from './apis/adminQuery/adminQuery.module';
 import { OrderModule } from './apis/order/order.module';
+import { ImageModule } from './apis/image/image.module';
 
 @Module({
   imports: [
+    ImageModule,
     OrderModule,
     AdminCateogryModule,
     AdminQueryModule,
