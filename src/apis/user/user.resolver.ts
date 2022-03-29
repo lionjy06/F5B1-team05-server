@@ -49,9 +49,9 @@ export class UserResolver {
     @Args('nickname') nickname: string,
     @Args('name') name: string,
     @Args('phoneNum') phoneNum: string,
-    @Args('userId') userId:string
+    
   ) {
-    const user = await this.userService.findOne({userId})
+    const user = await this.userService.findEmail({email})
     const nick = await this.userService.findNick({nickname})
     
     if(user){

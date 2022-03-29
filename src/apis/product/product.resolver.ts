@@ -11,7 +11,7 @@ import { Product } from "./entities/product.entity";
 import { ProductService } from "./product.service";
 
 
-//recentOrder.user.id
+
 
 @Resolver()
 export class ProductResolver{
@@ -27,9 +27,11 @@ export class ProductResolver{
 
     @Query(() => Product)
     async fetchProduct(
-        @Args('productId') productId:string
+        @Args('productId') productId:string,
+        @Args('userId') userId:string,
+        @Args('subCategoryId') subCategoryId:string
     ){
-        return await this.productSerivce.findOne({productId})
+        return await this.productSerivce.findOne({productId,userId,subCategoryId})
     }
 
     @UseGuards(GqlAuthAccessGuard)

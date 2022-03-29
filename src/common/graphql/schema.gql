@@ -9,7 +9,6 @@ type Brand {
 
 type Review {
   id: String!
-  title: String!
   content: String!
   img: String
   ratings: Int!
@@ -19,7 +18,7 @@ type Review {
 
 type User {
   id: String!
-  nickname: String
+  nickname: String!
   name: String!
   email: String!
   profilePic: String
@@ -92,6 +91,12 @@ enum PAYMENT_STATUS_ENUM {
   CANCEL
 }
 
+type Image {
+  id: String!
+  url: String!
+  product: Product!
+}
+
 type Query {
   fetchOrder(impUid: String!): Order!
   fetchOrders: [Order!]!
@@ -99,7 +104,7 @@ type Query {
   fetchAdminQuery(adminQueryId: String!, adminCategoryId: String!, userId: String!): AdminQuery!
   fetchUser: User!
   fetchUsers: [User!]!
-  fetchUserByEmail(email: String!): User!
+  fetchUserByEmail(userId: String!): User!
   fetchReview(userId: String!): SellerInfo!
   fetchBrand(name: String!): Brand!
   fetchBrands: [Brand!]!
@@ -108,11 +113,14 @@ type Query {
   fetchMainCategoryItem(name: String!): MainCategory!
   fetchMainCategorysItem: [MainCategory!]!
   fetchProducts: [Product!]!
-  fetchProduct(name: String!): Product!
-  fetchProductRelateMainCategory(mainCategory: String!): [Product!]!
+  fetchProduct(productId: String!, userId: String!, subCategoryId: String!): Product!
+  fetchProductRelateMainCategory(mainCategoryId: String!): [Product!]!
 }
 
 type Mutation {
+  uploadImage(files: [Upload!]!): [String!]!
+  createImage(url: [String!]!, productId: String!): Image!
+  updateImage(prductId: String!, url: [String!]!): [Image!]!
   createOrder(impUid: String!, price: Float!): Order!
   deleteOrder(orderId: String!): Boolean!
   createAdminCategory(name: String!): AdminCategory!
@@ -125,7 +133,8 @@ type Mutation {
   tokenMaker(phoneNum: String!): String!
   tokenValidate(phoneNum: String!, token: String!): Boolean!
   createUser(email: String!, password: String!, nickname: String!, name: String!, phoneNum: String!): User!
-  createReview(title: String!, content: String!, img: String!, ratings: Float!, productId: String!): Review!
+  updateAccount(userId: String!, updateUserAccountInput: UpdateUserAccountInput!): User!
+  createReview(content: String!, img: String!, ratings: Float!, productId: String!): Review!
   createBrand(name: String!): Brand!
   deleteBrand(productImgId: String!): Boolean!
   createSubCategory(name: String!, mainCategoryId: String!): SubCategory!
@@ -134,13 +143,23 @@ type Mutation {
   deleteMainCategoryItem(mainCategoryId: String!): Boolean!
   createProduct(createProductInput: CreateProductInput!): Product!
   updateProduct(productId: String!, updateProductInput: UpdateProductInput!): Product!
+  deleteProduct(productId: String!): Boolean!
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 input UpdateAdminQueryInput {
   title: String!
   contents: String!
   adminCateogryId: String!
   userId: String!
+}
+
+input UpdateUserAccountInput {
+  bank: String!
+  accountNumber: Int!
+  accountOwner: String!
 }
 
 input CreateProductInput {
