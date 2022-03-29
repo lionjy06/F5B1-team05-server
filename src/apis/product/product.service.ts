@@ -53,19 +53,19 @@ export class ProductService{
         })
     } 
     
-    async findOne({productId,userId,subCategoryId}){
+    async findOne({productId,}){
         
-        return await this.productRepository.findOne({where:{id:productId,user:userId,subCategory:subCategoryId},relations:['user','subCategory']})
+        return await this.productRepository.findOne({id:productId})
     }
 
     
     async create({currentUser,createProductInput}:ICreate){
-        const {brandId, subCategoryId,...rest} = createProductInput
+        const {brandName, subCategoryName,...rest} = createProductInput
 
 
         // const brand = await this.brandRepository.findOne({id:brandId})
-        const brand = await this.brandRepository.findOne({where:{id:brandId}})
-        const subCategory = await this.subCategoryRepository.findOne({where:{id:subCategoryId}})
+        const brand = await this.brandRepository.findOne({where:{name:brandName}})
+        const subCategory = await this.subCategoryRepository.findOne({where:{name:subCategoryName}})
         const user = await this.userRepository.findOne({where:{id:currentUser.id}})
         
         return await this.productRepository.save({brand,subCategory,user,...rest})

@@ -28,10 +28,9 @@ export class ProductResolver{
     @Query(() => Product)
     async fetchProduct(
         @Args('productId') productId:string,
-        @Args('userId') userId:string,
-        @Args('subCategoryId') subCategoryId:string
+       
     ){
-        return await this.productSerivce.findOne({productId,userId,subCategoryId})
+        return await this.productSerivce.findOne({productId})
     }
 
     @UseGuards(GqlAuthAccessGuard)

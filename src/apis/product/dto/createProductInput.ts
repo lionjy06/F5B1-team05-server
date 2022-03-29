@@ -17,10 +17,10 @@ export class CreateProductInput{
     urls:string
 
     @Field(() => String)
-    brandId:string
+    brandName:string
 
     @Field(() => String)
-    subCategoryId:string
+    subCategoryName:string
 
   
 }
