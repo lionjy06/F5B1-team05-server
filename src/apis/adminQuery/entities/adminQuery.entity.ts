@@ -33,4 +33,8 @@ export class AdminQuery{
     @Field(() => User)
     user:User
 
+    @Column()
+    @Field(()=>String)
+    adminAnswer:string
+
 }

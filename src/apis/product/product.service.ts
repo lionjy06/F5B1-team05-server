@@ -65,10 +65,11 @@ export class ProductService{
 
         // const brand = await this.brandRepository.findOne({id:brandId})
         const brand = await this.brandRepository.findOne({where:{name:brandName}})
-        const subCategory = await this.subCategoryRepository.findOne({where:{name:subCategoryName}})
+        const subCategory = await this.subCategoryRepository.findOne({where:{name:subCategoryName},relations:[
+            'mainCategory'
+        ]})
         const user = await this.userRepository.findOne({where:{id:currentUser.id}})
-        
-        return await this.productRepository.save({brand,subCategory,user,...rest})
+        return await this.productRepository.save({...rest,brand,subCategory,user,})
     }
 
     async findProductRelateMainCategory({name}){

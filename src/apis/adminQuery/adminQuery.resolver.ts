@@ -1,7 +1,10 @@
 import { UseGuards } from "@nestjs/common";
 import { Args, Mutation, Resolver,Query } from "@nestjs/graphql";
 import { GqlAuthAccessGuard } from "src/common/auth/gql-auth.guard";
+import { RolesGuard } from "src/common/auth/gql-role.guard";
+import { Roles } from "src/common/auth/gql-role.param";
 import { CurrentUser, ICurrentUser } from "src/common/auth/gql-user.param";
+import { Role } from "../user/entities/user.entity";
 import { UserService } from "../user/user.service";
 
 import { AdminQueryService } from "./adminQuery.service";
@@ -28,15 +31,23 @@ export class AdminQueryResolver{
         return this.adminQueryService.create({title,contents,img,currentUser,adminCategoryId})
     }
 
+    @Roles(Role.ADMIN)
+    @UseGuards(GqlAuthAccessGuard,RolesGuard)
+    @Mutation(() => String)
+    async replayAdminQuery(){
+    
+    }
     //이건어케하냐??(유저랑 어드민카테고리 못봄)
-    @UseGuards(GqlAuthAccessGuard)
+    @Roles(Role.ADMIN)
+    @UseGuards(GqlAuthAccessGuard, RolesGuard)
     @Query(() => [AdminQuery])
     async fetchAdminQuerys(){
         return this.adminQueryService.findAll()
     }
-
+    
     //이건 성공
-    @UseGuards(GqlAuthAccessGuard)
+    @Roles(Role.ADMIN)
+    @UseGuards(GqlAuthAccessGuard,RolesGuard)
     @Query(() => AdminQuery)
     async fetchAdminQuery(
         @Args('adminQueryId') adminQueryId:string,
@@ -45,15 +56,17 @@ export class AdminQueryResolver{
     ){
         return this.adminQueryService.findOne({adminQueryId,adminCategoryId,userId})
     }
-
-    @UseGuards(GqlAuthAccessGuard)
+    
+    @Roles(Role.ADMIN)
+    @UseGuards(GqlAuthAccessGuard, RolesGuard)
     @Mutation(() => Boolean)
     async deleteAdminQuery(
         @Args('adminQueryId') adminQueryId:string
     ){
         return await this.adminQueryService.delete({adminQueryId})
     }
-
+    
+    
     @UseGuards(GqlAuthAccessGuard)
     @Mutation(() =>  AdminQuery)
     async updateAdminQuery(
