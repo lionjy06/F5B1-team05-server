@@ -71,7 +71,7 @@ export class ProductService{
         return await this.productRepository.save({brand,subCategory,user,...rest})
     }
 
-    async findProductRelateMainCategory({mainCategoryId}){
+    async findProductRelateMainCategory({name}){
         // const result1 = await getConnection()
         // .createQueryBuilder()
         // .select('sub_category')
@@ -83,7 +83,7 @@ export class ProductService{
             .createQueryBuilder('product')
             .leftJoinAndSelect('product.subCategory','subCategory')
             .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
-            .where('mainCategory.id = :id', {id:mainCategoryId})
+            .where('mainCategory.name = :name', {name})
             .orderBy('product.createdAt','ASC')
             .getMany()
 
