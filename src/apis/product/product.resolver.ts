@@ -51,6 +51,13 @@ export class ProductResolver{
         return await this.productSerivce.findProductRelateMainCategory({mainCategoryId})
     }
 
+    @Query(() => [Product])
+    async fetchSellerProduct(
+        @Args('userId') userId:string
+    ){
+        return await this.productSerivce.findSellerProduct({userId})
+    }
+
     @UseGuards(GqlAuthAccessGuard)
     @Mutation(() => Product)
     async updateProduct(

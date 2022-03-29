@@ -43,7 +43,9 @@ export class ProductService{
         private readonly userRepository:Repository<User>
     ){}
 
-    
+    async findSellerProduct({userId}){
+        return await this.productRepository.find({relations:['user']})
+    }
 
     async findAll(){
         return await this.productRepository.find({
