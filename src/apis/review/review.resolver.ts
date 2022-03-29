@@ -22,7 +22,7 @@ export class ReviewResolver{
     @UseGuards(GqlAuthAccessGuard)
     @Mutation(() => Review)
     async createReview(
-        @Args('title') title:string,
+        
         @Args('content') content:string,
         @Args('img') img:string,
         @Args('ratings') ratings:number,
@@ -40,7 +40,7 @@ export class ReviewResolver{
         // .getMany()
         // console.log('this is an review query', review)
 
-        return await this.reviewService.create({title,content,img,ratings,productId,currentUser})
+        return await this.reviewService.create({content,img,ratings,productId,currentUser})
     }
 
     

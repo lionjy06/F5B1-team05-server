@@ -12,9 +12,7 @@ export class Review{
     @Field(() => String)
     id:string
 
-    @Column()
-    @Field(() => String)
-    title:string
+    
 
     @Column()
     @Field(() => String)

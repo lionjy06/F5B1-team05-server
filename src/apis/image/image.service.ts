@@ -25,9 +25,9 @@ export class ImageService {
 
   async upload({ files }: IUpload) {
     const storage = new Storage({
-      keyFilename: 'planar-door-341008-0acf66c366c4.json',
-      projectId: 'planar-door-341008',
-    }).bucket('mycodecamp');
+      keyFilename: process.env.STORAGE_KEY_FILENAME,
+      projectId: process.env.STORAGE_PROJECT_ID,
+    }).bucket(process.env.STORAGE_BUCKET);
     const waitedFiles = await Promise.all(files);
 
     const urls = await Promise.all(
@@ -37,7 +37,7 @@ export class ImageService {
             .createReadStream()
             .pipe(storage.file(file.filename).createWriteStream())
             .on('finish', () => {
-              resolve(`mycodecamp/${file.filename}`);
+              resolve(`${process.env.STORAGE_BUCKET}/${file.filename}`);
             })
             .on('error', (error) => reject(error));
         });

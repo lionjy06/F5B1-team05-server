@@ -26,7 +26,7 @@ export class ReviewService{
     @InjectRepository(User)
     private readonly userRepository:Repository<User>
    ){}
-    async create({content,ratings,img,title,productId,currentUser}){
+    async create({content,ratings,img,productId,currentUser}){
 
         const buyer = await this.userRepository.findOne({where:{id:currentUser.id}})
        const product = await this.productRepository.findOne({where:{id:productId},relations:['user']})
@@ -40,7 +40,7 @@ export class ReviewService{
        
         // console.log('this is product',product)
         // console.log('this is buyer', buyer)
-        return await this.reviewRepository.save({content,ratings,img,title,user:buyer, product:product})
+        return await this.reviewRepository.save({content,ratings,img,user:buyer, product:product})
     }
     async findReview({userId}){
         

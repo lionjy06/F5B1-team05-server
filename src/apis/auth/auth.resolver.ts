@@ -19,12 +19,12 @@ export class AuthResolver {
 
   @Mutation(() => String)
   async login(
-    @Args('userId') userId: string,
+    @Args('email') email: string,
     @Args('password') password: string,
     @Context() context: any,
 
   ) {
-    const user = await this.userService.findOne({userId});
+    const user = await this.userService.findEmail({email});
     const isAuthenticated = await bcrypt.compare(password, user.password);
     if (!isAuthenticated)
       throw new BadRequestException('비밀번호가 일치하지 않습니다.');
