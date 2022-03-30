@@ -40,14 +40,14 @@ export class UserAddrService{
         result.affected ? true: false
     }
 
-    async fetchUserAddr({currentUser,userAddrId}){
-        const user = await this.userAddrRepository.findOne({where:{id:currentUser.id}})
+    async fetchUserAddr({currentUser}){
+        
 
-        return await this.userAddrRepository.findOne({where:{id:userAddrId,user},relations:['user']})
+        return await this.userAddrRepository.findOne({where:{id:currentUser}})
     }
 
     async fetchUserAddrs({currentUser}){
-        const user = await this.userAddrRepository.findOne({where:{id:currentUser.id}})
-        return await this.userAddrRepository.find({where:{user},relations:['user']})
+        
+        return await this.userAddrRepository.find({where:{id:currentUser}})
     }
 }
