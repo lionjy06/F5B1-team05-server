@@ -27,6 +27,7 @@ export class ReviewResolver{
         @Args('img') img:string,
         @Args('ratings') ratings:number,
         @Args('productId') productId:string,
+        @Args('userId') userId:string,
         @CurrentUser () currentUser : ICurrentUser
         
     ){
@@ -40,7 +41,7 @@ export class ReviewResolver{
         // .getMany()
         // console.log('this is an review query', review)
 
-        // return await this.reviewService.create({content,img,ratings,productId,currentUser})
+        return await this.reviewService.create({content,userId,img,ratings,productId,currentUser})
     }
 
     

@@ -41,7 +41,7 @@ import { UserAddrModule } from './apis/userAddr/userAddr.module';
       autoSchemaFile: 'src/common/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
       cors:{
-        origin:"http://localhost:3000/", 
+        origin:"http://localhost:3000", 
         credential:true
       }
     }),

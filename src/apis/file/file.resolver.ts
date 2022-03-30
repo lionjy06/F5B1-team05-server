@@ -6,7 +6,7 @@ import { FileUpload, GraphQLUpload } from 'graphql-upload';
 export class FileResolver {
   constructor(private fileService: FileService) {}
 
-  @Mutation(() => [String])
+  @Mutation(() => String)
   async uploadFile(
     @Args({ name: 'files', type: () => [GraphQLUpload] }) files: FileUpload[],
   ) {

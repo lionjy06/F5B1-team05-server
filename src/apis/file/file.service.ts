@@ -36,10 +36,12 @@ export class FileService {
               resolve(`${process.env.STORAGE_BUCKET}/${file.filename}`);
             })
             .on('error', (error) => reject(error));
+            console.log(`${process.env.STORAGE_BUCKET}/${file.filename}`)
         });
       }),
     );
 
-    return urls;
+    
+    return `${urls}`;
   }
 }

@@ -63,4 +63,8 @@ export class Product{
 
     @OneToMany((type) => ProductLike, (productLike) => productLike.product)
     productLike: ProductLike[];
+
+    @OneToOne(() => Product)
+    @Field(() => Product)
+    product:Product
 }

@@ -48,6 +48,7 @@ type Product {
   brand: Brand!
   subCategory: SubCategory!
   user: User!
+  product: Product!
 }
 
 type SubCategory {
@@ -136,7 +137,7 @@ type Mutation {
   createUserAddr(createUserAddrInput: CreateUserAddrInput!): UserAddr!
   updateUserAddr(updateUserAddrInput: UpdateUserAddrInput!): UserAddr!
   deleteUserAddr: Boolean!
-  uploadFile(files: [Upload!]!): [String!]!
+  uploadFile(files: [Upload!]!): String!
   createOrder(impUid: String!, productId: String!, status: String!): Order!
   deleteOrder(orderId: String!): Boolean!
   createAdminCategory(name: String!): AdminCategory!
@@ -151,7 +152,7 @@ type Mutation {
   tokenValidate(phoneNum: String!, token: String!): Boolean!
   createUser(email: String!, password: String!, nickname: String!, name: String!, phoneNum: String!): User!
   updateAccount(userId: String!, updateUserAccountInput: UpdateUserAccountInput!): User!
-  createReview(content: String!, img: String!, ratings: Float!, productId: String!): Review!
+  createReview(content: String!, img: String!, ratings: Float!, productId: String!, userId: String!): Review!
   createBrand(name: String!): Brand!
   deleteBrand(productImgId: String!): Boolean!
   createSubCategory(name: String!, mainCategoryId: String!): SubCategory!

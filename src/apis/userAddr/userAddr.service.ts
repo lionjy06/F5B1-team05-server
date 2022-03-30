@@ -25,7 +25,7 @@ export class UserAddrService{
         
         const user = await this.userRepository.findOne({where:{id:currentUser.id}})
 
-        return await this.userAddrRepository.save({createUserAddrInput, user})
+        return await this.userAddrRepository.save({...createUserAddrInput, user})
     }
 
     async update({updateUserAddrInput,currenUser}){
