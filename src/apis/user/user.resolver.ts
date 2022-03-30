@@ -50,6 +50,7 @@ export class UserResolver {
     @Args('name') name: string,
     @Args('phoneNum') phoneNum: string,
     
+    
   ) {
     const user = await this.userService.findEmail({email})
     const nick = await this.userService.findNick({nickname})

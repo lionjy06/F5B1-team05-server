@@ -53,13 +53,24 @@ export class ProductService{
         })
     } 
     
-    async findOne({productId,}){
+    async findOne({productId}){
+
+        const subCategory = await getRepository(Product)
+        .createQueryBuilder('product')
+        .leftJoinAndSelect('product.subCategory','subCategory')
+        .leftJoinAndSelect('product.brand','brand')
+        .leftJoinAndSelect('product.user','user')
+        .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
+        .where('product.id = :id',{id:productId})
+        .getOne()
         
-        return await this.productRepository.findOne({id:productId})
+        return await subCategory
+        
     }
 
     
     async create({currentUser,createProductInput}:ICreate){
+       
         const {brandName, subCategoryName,...rest} = createProductInput
 
 

@@ -32,4 +32,5 @@ export class SellerInfo{
     @Field(() => String,{nullable:true})
     profilePic?:string
 
+    
 }

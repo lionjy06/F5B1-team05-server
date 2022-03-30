@@ -28,6 +28,7 @@ export class ProductResolver{
     @Query(() => Product)
     async fetchProduct(
         @Args('productId') productId:string,
+     
        
     ){
         return await this.productSerivce.findOne({productId})
