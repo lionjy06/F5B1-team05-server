@@ -12,8 +12,6 @@ export class Review{
     @Field(() => String)
     id:string
 
-    
-
     @Column()
     @Field(() => String)
     content:string

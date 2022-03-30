@@ -12,10 +12,6 @@ export class UserAddr{
 
     @Column()
     @Field(() => String)
-    nickname:string
-
-    @Column()
-    @Field(() => String)
     address:string
 
     @Column()

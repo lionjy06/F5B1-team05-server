@@ -31,8 +31,10 @@ export class AuthResolver {
 
   
 
-    this.authService.setRefreshToken({ user, res: context.res });
+    const refreshToken = this.authService.setRefreshToken({ user, res: context.res });
     
+    console.log('this is refreshToken', refreshToken)
+
     const accessToken = this.authService.getAccessToken({ user });
     return accessToken;
   }

@@ -29,8 +29,10 @@ export class ReviewService{
     async create({content,ratings,img,productId,currentUser}){
         
         const buyer = await this.userRepository.findOne({where:{id:currentUser.id}})
-        const product = await this.productRepository.findOne({where:{id:productId},relations:['user']})
-       
+        const seller = await this.productRepository.findOne({where:{id:productId},relations:['user']})
+       console.log('this is review test buyer',buyer)
+        console.log('this is review test', seller)
+       console.log('this is review test user', seller.user)
        // const seller = await get Repository(User)
         // .createQueryBuilder('user')
         // .leftJoinAndSelect('user.product','product')
