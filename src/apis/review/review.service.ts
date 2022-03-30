@@ -46,8 +46,7 @@ export class ReviewService{
         
         const result = await this.userRepository.find({where:{id:userId},relations:['product']})
         const numReview = await this.userRepository.find({where:{id:userId},relations:['review']}) 
-        console.log('this is result',result[0].product[0])
-        console.log('this is review',numReview[0])
+        
         if(numReview[0].review.length === 0){
             throw new UnprocessableEntityException('리뷰를 받은적이 없는 판매자입니다')
         }
@@ -78,12 +77,7 @@ export class ReviewService{
             img:imgs
         }
         const {reviewNum, ratings, nickname, productNum, profilePic, img} = aaa
-        console.log(reviewNum)
-        console.log(ratings)
-        console.log(nickname)
-        console.log(productNum)
-        console.log(profilePic)
-        console.log(img)
+       
         const sellerInfo = await this.sellerInfoRepository.save({reviewNum, ratings, nickname, productNum, profilePic, img})
         
         return sellerInfo

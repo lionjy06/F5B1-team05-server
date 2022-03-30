@@ -18,6 +18,7 @@ type Review {
 
 type User {
   id: String!
+  role: Role!
   nickname: String!
   name: String!
   email: String!
@@ -29,6 +30,11 @@ type User {
   accountNumber: Int
   bank: String
   income: Int
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 type Product {
@@ -75,6 +81,7 @@ type AdminQuery {
   contents: String!
   adminCategory: AdminCategory!
   user: User!
+  adminAnswer: String!
 }
 
 type Order {
@@ -94,12 +101,6 @@ enum ORDER_STATUS_ENUM {
   CANCEL
 }
 
-type Image {
-  id: String!
-  url: String!
-  product: Product!
-}
-
 type Query {
   fetchOrder(orderId: String!): Order!
   fetchOrders: [Order!]!
@@ -116,19 +117,19 @@ type Query {
   fetchMainCategoryItem(name: String!): MainCategory!
   fetchMainCategorysItem: [MainCategory!]!
   fetchProducts: [Product!]!
-  fetchProduct(productId: String!, userId: String!, subCategoryId: String!): Product!
-  fetchProductRelateMainCategory(mainCategoryId: String!): [Product!]!
+  fetchProduct(productId: String!): Product!
+  fetchProductRelateMainCategory(name: String!): [Product!]!
+  fetchSellerProduct(userId: String!): [Product!]!
 }
 
 type Mutation {
-  uploadImage(files: [Upload!]!): [String!]!
-  createImage(url: [String!]!, productId: String!): Image!
-  updateImage(prductId: String!, url: [String!]!): [Image!]!
+  uploadFile(files: [Upload!]!): [String!]!
   createOrder(impUid: String!, productId: String!, status: String!): Order!
   deleteOrder(orderId: String!): Boolean!
   createAdminCategory(name: String!): AdminCategory!
   deleteAdminCategory(adminCategoryId: String!): Boolean!
   createAdminQuery(title: String!, contents: String!, img: String!, adminCategoryId: String!): AdminQuery!
+  replayAdminQuery: String!
   deleteAdminQuery(adminQueryId: String!): Boolean!
   updateAdminQuery(adminQueryId: String!, updatedAdminQueryInput: UpdateAdminQueryInput!): AdminQuery!
   login(email: String!, password: String!): String!
@@ -170,8 +171,8 @@ input CreateProductInput {
   description: String!
   price: Int!
   urls: String!
-  brandId: String!
-  subCategoryId: String!
+  brandName: String!
+  subCategoryName: String!
 }
 
 input UpdateProductInput {

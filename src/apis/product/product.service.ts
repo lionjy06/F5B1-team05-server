@@ -43,7 +43,9 @@ export class ProductService{
         private readonly userRepository:Repository<User>
     ){}
 
-    
+    async findSellerProduct({userId}){
+        return await this.productRepository.find({relations:['user']})
+    }
 
     async findAll(){
         return await this.productRepository.find({
@@ -51,25 +53,26 @@ export class ProductService{
         })
     } 
     
-    async findOne({productId,userId,subCategoryId}){
+    async findOne({productId,}){
         
-        return await this.productRepository.findOne({where:{id:productId,user:userId,subCategory:subCategoryId},relations:['user','subCategory']})
+        return await this.productRepository.findOne({id:productId})
     }
 
     
     async create({currentUser,createProductInput}:ICreate){
-        const {brandId, subCategoryId,...rest} = createProductInput
+        const {brandName, subCategoryName,...rest} = createProductInput
 
 
         // const brand = await this.brandRepository.findOne({id:brandId})
-        const brand = await this.brandRepository.findOne({where:{id:brandId}})
-        const subCategory = await this.subCategoryRepository.findOne({where:{id:subCategoryId}})
+        const brand = await this.brandRepository.findOne({where:{name:brandName}})
+        const subCategory = await this.subCategoryRepository.findOne({where:{name:subCategoryName},relations:[
+            'mainCategory'
+        ]})
         const user = await this.userRepository.findOne({where:{id:currentUser.id}})
-        
-        return await this.productRepository.save({brand,subCategory,user,...rest})
+        return await this.productRepository.save({...rest,brand,subCategory,user,})
     }
 
-    async findProductRelateMainCategory({mainCategoryId}){
+    async findProductRelateMainCategory({name}){
         // const result1 = await getConnection()
         // .createQueryBuilder()
         // .select('sub_category')
@@ -81,7 +84,7 @@ export class ProductService{
             .createQueryBuilder('product')
             .leftJoinAndSelect('product.subCategory','subCategory')
             .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
-            .where('mainCategory.id = :id', {id:mainCategoryId})
+            .where('mainCategory.name = :name', {name})
             .orderBy('product.createdAt','ASC')
             .getMany()
 
