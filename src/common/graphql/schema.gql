@@ -102,7 +102,17 @@ enum ORDER_STATUS_ENUM {
   CANCEL
 }
 
+type UserAddr {
+  id: String!
+  address: String!
+  addressDetail: String!
+  zipCode: String!
+  user: User!
+}
+
 type Query {
+  fetchUserAddr(userAddrId: String!): UserAddr!
+  fetchUserAddrs: [UserAddr!]!
   fetchOrder(orderId: String!): Order!
   fetchOrders: [Order!]!
   fetchAdminQuerys: [AdminQuery!]!
@@ -124,6 +134,9 @@ type Query {
 }
 
 type Mutation {
+  createUserAddr(createUserAddrInput: CreateUserAddrInput!): UserAddr!
+  updateUserAddr(updateUserAddrInput: UpdateUserAddrInput!): UserAddr!
+  deleteUserAddr: Boolean!
   uploadFile(files: [Upload!]!): [String!]!
   createOrder(impUid: String!, productId: String!, status: String!): Order!
   deleteOrder(orderId: String!): Boolean!
@@ -149,6 +162,18 @@ type Mutation {
   createProduct(createProductInput: CreateProductInput!): Product!
   updateProduct(productId: String!, updateProductInput: UpdateProductInput!): Product!
   deleteProduct(productId: String!): Boolean!
+}
+
+input CreateUserAddrInput {
+  address: String!
+  addressDetail: String!
+  zipCode: String!
+}
+
+input UpdateUserAddrInput {
+  address: String!
+  addressDetail: String!
+  zipCode: String!
 }
 
 """The `Upload` scalar type represents a file upload."""

@@ -31,6 +31,7 @@ export class JwtAccessStrategy extends PassportStrategy(Strategy, 'access') {
     if (confirm)
       throw new UnprocessableEntityException('로그아웃을 생활화합시다');
     return {
+      
       id: payload.sub,
       email: payload.email,
       exp: payload.exp,
