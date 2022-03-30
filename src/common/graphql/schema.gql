@@ -12,7 +12,6 @@ type Review {
   content: String!
   img: String
   ratings: Int!
-  seller: String!
   user: User!
   product: Product!
 }

@@ -26,23 +26,24 @@ export class ReviewService{
     @InjectRepository(User)
     private readonly userRepository:Repository<User>
    ){}
-    async create({content,ratings,img,productId,currentUser}){
+    async create({content,ratings,img,userId,currentUser}){
         
         const buyer = await this.userRepository.findOne({where:{id:currentUser.id}})
-        const seller = await this.productRepository.findOne({where:{id:productId},relations:['user']})
-       console.log('this is review test buyer',buyer)
-        console.log('this is review test', seller)
-       console.log('this is review test user', seller.user)
-       // const seller = await get Repository(User)
-        // .createQueryBuilder('user')
-        // .leftJoinAndSelect('user.product','product')
-        // .leftJoinAndSelect('product.user','seller')
-        // .where('product.id= :id',{id : productId})
-        // .getOne()
-       
-        // console.log('this is product',product)
-        // console.log('this is buyer', buyer)
-        // return await this.reviewRepository.save({content,ratings,img,user:buyer, seller:product})
+        const product = await this.userRepository.find({where:{id:userId},relations:['review']})
+    
+    //    const product = await getRepository(User)
+    //     .createQueryBuilder('user')
+    //     .leftJoinAndSelect('user.product','product')
+    //     .leftJoinAndSelect('product.user','seller')
+    //     .leftJoinAndSelect('user.review','review')
+    //     .where('product.id= :id',{id : productId})
+    //     .getOne()
+        
+        console.log('113-------',product)
+
+      
+        
+        // return await this.reviewRepository.save({content,ratings,img,user:buyer, product})
     }
     async findReview({userId}){
         

@@ -44,13 +44,25 @@ export class ProductService{
     ){}
 
     async findSellerProduct({userId}){
+        
         return await this.productRepository.find({relations:['user']})
     }
 
     async findAll(){
-        return await this.productRepository.find({
-            relations:["brand",'subCategory'],
+        const subCategory= await this.productRepository.find({
+            relations:['subCategory','subCategory.mainCategory','brand']
         })
+        
+        // const subCategory = await getRepository(Product)
+        // .createQueryBuilder('product')
+        // .leftJoinAndSelect('product.subCategory','subCategory')
+        // .leftJoinAndSelect('product.brand','brand')
+        // .leftJoinAndSelect('product.user','user')
+        // .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
+        // .orderBy('product.createdAt','ASC')
+        // .getMany()
+
+        return subCategory
     } 
     
     async findOne({productId}){
@@ -62,6 +74,7 @@ export class ProductService{
         .leftJoinAndSelect('product.user','user')
         .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
         .where('product.id = :id',{id:productId})
+        .orderBy('product.createdAt','ASC')
         .getOne()
         
         return await subCategory
