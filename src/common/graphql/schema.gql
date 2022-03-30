@@ -81,13 +81,16 @@ type Order {
   id: String!
   impUid: String!
   price: Int
-  status: PAYMENT_STATUS_ENUM!
+  status: ORDER_STATUS_ENUM!
   product: Product!
   user: User!
 }
 
-enum PAYMENT_STATUS_ENUM {
+enum ORDER_STATUS_ENUM {
   PAYMENT
+  EXAMINATION
+  ONTHEWAY
+  DELIVERED
   CANCEL
 }
 
@@ -98,7 +101,7 @@ type Image {
 }
 
 type Query {
-  fetchOrder(impUid: String!): Order!
+  fetchOrder(orderId: String!): Order!
   fetchOrders: [Order!]!
   fetchAdminQuerys: [AdminQuery!]!
   fetchAdminQuery(adminQueryId: String!, adminCategoryId: String!, userId: String!): AdminQuery!
@@ -121,7 +124,7 @@ type Mutation {
   uploadImage(files: [Upload!]!): [String!]!
   createImage(url: [String!]!, productId: String!): Image!
   updateImage(prductId: String!, url: [String!]!): [Image!]!
-  createOrder(impUid: String!, price: Float!): Order!
+  createOrder(impUid: String!, productId: String!, status: String!): Order!
   deleteOrder(orderId: String!): Boolean!
   createAdminCategory(name: String!): AdminCategory!
   deleteAdminCategory(adminCategoryId: String!): Boolean!
