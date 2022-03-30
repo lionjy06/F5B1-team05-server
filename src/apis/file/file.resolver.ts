@@ -12,5 +12,6 @@ export class FileResolver {
   ) {
     
     return await this.fileService.upload({ files });
+    
   }
 }

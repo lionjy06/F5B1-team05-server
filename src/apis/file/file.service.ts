@@ -4,6 +4,9 @@ import { Storage } from '@google-cloud/storage';
 import * as dotenv from 'dotenv';
 import { resolve } from 'path/posix';
 import { rejects } from 'assert';
+import { Repository } from 'typeorm';
+import { File } from './entities/file.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 dotenv.config();
 interface IUpload {
@@ -14,8 +17,13 @@ interface IUpload {
 
 @Injectable()
 export class FileService {
+  constructor(
+    @InjectRepository(File)
+    private readonly fileRepository: Repository<File>
+  ){}
   async upload({ files }: IUpload) {
     // // 스토리지에 이미지 업로드 작업을 하는 함수
+    
     const storage = new Storage({
       keyFilename: process.env.STORAGE_KEY_FILENAME, //key filename을 소유함으로서 권한을 갖게된다
       projectId: process.env.STORAGE_PROJECT_ID,
@@ -42,6 +50,6 @@ export class FileService {
     );
 
     
-    return `${urls}`;
+    return await this.fileRepository.save({urls:JSON.stringify(urls)});
   }
 }

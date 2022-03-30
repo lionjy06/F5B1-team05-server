@@ -41,7 +41,7 @@ export class ReviewService{
     //     .where('product.id= :id',{id : productId})
     //     .getOne()
         
-    console.log('123123321',product)
+    console.log('123123321',review)
         
 
       
