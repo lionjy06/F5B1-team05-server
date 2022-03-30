@@ -21,7 +21,9 @@ export class ProductResolver{
     ){}
 
     @Query(() => [Product])
-    async fetchProducts(){
+    async fetchProducts(
+    
+    ){
         return await this.productSerivce.findAll()
     }
 

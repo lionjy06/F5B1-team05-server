@@ -40,7 +40,10 @@ import { UserAddrModule } from './apis/userAddr/userAddr.module';
       driver: ApolloDriver,
       autoSchemaFile: 'src/common/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
-      cors:{origin:"http://localhost:3000", credential:true}
+      cors:{
+        origin:"http://localhost:3000/", 
+        credential:true
+      }
     }),
     ConfigModule.forRoot({
       isGlobal: true,

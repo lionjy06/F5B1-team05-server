@@ -40,7 +40,7 @@ export class ReviewResolver{
         // .getMany()
         // console.log('this is an review query', review)
 
-        return await this.reviewService.create({content,img,ratings,productId,currentUser})
+        // return await this.reviewService.create({content,img,ratings,productId,currentUser})
     }
 
     

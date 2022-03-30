@@ -30,10 +30,7 @@ export class Review{
     @DeleteDateColumn()
     deletedAt:Date
 
-    @Column()
-    @Field(() => String)
-    seller:string
-
+    
 
     @ManyToOne(() => User)
     @Field(() => User)

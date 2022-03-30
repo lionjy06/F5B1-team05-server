@@ -31,7 +31,7 @@ export class AuthResolver {
 
   
 
-    const refreshToken = this.authService.setRefreshToken({ user, res: context.res });
+    const refreshToken = await this.authService.setRefreshToken({ user, res: context.res });
     
     console.log('this is refreshToken', refreshToken)
 
