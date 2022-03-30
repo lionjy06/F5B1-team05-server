@@ -27,9 +27,9 @@ export class ReviewService{
     private readonly userRepository:Repository<User>
    ){}
     async create({content,ratings,img,productId,currentUser}){
-
+        
         const buyer = await this.userRepository.findOne({where:{id:currentUser.id}})
-       const product = await this.productRepository.findOne({where:{id:productId},relations:['user']})
+        const product = await this.productRepository.findOne({where:{id:productId},relations:['user']})
        
        // const seller = await get Repository(User)
         // .createQueryBuilder('user')
@@ -40,13 +40,16 @@ export class ReviewService{
        
         // console.log('this is product',product)
         // console.log('this is buyer', buyer)
-        return await this.reviewRepository.save({content,ratings,img,user:buyer, product:product})
+        // return await this.reviewRepository.save({content,ratings,img,user:buyer, seller:product})
     }
     async findReview({userId}){
         
         const result = await this.userRepository.find({where:{id:userId},relations:['product']})
         const numReview = await this.userRepository.find({where:{id:userId},relations:['review']}) 
         
+        console.log('this is result', result)
+        console.log('this is numReview', numReview)
+
         if(numReview[0].review.length === 0){
             throw new UnprocessableEntityException('리뷰를 받은적이 없는 판매자입니다')
         }
@@ -59,10 +62,10 @@ export class ReviewService{
             rateCounting += ratingArr[i]
         }
         let ratingAvg = Math.round(rateCounting/ratingArr.length)
-        console.log('this is avg',rateCounting,ratingArr.length,  ratingAvg)
+        
         let urlArr = []
         for(let i = 0; i < result[0].product.length; i++){
-            console.log(result[0].product[i].urls)
+            
             urlArr.push(result[0].product[i].urls)
         }
         
@@ -78,7 +81,7 @@ export class ReviewService{
         }
         const {reviewNum, ratings, nickname, productNum, profilePic, img} = aaa
        
-        const sellerInfo = await this.sellerInfoRepository.save({reviewNum, ratings, nickname, productNum, profilePic, img})
+        const sellerInfo = await this.sellerInfoRepository.save({reviewNum,seller:numReview,uaer:result, ratings, nickname, productNum, profilePic, img})
         
         return sellerInfo
 

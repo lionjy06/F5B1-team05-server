@@ -2,4 +2,8 @@ import { Resolver } from "@nestjs/graphql";
 
 
 @Resolver()
-export class UserAddrResolver{}
+export class UserAddrResolver{
+    constructor(
+
+    ){}
+}
