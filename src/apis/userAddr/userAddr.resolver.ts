@@ -43,7 +43,7 @@ export class UserAddrResolver{
     @UseGuards(GqlAuthAccessGuard)
     @Query(() => UserAddr)
     async fetchUserAddr(
-        @Args('currentUser') currentUser:ICurrentUser
+        @CurrentUser() currentUser:ICurrentUser
         
     ){
         return await this.userAddrService.fetchUserAddr({currentUser})

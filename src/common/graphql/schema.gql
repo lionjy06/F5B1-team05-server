@@ -111,7 +111,7 @@ type UserAddr {
 }
 
 type Query {
-  fetchUserAddr(userAddrId: String!): UserAddr!
+  fetchUserAddr: UserAddr!
   fetchUserAddrs: [UserAddr!]!
   fetchOrder(orderId: String!): Order!
   fetchOrders: [Order!]!
