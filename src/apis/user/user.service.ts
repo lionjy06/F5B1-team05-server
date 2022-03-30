@@ -79,13 +79,16 @@ export class UserService {
       }
     )
     console.log(result)
+    return '성공'
     } catch (error) {
-      console.log('에러', error)
+      
+      throw new UnprocessableEntityException('토큰 발송에 실패')
     }
   
   
     
-    console.log('전송끝')
+    
+    
     // console.log(phone + '번호로 인증번호' + token + '를 전송합니다')
   }
 
@@ -110,8 +113,10 @@ export class UserService {
         return true
       }
     }catch(error){
-      throw new UnprocessableEntityException('유효번호와 맞지않아요')
+      return '실패'
+
     }
+    return false
   }
 
 

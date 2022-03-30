@@ -26,11 +26,13 @@ export class ReviewService{
     @InjectRepository(User)
     private readonly userRepository:Repository<User>
    ){}
-    async create({content,ratings,img,userId,currentUser}){
+    async create({content,ratings,img,productId,userId,currentUser}){
         
         const buyer = await this.userRepository.findOne({where:{id:currentUser.id}})
-        const product = await this.userRepository.find({where:{id:userId},relations:['review']})
+        const product = await this.productRepository.findOne({where:{id:productId},relations:['user']})
     
+
+        const review = await  this.reviewRepository.find({where:{id:userId},relations:['user']})
     //    const product = await getRepository(User)
     //     .createQueryBuilder('user')
     //     .leftJoinAndSelect('user.product','product')
@@ -39,11 +41,12 @@ export class ReviewService{
     //     .where('product.id= :id',{id : productId})
     //     .getOne()
         
-        console.log('113-------',product)
+    console.log('123123321',product)
+        
 
       
         
-        // return await this.reviewRepository.save({content,ratings,img,user:buyer, product})
+        return await this.reviewRepository.save({content,ratings,img,user:buyer, product})
     }
     async findReview({userId}){
         
