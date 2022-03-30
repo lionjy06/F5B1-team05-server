@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { ElasticsearchModule } from "@nestjs/elasticsearch";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Brand } from "../brand/entities/brand.entity";
 import { MainCategory } from "../mainCategory/entities/mainCategory.entity";
@@ -18,7 +19,10 @@ import { ProductService } from "./product.service";
             User,
             MainCategory,
             Brand
-        ])
+        ]),
+        ElasticsearchModule.register({
+            node: 'http://elasticsearch:9200',
+        }),
     ],
     providers:[ProductResolver,ProductService]
 })
