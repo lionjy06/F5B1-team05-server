@@ -1,5 +1,5 @@
 import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
-import { User } from './entities/user.entity';
+import { Role, User } from './entities/user.entity';
 import { IUpdateUserInfo, UserService } from './user.service';
 import * as bcrypt from 'bcrypt';
 import { CurrentUser } from 'src/common/auth/gql-user.param';
@@ -10,6 +10,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Cache } from 'cache-manager';
 import { UpdateUserAccountInput } from './dto/updateUserAccountInput';
 import { UpdateUserInfo } from './dto/updateUserInfo.input';
+import { Roles } from 'src/common/auth/gql-role.param';
 
 
 
@@ -43,6 +44,15 @@ export class UserResolver {
     
   }
 
+  @UseGuards(GqlAuthAccessGuard)
+  @Mutation(() => User)
+  async updateToAdmin(
+    @Args('userId') userId:string
+  ){
+    
+    return await this.userService.updateToAdmin({userId})
+  }
+
   @Mutation(() => User)
   async createUser(
     @Args('email') email: string,
@@ -64,7 +74,7 @@ export class UserResolver {
       throw new ConflictException('존재하는 닉네임입니다')
     }
     const hashedPassword = await bcrypt.hash(password, 5); 
-    const result= await this.userService.create({ hashedPassword, email, nickname, name,phoneNum });
+    const result= await this.userService.create({ hashedPassword, email, nickname, name,phoneNum});
 
     const confirmedEmail = this.userService.checkValidationEmail(email)
 
@@ -115,5 +125,14 @@ export class UserResolver {
     @Args('updateUserAccountInput') updateUserAccountInput: UpdateUserAccountInput
   ){
     const user = await this.userService.updateAccount({userId,updateUserAccountInput})
+  }
+
+  @UseGuards(GqlAuthAccessGuard)
+  @Mutation(() => Boolean)
+  async deleteUser(
+    @CurrentUser() currentUser:ICurrentUser,
+    
+  ){
+    return await this.userService.deleteUser({currentUser})
   }
 }

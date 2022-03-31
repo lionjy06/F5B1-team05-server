@@ -14,7 +14,7 @@ export class AdminCategoryService{
         private readonly adminCategoryRepository:Repository<AdminCategory>
     ){}
     async create({name}){
-        const checkName = await this.adminCategoryRepository.findOne({name})
+        const checkName = await this.adminCategoryRepository.findOne({where:{name}})
         console.log(checkName)
         if(checkName){
             console.log('????----',name)

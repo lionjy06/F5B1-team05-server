@@ -35,9 +35,9 @@ export class UserAddrResolver{
     @UseGuards(GqlAuthAccessGuard)
     @Mutation(() => Boolean)
     async deleteUserAddr(
-        @CurrentUser() currenUser:ICurrentUser
+        @Args('userAddrId') userAddrId:string
     ){
-        return await this.userAddrService.delete({currenUser})
+        return await this.userAddrService.delete({userAddrId})
     }
 
     @UseGuards(GqlAuthAccessGuard)

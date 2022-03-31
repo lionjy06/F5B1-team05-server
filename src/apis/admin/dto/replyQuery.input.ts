@@ -1,15 +1,10 @@
 import { Field, InputType } from "@nestjs/graphql";
 
-
 @InputType()
-export class UpdateAdminQueryInput{
-    @Field(() => String)
-    title:string
-
+export class ReplyQueryInput{
     @Field(() => String)
     contents:string
 
     @Field(() => String)
-    adminCateogryId:string
-
+    userQueryId:string
 }

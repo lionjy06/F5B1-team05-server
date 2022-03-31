@@ -1,4 +1,4 @@
-import { Injectable, UseGuards } from "@nestjs/common";
+import { Injectable, UnprocessableEntityException, UseGuards } from "@nestjs/common";
 import { Args } from "@nestjs/graphql";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GqlAuthAccessGuard } from "src/common/auth/gql-auth.guard";
@@ -11,6 +11,7 @@ import { AdminQuery } from "./entities/adminQuery.entity";
 
 
 interface IUpdate {
+    currentUser:ICurrentUser,
     adminQueryId: string;
     updateAdminQueryInput:UpdateAdminQueryInput
   }
@@ -35,21 +36,35 @@ export class AdminQueryService{
         return await this.adminQueryRepository.save({title,contents,img,user,adminCategory})
     }
 
-    async findAll(){
-        return this.adminQueryRepository.find()
+    async findAll({currentUser,adminCategoryId}){
+        return this.adminQueryRepository.find({where:{user:currentUser.id,adminCategory:adminCategoryId},relations:['user','adminCategory']})
     }
 
-    async findOne({adminQueryId,adminCategoryId,userId}){
-        return await this.adminQueryRepository.findOne({where:{id:adminQueryId,adminCategory:adminCategoryId,user:userId},relations:['adminCategory','user']})
+    async findOne({adminQueryId,currentUser,adminCategoryId}){
+        return await this.adminQueryRepository.findOne({where:{id:adminQueryId,adminCategory:adminCategoryId,user:currentUser.id},relations:['adminCategory','user']})
     }
 
-    async delete({adminQueryId}){
-        const result = await this.adminQueryRepository.softDelete({id:adminQueryId})
+    async delete({adminQueryId,currentUser}){
+
+        const query = await this.adminQueryRepository.findOne({where:{id:adminQueryId},relations:['user']})
+        console.log('123123333',query.user.id)
+        console.log('321312312',currentUser.id)
+        if(query.user.id !== currentUser.id){
+            throw new UnprocessableEntityException('당신의 문의 사항이 아니므로 삭제 할수없습니다')
+        }
+
+        const result = await this.adminQueryRepository.softDelete(query)
         return result.affected ? true:false
+        
     }
 
-    async update({adminQueryId,updateAdminQueryInput}:IUpdate){
-        const adminQuery = await this.adminQueryRepository.findOne({where:{id:adminQueryId}})
+    async update({adminQueryId,updateAdminQueryInput,currentUser}:IUpdate){
+        
+        const adminQuery = await this.adminQueryRepository.findOne({where:{id:adminQueryId},relations:['user','adminCategory']})
+        if(adminQuery.user.id !== currentUser.id){
+            throw new UnprocessableEntityException('당신의 문의 사항이 아니므로 수정 할수없습니다')
+        }
+
         const newAdminQuery = {...adminQuery,...updateAdminQueryInput}
         const updatedAdminQuery = await this.adminQueryRepository.save(newAdminQuery)
         return updatedAdminQuery

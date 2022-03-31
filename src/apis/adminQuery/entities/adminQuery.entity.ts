@@ -1,8 +1,20 @@
-import { Field, ObjectType } from "@nestjs/graphql";
+import { Field, ObjectType, registerEnumType } from "@nestjs/graphql";
+import { Admin } from "src/apis/admin/entities/admin.entity";
 import { AdminCategory } from "src/apis/adminCategory/entities/adminCategory.entity";
 import { User } from "src/apis/user/entities/user.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
+
+export enum ANSWER_STAUS_ENUM {
+    
+      STANDBY = 'STANDBY',
+      COMPLETE = 'COMPLETE',
+      
+    }
+     
+    registerEnumType(ANSWER_STAUS_ENUM, {
+      name: 'ANSWER_STAUS_ENUM',
+    });
 
 @Entity()
 @ObjectType()
@@ -33,8 +45,7 @@ export class AdminQuery{
     @Field(() => User)
     user:User
 
-    @Column()
-    @Field(()=>String)
-    adminAnswer:string
-
+    @OneToMany(() => Admin, (admin) => admin.userQuery)
+    @Field(() => [Admin])
+    admin: Admin[]
 }

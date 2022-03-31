@@ -1,6 +1,8 @@
 import { Field, ObjectType } from "@nestjs/graphql";
+import { AdminQuery } from "src/apis/adminQuery/entities/adminQuery.entity";
 import { User } from "src/apis/user/entities/user.entity";
-import { Column, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+
 
 
 @Entity()
@@ -11,16 +13,22 @@ export class Admin{
     id:string
 
     @Column()
-    @Field(() => String,{nullable:true})
-    query?:string
+    @Field(() =>String)
+    contents:string
+
+    @CreateDateColumn()
+    createdAt:Date
 
     @DeleteDateColumn()
     deletedAt:Date
+ 
+    @ManyToOne(() => AdminQuery , (userquery) => userquery.admin)
+    @Field(() => AdminQuery)
+    userQuery:AdminQuery
 
-    @JoinColumn()
-    @OneToOne(() => User)
-    @Field(() => User)
+  
+    @ManyToOne((type) => User, user => user.admin)
+    @Field(() =>User)
     user:User
 
-    
 }
