@@ -32,7 +32,7 @@ export class AuthResolver {
   
 
     const refreshToken = await this.authService.setRefreshToken({ user, res: context.res });
-    
+    console.log('avxxzz',refreshToken)    
 
     const accessToken = this.authService.getAccessToken({ user });
     return accessToken;

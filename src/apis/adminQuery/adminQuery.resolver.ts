@@ -21,7 +21,7 @@ export class AdminQueryResolver{
 
     @UseGuards(GqlAuthAccessGuard)
     @Mutation(() => AdminQuery)
-    async createAdminQuery(
+    async createUserQuery(
         @Args('title') title:string,
         @Args('contents') contents:string,
         @Args('img') img:string,
@@ -31,49 +31,47 @@ export class AdminQueryResolver{
         return this.adminQueryService.create({title,contents,img,currentUser,adminCategoryId})
     }
 
-    @Roles(Role.ADMIN)
-    @UseGuards(GqlAuthAccessGuard,RolesGuard)
-    @Mutation(() => String)
-    async replayAdminQuery(){
-    
-    }
     //이건어케하냐??(유저랑 어드민카테고리 못봄)
-    @Roles(Role.ADMIN)
-    @UseGuards(GqlAuthAccessGuard, RolesGuard)
+    @UseGuards(GqlAuthAccessGuard)
     @Query(() => [AdminQuery])
-    async fetchAdminQuerys(){
-        return this.adminQueryService.findAll()
+    async fetchUserQuerys(
+        @CurrentUser() currentUser:ICurrentUser,
+        @Args('adminCategoryId') adminCategoryId:string
+    ){
+        return this.adminQueryService.findAll({currentUser,adminCategoryId})
     }
     
     //이건 성공
-    @Roles(Role.ADMIN)
-    @UseGuards(GqlAuthAccessGuard,RolesGuard)
+    
+    @UseGuards(GqlAuthAccessGuard)
     @Query(() => AdminQuery)
-    async fetchAdminQuery(
+    async fetchUserQuery(
+        @CurrentUser() currentUser:ICurrentUser,
         @Args('adminQueryId') adminQueryId:string,
-        @Args('adminCategoryId') adminCategoryId:string,
-        @Args('userId') userId:string
+        @Args('adminCategoryId') adminCategoryId:string
     ){
-        return this.adminQueryService.findOne({adminQueryId,adminCategoryId,userId})
+        return this.adminQueryService.findOne({adminQueryId,currentUser,adminCategoryId})
     }
     
-    @Roles(Role.ADMIN)
-    @UseGuards(GqlAuthAccessGuard, RolesGuard)
+    
+    @UseGuards(GqlAuthAccessGuard)
     @Mutation(() => Boolean)
-    async deleteAdminQuery(
-        @Args('adminQueryId') adminQueryId:string
+    async deleteUserQuery(
+        @Args('adminQueryId') adminQueryId:string,
+        @CurrentUser() currentUser:ICurrentUser,
     ){
-        return await this.adminQueryService.delete({adminQueryId})
+        return await this.adminQueryService.delete({adminQueryId,currentUser})
     }
     
     
     @UseGuards(GqlAuthAccessGuard)
     @Mutation(() =>  AdminQuery)
-    async updateAdminQuery(
+    async updateUserQuery(
         @Args('adminQueryId') adminQueryId:string,
-        @Args('updatedAdminQueryInput') updateAdminQueryInput: UpdateAdminQueryInput
+        @Args('updatedAdminQueryInput') updateAdminQueryInput: UpdateAdminQueryInput,
+        @CurrentUser() currentUser:ICurrentUser,
     ){
         //cannot null for non-nullable떠서 adminCategory랑 user다시 설정해줘야됨...
-        return await this.adminQueryService.update({adminQueryId,updateAdminQueryInput})
+        return await this.adminQueryService.update({adminQueryId,updateAdminQueryInput,currentUser})
     }
 }

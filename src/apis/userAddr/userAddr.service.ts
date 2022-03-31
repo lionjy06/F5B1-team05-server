@@ -35,8 +35,8 @@ export class UserAddrService{
         return result
     }
 
-    async delete({currenUser}){
-        const result = await this.userAddrRepository.softDelete({user:currenUser.id})
+    async delete({userAddrId}){
+        const result = await this.userAddrRepository.softDelete({id:userAddrId})
         result.affected ? true: false
     }
 

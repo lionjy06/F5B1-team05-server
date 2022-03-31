@@ -1,7 +1,7 @@
 import { CACHE_MANAGER, Inject, Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
+import { Role, User } from './entities/user.entity';
 import axios from 'axios'
 import * as bcrypt from 'bcrypt';
 import dotenv from 'dotenv'
@@ -100,6 +100,14 @@ export class UserService {
     // console.log(phone + '번호로 인증번호' + token + '를 전송합니다')
   }
 
+async updateToAdmin({userId}){
+  const user = await this.userRepository.findOne({id:userId})
+  const updatedUser = {...user,role:Role.ADMIN}
+  const newUser = await this.userRepository.save(updatedUser)
+  return newUser
+}
+
+
  async createToken(phoneNum,token){
   const checkPhoneNum = await this.checkValidation(phoneNum)
   if(checkPhoneNum){
@@ -135,7 +143,8 @@ export class UserService {
       password,
       nickname,
       name,
-      phoneNum
+      phoneNum,
+      
     });
   }
 
@@ -229,4 +238,14 @@ export class UserService {
     const result = await this.userRepository.save(newUser)
     return result
   }
+
+  async deleteUser({currentUser}){
+    const result = await this.userRepository.softDelete({id:currentUser.id})
+    
+   
+    return result.affected ? true : false
+    
+  }
+
+  
 }
