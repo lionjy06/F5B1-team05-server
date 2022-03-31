@@ -12,18 +12,19 @@ export class AuthService {
       { email: user.email, sub: user.id, role:user.role },
       { secret: 'myRefreshKey', expiresIn: '2w' },
     );
-    console.log('111111aaa11',refreshToken);
-    // res.setHeader('Set-Cookie', `refreshToken=${refreshToken}`);
+    //console.log('111111aaa11',refreshToken);
     // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     // res.setHeader(
     //   'Set-Cookie',
     //   `refreshToken=${refreshToken}; path=/; domain=.project5-sos.shop; SameSite=None; Secure;httpOnly`) 
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.setHeader(
-      'Set-Cookie',
-      `refreshToken=${refreshToken}; path=/; domain=.project5-sos.shop; SameSite=None; Secure;httpOnly;`,
-    );
-    console.log('this is setHeader',res.setHeader)
+    //res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Set-Cookie', `refreshToken=${refreshToken}`);
+
+    // res.setHeader(
+    //   'Set-Cookie',
+    //   `refreshToken=${refreshToken}; path=/; domain=.project5-sos.shop; SameSite=None; Secure;httpOnly;`,
+    // );
+    
     }
 
   getAccessToken({ user }) {
