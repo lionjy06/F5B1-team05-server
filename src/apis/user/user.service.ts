@@ -3,14 +3,22 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import axios from 'axios'
+import * as bcrypt from 'bcrypt';
 import dotenv from 'dotenv'
 import { Cache } from 'cache-manager';
 import { UpdateUserAccountInput } from './dto/updateUserAccountInput';
+import { UpdateUserInfo } from './dto/updateUserInfo.input';
+import { ICurrentUser } from 'src/common/auth/gql-user.param';
 
 
-interface IUpdateAccount{
+export interface IUpdateAccount{
   userId:string
   updateUserAccountInput: UpdateUserAccountInput
+}
+
+export interface IUpdateUserInfo{
+  updateUserInfo:UpdateUserInfo
+  currentUser:ICurrentUser
 }
 
 @Injectable()
@@ -132,7 +140,7 @@ export class UserService {
   }
 
   async findOne({userId}) {
-    return await this.userRepository.findOne({id:userId});
+    return await this.userRepository.findOne({where:{id:userId}});
   }
 
   async findEmail({email}) {
@@ -210,5 +218,15 @@ export class UserService {
     const newUser = {...user, ...updateUserAccountInput};
     const updatedAccount = await this.userRepository.save(newUser)
     return updatedAccount
+  }
+
+  async updateUser({currentUser,updateUserInfo}:IUpdateUserInfo){
+    const user = await this.userRepository.findOne({where:{id:currentUser.id}})
+    const {nickname, password} = updateUserInfo
+    const hashedPassword = await bcrypt.hash(password,5)
+    const aaa = {nickname,hashedPassword}
+    const newUser = {...user,...aaa}
+    const result = await this.userRepository.save(newUser)
+    return result
   }
 }

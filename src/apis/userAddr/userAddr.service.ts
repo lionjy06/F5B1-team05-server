@@ -29,25 +29,25 @@ export class UserAddrService{
     }
 
     async update({updateUserAddrInput,currenUser}){
-        const userAddr = await this.userAddrRepository.findOne({where:{id:currenUser.id}})
+        const userAddr = await this.userAddrRepository.findOne({where:{user:currenUser.id},relations:['user']})
         const newUserAddr = {...userAddr,...updateUserAddrInput}
         const result = await this.userAddrRepository.save(newUserAddr)
         return result
     }
 
     async delete({currenUser}){
-        const result = await this.userAddrRepository.softDelete({id:currenUser.id})
+        const result = await this.userAddrRepository.softDelete({user:currenUser.id})
         result.affected ? true: false
     }
 
     async fetchUserAddr({currentUser}){
         
 
-        return await this.userAddrRepository.findOne({where:{id:currentUser}})
+        return await this.userAddrRepository.findOne({where:{user:currentUser.id},relations:['user']})
     }
 
     async fetchUserAddrs({currentUser}){
         
-        return await this.userAddrRepository.find({where:{id:currentUser}})
+        return await this.userAddrRepository.find({where:{user:currentUser.id},relations:['user']})
     }
 }

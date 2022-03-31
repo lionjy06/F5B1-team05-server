@@ -50,6 +50,7 @@ export class FileService {
     );
 
     
-    return await this.fileRepository.save({urls:JSON.stringify(urls)});
+     await this.fileRepository.save({urls:JSON.stringify(urls)});
+     return JSON.stringify(urls)
   }
 }

@@ -151,6 +151,7 @@ type Mutation {
   tokenMaker(phoneNum: String!): String!
   tokenValidate(phoneNum: String!, token: String!): Boolean!
   createUser(email: String!, password: String!, nickname: String!, name: String!, phoneNum: String!): User!
+  updateUser(updateUserInfo: UpdateUserInfo!): User!
   updateAccount(userId: String!, updateUserAccountInput: UpdateUserAccountInput!): User!
   createReview(content: String!, img: String!, ratings: Float!, productId: String!, userId: String!): Review!
   createBrand(name: String!): Brand!
@@ -184,6 +185,11 @@ input UpdateAdminQueryInput {
   contents: String!
   adminCateogryId: String!
   userId: String!
+}
+
+input UpdateUserInfo {
+  nickname: String!
+  password: String!
 }
 
 input UpdateUserAccountInput {

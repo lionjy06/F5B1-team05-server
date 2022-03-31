@@ -1,6 +1,6 @@
 import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { User } from './entities/user.entity';
-import { UserService } from './user.service';
+import { IUpdateUserInfo, UserService } from './user.service';
 import * as bcrypt from 'bcrypt';
 import { CurrentUser } from 'src/common/auth/gql-user.param';
 import { ICurrentUser } from 'src/common/auth/gql-user.param';
@@ -9,6 +9,7 @@ import { CACHE_MANAGER, ConflictException, Inject, UseGuards } from '@nestjs/com
 import { AuthGuard } from '@nestjs/passport';
 import { Cache } from 'cache-manager';
 import { UpdateUserAccountInput } from './dto/updateUserAccountInput';
+import { UpdateUserInfo } from './dto/updateUserInfo.input';
 
 
 
@@ -95,6 +96,16 @@ export class UserResolver {
     @Args('userId') userId:string
   ){
     return await this.userService.findOne({userId})
+  }
+
+
+  @UseGuards(GqlAuthAccessGuard)
+  @Mutation(() => User)
+  async updateUser(
+    @Args('updateUserInfo') updateUserInfo:UpdateUserInfo,
+    @CurrentUser() currentUser:ICurrentUser
+  ){
+    return await this.userService.updateUser({currentUser,updateUserInfo})
   }
 
   @UseGuards(GqlAuthAccessGuard)
