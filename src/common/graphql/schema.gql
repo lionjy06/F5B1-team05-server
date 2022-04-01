@@ -37,6 +37,14 @@ enum Role {
   ADMIN
 }
 
+type ProductLike {
+  id: String!
+  user: User!
+  product: Product!
+  islike: Boolean!
+  isdislike: Boolean!
+}
+
 type Product {
   id: String!
   name: String!
@@ -110,6 +118,7 @@ type UserAddr {
 }
 
 type Query {
+  fetchProductLike: [Product!]!
   fetchUserAddr: UserAddr!
   fetchUserAddrs: [UserAddr!]!
   fetchOrder(orderId: String!): Order!
@@ -133,6 +142,7 @@ type Query {
 }
 
 type Mutation {
+  createLike(productId: String!): ProductLike!
   createUserAddr(createUserAddrInput: CreateUserAddrInput!): UserAddr!
   updateUserAddr(updateUserAddrInput: UpdateUserAddrInput!): UserAddr!
   deleteUserAddr(userAddrId: String!): Boolean!
