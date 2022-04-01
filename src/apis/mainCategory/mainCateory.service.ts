@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { getRepository, Repository } from "typeorm";
 import { MainCategory } from "./entities/mainCategory.entity";
-
+//
 
 @Injectable()
 export class MainCategoryService{
