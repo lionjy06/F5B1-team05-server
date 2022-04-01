@@ -7,27 +7,6 @@ type Brand {
   name: String!
 }
 
-type AdminCategory {
-  id: String!
-  name: String!
-}
-
-type AdminQuery {
-  id: String!
-  title: String!
-  contents: String!
-  adminCategory: AdminCategory!
-  user: User!
-  admin: [Admin!]!
-}
-
-type Admin {
-  id: String!
-  contents: String!
-  userQuery: AdminQuery!
-  user: User!
-}
-
 type Review {
   id: String!
   content: String!
@@ -51,7 +30,6 @@ type User {
   accountNumber: Int
   bank: String
   income: Int
-  admin: [Admin!]!
 }
 
 enum Role {
@@ -93,6 +71,19 @@ type SellerInfo {
   profilePic: String
 }
 
+type AdminCategory {
+  id: String!
+  name: String!
+}
+
+type AdminQuery {
+  id: String!
+  title: String!
+  contents: String!
+  adminCategory: AdminCategory!
+  user: User!
+}
+
 type Order {
   id: String!
   impUid: String!
@@ -119,8 +110,6 @@ type UserAddr {
 }
 
 type Query {
-  fetchAdminQuerys(userId: String!): [Admin!]!
-  fetchAdminQuery(userQueryId: String!, userId: String!): Admin!
   fetchUserAddr: UserAddr!
   fetchUserAddrs: [UserAddr!]!
   fetchOrder(orderId: String!): Order!
@@ -144,7 +133,6 @@ type Query {
 }
 
 type Mutation {
-  replyAdminQuery(contents: String!, userQueryId: String!): Admin!
   createUserAddr(createUserAddrInput: CreateUserAddrInput!): UserAddr!
   updateUserAddr(updateUserAddrInput: UpdateUserAddrInput!): UserAddr!
   deleteUserAddr(userAddrId: String!): Boolean!
