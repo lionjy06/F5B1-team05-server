@@ -19,13 +19,13 @@ import { OrderModule } from './apis/order/order.module';
 
 import { FileModule } from './apis/file/file.module';
 import { UserAddrModule } from './apis/userAddr/userAddr.module';
-import { Admin } from './apis/admin/entities/admin.entity';
-import { AdminModule } from './apis/admin/admin.module';
+// import { Admin } from './apis/admin/entities/admin.entity';
+// import { AdminModule } from './apis/admin/admin.module';
 // import { ChatModule } from './apis/chat/chat.module';
 
 @Module({
   imports: [
-    AdminModule,
+    // AdminModule,
     UserAddrModule,
     // ChatModule,
     FileModule,

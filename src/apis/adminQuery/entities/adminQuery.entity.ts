@@ -1,5 +1,5 @@
 import { Field, ObjectType, registerEnumType } from "@nestjs/graphql";
-import { Admin } from "src/apis/admin/entities/admin.entity";
+// import { Admin } from "src/apis/admin/entities/admin.entity";
 import { AdminCategory } from "src/apis/adminCategory/entities/adminCategory.entity";
 import { User } from "src/apis/user/entities/user.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
@@ -45,7 +45,7 @@ export class AdminQuery{
     @Field(() => User)
     user:User
 
-    @OneToMany(() => Admin, (admin) => admin.userQuery)
-    @Field(() => [Admin])
-    admin: Admin[]
+    // @OneToMany(() => Admin, (admin) => admin.userQuery)
+    // @Field(() => [Admin])
+    // admin: Admin[]
 }
