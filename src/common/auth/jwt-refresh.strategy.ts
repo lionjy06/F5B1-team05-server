@@ -34,10 +34,10 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
 
 
   async validate(req, payload: any) {
-    const accessToken = req.headers.authorization.replace('Bearer ', '');
-    console.log('111111', accessToken);
-    const confirm = await this.cacheManager.get(`accessToken:${accessToken}`);
-    if (confirm) throw new UnprocessableEntityException();
+    const refreshToken = req.headers.authorization.replace('refreshToken=', '');
+    console.log('111111', refreshToken);
+    const confirm = await this.cacheManager.get(`refreshToken:${refreshToken}`);
+    if (confirm) throw new UnprocessableEntityException('로그아웃 되었슴다');
     return {
       id: payload.sub,
       email: payload.email,

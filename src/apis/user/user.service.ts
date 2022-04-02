@@ -233,8 +233,10 @@ async updateToAdmin({userId}){
     const user = await this.userRepository.findOne({where:{id:currentUser.id}})
     const {nickname, password} = updateUserInfo
     const hashedPassword = await bcrypt.hash(password,5)
-    const aaa = {nickname,hashedPassword}
+    const aaa = {nickname,password:hashedPassword}
     const newUser = {...user,...aaa}
+    console.log('this is password',user.password)
+    console.log('----------',newUser.password)
     const result = await this.userRepository.save(newUser)
     return result
   }
