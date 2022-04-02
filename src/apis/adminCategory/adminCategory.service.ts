@@ -27,4 +27,8 @@ export class AdminCategoryService{
         const result = await this.adminCategoryRepository.delete({id:adminCategoryId})
         return result.affected ? true:false
     }
+//
+    async findAll(){
+        return await this.adminCategoryRepository.find()
+    }
 }
