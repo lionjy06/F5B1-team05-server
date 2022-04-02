@@ -22,14 +22,14 @@ import { UserAddrModule } from './apis/userAddr/userAddr.module';
 import { ProductLikeModule } from './apis/productLike/productLike.module';
 import { EventsModule } from './apis/event/events.module';
 // import { Admin } from './apis/admin/entities/admin.entity';
-// import { AdminModule } from './apis/admin/admin.module';
+import { AdminModule } from './apis/admin/admin.module';
 // import { ChatModule } from './apis/chat/chat.module';
 
 @Module({
   imports: [
     EventsModule,
     ProductLikeModule,
-    // AdminModule,
+    AdminModule,
     UserAddrModule,
     // ChatModule,
     FileModule,

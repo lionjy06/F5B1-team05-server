@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType, registerEnumType } from "@nestjs/graphql";
-// import { Admin } from "src/apis/admin/entities/admin.entity";
+import { Admin } from "src/apis/admin/entities/admin.entity";
 import { Product } from "src/apis/product/entities/product.entity";
 import { ProductLike } from "src/apis/productLike/entities/productLike.entity";
 import { Review } from "src/apis/review/entities/review.entity";
@@ -87,7 +87,7 @@ export class User{
     @OneToMany((type) => ProductLike, (productLike) => productLike.user)
     productLike: ProductLike[];
 
-    // @OneToMany((type) => Admin, admin => admin.user)
-    // @Field(() => [Admin])
-    // admin:Admin[]
+    @OneToMany((type) => Admin, admin => admin.user)
+    @Field(() => [Admin])
+    admin:Admin[]
 }    

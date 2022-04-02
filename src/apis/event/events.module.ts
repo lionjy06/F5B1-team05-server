@@ -12,8 +12,10 @@ import { EventService } from "./events.service";
         TypeOrmModule.forFeature([
             Event,
             User
-        ])
+        ]),
+        
     ],
-    providers:[EventService,EventResolver]
+    
+    providers:[EventService,EventResolver,EventsGateway]
 })
 export class EventsModule{}

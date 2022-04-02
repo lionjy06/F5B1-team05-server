@@ -7,6 +7,27 @@ type Brand {
   name: String!
 }
 
+type AdminCategory {
+  id: String!
+  name: String!
+}
+
+type AdminQuery {
+  id: String!
+  title: String!
+  contents: String!
+  adminCategory: AdminCategory!
+  user: User!
+  admin: [Admin!]!
+}
+
+type Admin {
+  id: String!
+  contents: String!
+  userQuery: AdminQuery!
+  user: User!
+}
+
 type Review {
   id: String!
   content: String!
@@ -30,6 +51,7 @@ type User {
   accountNumber: Int
   bank: String
   income: Int
+  admin: [Admin!]!
 }
 
 enum Role {
@@ -79,19 +101,6 @@ type SellerInfo {
   profilePic: String
 }
 
-type AdminCategory {
-  id: String!
-  name: String!
-}
-
-type AdminQuery {
-  id: String!
-  title: String!
-  contents: String!
-  adminCategory: AdminCategory!
-  user: User!
-}
-
 type Order {
   id: String!
   impUid: String!
@@ -132,10 +141,14 @@ type Event {
 type Query {
   fetchChat(roomId: String!): [Event!]!
   fetchProductLike: [Product!]!
+  fetchAdminQuerys: [Admin!]!
+  fetchAdminQuery(userQueryId: String!, adminId: String!): Admin!
   fetchUserAddr: UserAddr!
   fetchUserAddrs: [UserAddr!]!
   fetchOrder(orderId: String!): Order!
-  fetchOrders: [Order!]!
+  fetchOrders: [Order]!
+  fetchBuyerOrders: [Order]!
+  fetchSellerOrders: [Order]!
   fetchAdminCategorys: [AdminCategory!]!
   fetchUserQuerys(adminCategoryId: String!): [AdminQuery!]!
   fetchUserQuery(adminQueryId: String!, adminCategoryId: String!): AdminQuery!
@@ -159,6 +172,8 @@ type Query {
 type Mutation {
   createChat(roomId: String!, chatLog: String!): Event!
   createLike(productId: String!): ProductLike!
+  replyAdminQuery(contents: String!, userQueryId: String!): Admin!
+  deleteAdminQuery(adminId: String!): Boolean!
   createUserAddr(createUserAddrInput: CreateUserAddrInput!): UserAddr!
   updateUserAddr(updateUserAddrInput: UpdateUserAddrInput!): UserAddr!
   deleteUserAddr(userAddrId: String!): Boolean!
