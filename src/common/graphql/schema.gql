@@ -95,8 +95,8 @@ type AdminQuery {
 type Order {
   id: String!
   impUid: String!
-  price: Int
   status: ORDER_STATUS_ENUM!
+  createdAt: DateTime!
   product: Product!
   user: User!
 }
@@ -108,6 +108,11 @@ enum ORDER_STATUS_ENUM {
   DELIVERED
   CANCEL
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type UserAddr {
   id: String!
@@ -145,6 +150,7 @@ type Query {
   fetchMainCategoryItem(name: String!): MainCategory!
   fetchMainCategorysItem: [MainCategory!]!
   fetchProducts: [Product!]!
+  fetchProductsByKeyword(searchKeyword: String!): [Product!]!
   fetchProduct(productId: String!): Product!
   fetchProductRelateMainCategory(name: String!): [Product!]!
   fetchSellerProduct(userId: String!): [Product!]!
