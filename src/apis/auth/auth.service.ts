@@ -13,7 +13,7 @@ export class AuthService {
       { secret: 'myRefreshKey', expiresIn: '2w' },
     );
     console.log('111111aaa11',refreshToken);
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
       'Set-Cookie',
       `refreshToken=${refreshToken}; path=/; domain=.project5-sos.shop; SameSite=None; Secure;httpOnly`) 

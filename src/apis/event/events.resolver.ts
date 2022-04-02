@@ -6,6 +6,8 @@ import { Event } from "./entities/event.entity";
 import { EventService } from "./events.service";
 
 
+
+
 @Resolver()
 export class EventResolver{
     constructor(
@@ -26,10 +28,30 @@ export class EventResolver{
     @UseGuards(GqlAuthAccessGuard)
     @Mutation(() => Event)
     async createChat(
-        @Args('roomId') roomId:string,
         @CurrentUser() currentUser:ICurrentUser,
-        @Args('chatLog') chatLog:string
+        @Args('productId') productId:string
     ){
-        return await this.eventService.createChat({roomId,currentUser,chatLog})
+        return await this.eventService.createChat({productId,currentUser})
     }
+
+    @UseGuards(GqlAuthAccessGuard)
+    @Mutation(() => Event)
+    async updateChat(
+        @Args('roomId') roomId:string,
+        @Args('updateChat') updateChat:string,
+        @CurrentUser() currentUser:ICurrentUser
+    ){
+        return await this.eventService.updateChat({roomId, updateChat,currentUser})
+    }
+
+    // @UseGuards(GqlAuthAccessGuard)
+    // @Mutation(() => Event)
+    // async createChat(
+    //     @Args('roomId') roomId:string,
+    //     @CurrentUser() currentUser:ICurrentUser,
+    //     @Args('chatLog') chatLog:string
+    // ){
+    //     return await this.eventService.createChat({roomId,currentUser,chatLog})
+    // }
 }
+

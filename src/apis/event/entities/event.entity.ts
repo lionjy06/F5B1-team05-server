@@ -1,4 +1,6 @@
+import { Uuid } from "@elastic/elasticsearch/lib/api/types";
 import { Field, ObjectType } from "@nestjs/graphql";
+import { Product } from "src/apis/product/entities/product.entity";
 import { User } from "src/apis/user/entities/user.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -14,7 +16,7 @@ export class Event{
     @Field(() => String)
     roomId:string
 
-    @Column()
+    @Column({default:''})
     @Field(() => String)
     chatLog:string
 
@@ -25,4 +27,7 @@ export class Event{
     @Field(() => User)
     user:User 
 
+    @ManyToOne(() =>Product)
+    @Field(() => Product)
+    product:Product
 }

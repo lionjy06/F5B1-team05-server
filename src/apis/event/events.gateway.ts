@@ -17,6 +17,18 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
         return 'hello world'
     }
 
+    @SubscribeMessage('createChat')
+    async createChat(
+        @MessageBody() data: {productId, currentUser},
+        @ConnectedSocket() socket:Socket
+    ){
+        const { productId, currentUser} = data
+
+        const roomInfo = await this.eventResolver.createChat(productId,currentUser)
+        socket.join(roomInfo.roomId)
+        socket.emit('roomInfo',roomInfo.roomId)
+    }
+
     @SubscribeMessage('login')
     handleLogin(
         @MessageBody() data: {id: number; channels: number[]},
@@ -33,32 +45,32 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
         })
     }
 
-    @SubscribeMessage('new_message')
-    async createChat(
-        @MessageBody() data: {roomId, chatLog, currentUser},
-        @ConnectedSocket() socket:Socket
-    ){
-        const { roomId, chatLog, currentUser } = data
+    // @SubscribeMessage('new_message')
+    // async createChat(
+    //     @MessageBody() data: {chatLog, currentUser},
+    //     @ConnectedSocket() socket:Socket
+    // ){
+    //     const {chatLog, currentUser } = data
 
-        await this.eventResolver.createChat(roomId,chatLog,currentUser)
+    //     await this.eventService.createChat({chatLog,currentUser})
 
-        socket.emit('return_message',chatLog)
+    //     socket.emit('return_message',chatLog)
 
-    }
+    // }
 
-    @SubscribeMessage('enter_room')
-    async enterRoom(
-        @MessageBody() data:string,
-        @ConnectedSocket() socket:Socket
-    ){
-        const roomId = data
+    // @SubscribeMessage('enter_room')
+    // async enterRoom(
+    //     @MessageBody() data:string,
+    //     @ConnectedSocket() socket:Socket
+    // ){
+    //     const roomId = data
         
-        const chat = await this.eventResolver.fetchChat(roomId)
+    //     const chat = await this.eventService.fetchChat({roomId})
 
-        console.log('this is chat logs',chat)
+    //     console.log('this is chat logs',chat)
 
-        socket.emit('chatLogs',chat)
-    }
+    //     socket.emit('chatLogs',chat)
+    // }
 
     afterInit( server: Server):any {
         console.log('websocket server init')

@@ -135,6 +135,7 @@ type Event {
   roomId: String!
   chatLog: String!
   user: User!
+  product: Product!
 }
 
 type Query {
@@ -170,7 +171,8 @@ type Query {
 }
 
 type Mutation {
-  createChat(roomId: String!, chatLog: String!): Event!
+  createChat(productId: String!): Event!
+  updateChat(roomId: String!, updateChat: String!): Event!
   createLike(productId: String!): ProductLike!
   replyAdminQuery(contents: String!, userQueryId: String!): Admin!
   deleteAdminQuery(adminId: String!): Boolean!

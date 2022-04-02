@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { Product } from "../product/entities/product.entity";
 import { User } from "../user/entities/user.entity";
 import { Event } from "./entities/event.entity";
 import { EventsGateway } from "./events.gateway";
@@ -11,7 +12,8 @@ import { EventService } from "./events.service";
     imports:[
         TypeOrmModule.forFeature([
             Event,
-            User
+            User,
+            Product
         ]),
         
     ],

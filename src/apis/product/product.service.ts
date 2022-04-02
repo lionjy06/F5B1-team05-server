@@ -49,20 +49,20 @@ export class ProductService{
     }
 
     async findAll(){
-        const subCategory= await this.productRepository.find({
-            relations:['subCategory','subCategory.mainCategory','brand']
-        })
+        // const subCategory= await this.productRepository.find({
+        //     relations:['subCategory','subCategory.mainCategory','brand']
+        // })
         
-        // const subCategory = await getRepository(Product)
-        // .createQueryBuilder('product')
-        // .leftJoinAndSelect('product.subCategory','subCategory')
-        // .leftJoinAndSelect('product.brand','brand')
-        // .leftJoinAndSelect('product.user','user')
-        // .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
-        // .orderBy('product.createdAt','ASC')
-        // .getMany()
+        return await getRepository(Product)
+        .createQueryBuilder('product')
+        .leftJoinAndSelect('product.subCategory','subCategory')
+        .leftJoinAndSelect('product.brand','brand')
+        .leftJoinAndSelect('product.user','user')
+        .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
+        .orderBy('product.createdAt','DESC')
+        .getMany()
 
-        return subCategory
+        // return subCategory
     } 
     
     async findOne({productId}){
