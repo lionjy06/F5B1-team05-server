@@ -48,7 +48,7 @@ import { AdminModule } from './apis/admin/admin.module';
       autoSchemaFile: 'src/common/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
       cors:{
-        origin:'*', 
+        origin:'http://localhost:3000', 
         credential:true
       }
     }),
