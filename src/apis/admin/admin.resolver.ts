@@ -29,7 +29,7 @@ export class AdminResolver{
 ){
     return await this.adminService.reply({contents,currentUser,userQueryId})
 }
-//이건어케하냐??(유저랑 어드민카테고리 못봄)
+
 @Roles(Role.ADMIN)
 @UseGuards(GqlAuthAccessGuard, RolesGuard)
 @Query(() => [Admin])
@@ -39,7 +39,7 @@ async fetchAdminQuerys(
     return this.adminService.findAll({currentUser})
 }
 
-// //이건 성공
+
 @Roles(Role.ADMIN)
 @UseGuards(GqlAuthAccessGuard,RolesGuard)
 @Query(() => Admin)
@@ -61,15 +61,5 @@ async deleteAdminQuery(
     return await this.adminService.delete({adminId})
 }
 
-
-// @UseGuards(GqlAuthAccessGuard)
-// @Mutation(() =>  Admin)
-// async updateAdminQuery(
-//     @Args('adminQueryId') adminQueryId:string,
-//     @Args('updatedAdminQueryInput') updateAdminQueryInput: UpdateAdminQueryInput
-// ){
-//     //cannot null for non-nullable떠서 adminCategory랑 user다시 설정해줘야됨...
-//     return await this.adminService.update({adminQueryId,updateAdminQueryInput})
-// }
 }
 

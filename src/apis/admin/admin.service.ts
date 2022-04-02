@@ -62,11 +62,7 @@ export class AdminService{
         .andWhere('userQuery.id = :id', {id:userQueryId})
         .getOne()
 
-        // const admin = await this.adminRepository.findOne({
-        //     where:{id:adminId,user:currentUser.id, userQuery:userQueryId},
-        //     relations:['user','userQuery']
-
-        // })
+       
 
         console.log('this is admin',admin)
      
@@ -79,11 +75,4 @@ export class AdminService{
         const result = await this.adminRepository.softDelete({id:adminId})
         return result.affected ? true:false
     }
-
-    // async update({adminQueryId,updateAdminQueryInput}:IUpdate){
-    //     const adminQuery = await this.adminQueryRepository.findOne({where:{id:adminQueryId}})
-    //     const newAdminQuery = {...adminQuery,...updateAdminQueryInput}
-    //     const updatedAdminQuery = await this.adminQueryRepository.save(newAdminQuery)
-    //     return updatedAdminQuery
-    // }
 }
