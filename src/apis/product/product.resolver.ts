@@ -25,14 +25,30 @@ export class ProductResolver{
     @Query(() => [Product])
     async fetchProducts(){
         const result = await this.elasticsearchService.search({
-            index: 'testproduct7',
+            index: 'testproduct8',
             query: {
                 match_all: {}
             }
         });
+
+        const returnVal = result.hits.hits.map((val:any) => {
+            return {
+                id : val._source.id,
+                urls : val._source.urls,
+                name : val._source.name,
+                price : val._source.price,
+                subCategory : {
+                    name : val._source.subcategoryname
+                },
+                brand : {
+                    name : val._source.brandname
+                }  
+            }
+        })
+
         console.log("===============fetchProducts===============");
-        console.log(JSON.stringify(result, null, ' '));
-        return result;
+        console.log(JSON.stringify(returnVal, null, ' '));
+        return returnVal;
     }
 
     @Query(() => [Product])
@@ -58,8 +74,8 @@ export class ProductResolver{
             view : val._source.view,
             like : val._source.like,
             urls : val._source.urls,
-        }
-    })
+            }
+        })
     console.log(JSON.stringify(result, null, ' '));
     console.log("===================================")
     console.log(JSON.stringify(returnVal, null, ' '));
