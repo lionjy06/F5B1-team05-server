@@ -95,8 +95,8 @@ type AdminQuery {
 type Order {
   id: String!
   impUid: String!
-  price: Int
   status: ORDER_STATUS_ENUM!
+  createdAt: DateTime!
   product: Product!
   user: User!
 }
@@ -109,22 +109,23 @@ enum ORDER_STATUS_ENUM {
   CANCEL
 }
 
-type UserAddr {
-  id: String!
-  address: String!
-  addressDetail: String!
-  zipCode: String!
-  user: User!
-}
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Query {
   fetchProductLike: [Product!]!
   fetchUserAddr: UserAddr!
   fetchUserAddrs: [UserAddr!]!
-  fetchOrder(orderId: String!): Order!
-  fetchOrders: [Order!]!
+  fetchOrder(orderId: String!): Order! 
   fetchUserQuerys(adminCategoryId: String!): [AdminQuery!]!
   fetchUserQuery(adminQueryId: String!, adminCategoryId: String!): AdminQuery!
+  fetchOrders: [Order]!
+  fetchBuyerOrders: [Order]!
+  fetchSellerOrders: [Order]!
+  fetchAdminQuerys: [AdminQuery!]!
+  fetchAdminQuery(adminQueryId: String!, adminCategoryId: String!, userId: String!): AdminQuery!
   fetchUser: User!
   fetchUsers: [User!]!
   fetchUserByEmail(userId: String!): User!
@@ -135,7 +136,7 @@ type Query {
   fetchSubCategorys: [SubCategory!]!
   fetchMainCategoryItem(name: String!): MainCategory!
   fetchMainCategorysItem: [MainCategory!]!
-  fetchProducts: [Product!]!
+  fetchProducts(searchKeyword: String!): [Product!]!
   fetchProduct(productId: String!): Product!
   fetchProductRelateMainCategory(name: String!): [Product!]!
   fetchSellerProduct(userId: String!): [Product!]!
