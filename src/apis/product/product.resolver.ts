@@ -133,4 +133,9 @@ export class ProductResolver{
     ){
         return await this.productSerivce.delete({productId})
     }
+
+    @Query(() => [Product])
+    async fetchAllProduct(){
+        return await this.productSerivce.fetchAllProduct()
+    }
 }
