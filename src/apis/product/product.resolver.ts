@@ -2,6 +2,7 @@
 import { UseGuards } from "@nestjs/common";
 import { ElasticsearchService } from "@nestjs/elasticsearch";
 import { Resolver,Query, Mutation, Args  } from "@nestjs/graphql";
+import { query } from "express";
 import { GqlAuthAccessGuard } from "src/common/auth/gql-auth.guard";
 import { CurrentUser, ICurrentUser } from "src/common/auth/gql-user.param";
 import { MainCategory } from "../mainCategory/entities/mainCategory.entity";
@@ -19,10 +20,23 @@ export class ProductResolver{
     constructor(
         private readonly productSerivce:ProductService,
         private readonly elasticsearchService: ElasticsearchService,
-    ){}
+    ){} 
 
     @Query(() => [Product])
-    async fetchProducts(
+    async fetchProducts(){
+        const result = await this.elasticsearchService.search({
+            index: 'testproduct7',
+            query: {
+                match_all: {}
+            }
+        });
+        console.log("===============fetchProducts===============");
+        console.log(JSON.stringify(result, null, ' '));
+        return result;
+    }
+
+    @Query(() => [Product])
+    async fetchProductsByKeyword(
         @Args('searchKeyword') searchKeyword: string,
     ){
         // 1. 레디스에 캐시되어 있는지 확인하기
@@ -35,8 +49,8 @@ export class ProductResolver{
           //이름을 쳤더니 이름을 포한한 것이 나온게 아니라 이름과 완전히 맞는 것을 가져온다. 따라서 match가 검색어가 '포함'인 것을 찾아보자
           // 띄어쓰기로 같은 단어를 포함하면 예상대로 출력이 나온다. 대신 '마우스', '마우스2'는 같은 단어로 인식하지 않는다. 
         },
-    });
-    const returnVal = result.hits.hits.map((val:any) => {
+        });
+        const returnVal = result.hits.hits.map((val:any) => {
         return {
             name : val._source.name,
             description : val._source.description,

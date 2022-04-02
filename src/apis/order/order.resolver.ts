@@ -40,6 +40,7 @@ export class OrderResolver{
     ){
         return this.orderService.findOneById({orderId})
     }
+    
     @Query(()=>[Order], { nullable: 'items' }) // 사이트 전체에서 주문한 물건이 없을 수도 있으니까
     async fetchOrders(){
         return this.orderService.findAll()

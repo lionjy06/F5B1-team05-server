@@ -114,18 +114,24 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type UserAddr {
+  id: String!
+  address: String!
+  addressDetail: String!
+  zipCode: String!
+  user: User!
+}
+
 type Query {
   fetchProductLike: [Product!]!
   fetchUserAddr: UserAddr!
   fetchUserAddrs: [UserAddr!]!
-  fetchOrder(orderId: String!): Order! 
-  fetchUserQuerys(adminCategoryId: String!): [AdminQuery!]!
-  fetchUserQuery(adminQueryId: String!, adminCategoryId: String!): AdminQuery!
+  fetchOrder(orderId: String!): Order!
   fetchOrders: [Order]!
   fetchBuyerOrders: [Order]!
   fetchSellerOrders: [Order]!
-  fetchAdminQuerys: [AdminQuery!]!
-  fetchAdminQuery(adminQueryId: String!, adminCategoryId: String!, userId: String!): AdminQuery!
+  fetchUserQuerys(adminCategoryId: String!): [AdminQuery!]!
+  fetchUserQuery(adminQueryId: String!, adminCategoryId: String!): AdminQuery!
   fetchUser: User!
   fetchUsers: [User!]!
   fetchUserByEmail(userId: String!): User!
@@ -136,7 +142,8 @@ type Query {
   fetchSubCategorys: [SubCategory!]!
   fetchMainCategoryItem(name: String!): MainCategory!
   fetchMainCategorysItem: [MainCategory!]!
-  fetchProducts(searchKeyword: String!): [Product!]!
+  fetchProducts: [Product!]!
+  fetchProductsByKeyword(searchKeyword: String!): [Product!]!
   fetchProduct(productId: String!): Product!
   fetchProductRelateMainCategory(name: String!): [Product!]!
   fetchSellerProduct(userId: String!): [Product!]!

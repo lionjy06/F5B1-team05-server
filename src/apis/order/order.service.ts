@@ -26,7 +26,7 @@ export class OrderService{
         
         const queryRunner = await this.connection.createQueryRunner();
         await queryRunner.connect();
-        await queryRunner.startTransaction('READ COMMITTED');    
+        await queryRunner.startTransaction();    
         try{
             // user 있는 건지 확인
             const user = await this.userRepository.findOne({email:currentUser.email});
@@ -72,7 +72,7 @@ export class OrderService{
     async delete({orderId}){
         const queryRunner = await this.connection.createQueryRunner();
         await queryRunner.connect();
-        await queryRunner.startTransaction('READ COMMITTED'); 
+        await queryRunner.startTransaction(); 
         try{
             const result = await this.orderRepository.softDelete({id:orderId})
             return result.affected ? true: false
