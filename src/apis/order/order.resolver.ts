@@ -45,7 +45,7 @@ export class OrderResolver{
     async fetchOrders(){
         return this.orderService.findAll()
     }
-
+//
     @UseGuards(GqlAuthAccessGuard) 
     @Query(() => [Order], { nullable: 'items' }) // 구매한 물건이 없다면 오류대신 null값이 오게
     async fetchBuyerOrders( 
