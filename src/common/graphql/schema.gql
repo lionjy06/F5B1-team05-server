@@ -117,12 +117,21 @@ type UserAddr {
   user: User!
 }
 
+type Event {
+  id: String!
+  roomId: String!
+  chatLog: String!
+  user: User!
+}
+
 type Query {
+  fetchChat(roomId: String!): [Event!]!
   fetchProductLike: [Product!]!
   fetchUserAddr: UserAddr!
   fetchUserAddrs: [UserAddr!]!
   fetchOrder(orderId: String!): Order!
   fetchOrders: [Order!]!
+  fetchAdminCategorys: [AdminCategory!]!
   fetchUserQuerys(adminCategoryId: String!): [AdminQuery!]!
   fetchUserQuery(adminQueryId: String!, adminCategoryId: String!): AdminQuery!
   fetchUser: User!
@@ -142,6 +151,7 @@ type Query {
 }
 
 type Mutation {
+  createChat(roomId: String!, chatLog: String!): Event!
   createLike(productId: String!): ProductLike!
   createUserAddr(createUserAddrInput: CreateUserAddrInput!): UserAddr!
   updateUserAddr(updateUserAddrInput: UpdateUserAddrInput!): UserAddr!
