@@ -78,7 +78,6 @@ type Product {
   brand: Brand!
   subCategory: SubCategory!
   user: User!
-  product: Product!
 }
 
 type SubCategory {
@@ -186,6 +185,7 @@ type Mutation {
   deleteUserQuery(adminQueryId: String!): Boolean!
   updateUserQuery(adminQueryId: String!, updatedAdminQueryInput: UpdateAdminQueryInput!): AdminQuery!
   login(email: String!, password: String!): String!
+  logout: String!
   restoreAccessToken: String!
   tokenMaker(phoneNum: String!): String!
   tokenValidate(phoneNum: String!, token: String!): Boolean!
