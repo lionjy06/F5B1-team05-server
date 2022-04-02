@@ -166,6 +166,7 @@ type Query {
   fetchProduct(productId: String!): Product!
   fetchProductRelateMainCategory(name: String!): [Product!]!
   fetchSellerProduct(userId: String!): [Product!]!
+  fetchAllProduct: [Product!]!
 }
 
 type Mutation {

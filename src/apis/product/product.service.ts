@@ -120,6 +120,20 @@ export class ProductService{
     }
 
     
+    async fetchAllProduct(){
+        const product = await getRepository(Product)
+        .createQueryBuilder('product')
+        .leftJoinAndSelect('product.brand','brand')
+        .leftJoinAndSelect('product.subCategory','subCategory')
+        .leftJoinAndSelect('product.user','user')
+        .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
+        .getMany()
+
+        return product
+
+    }
+
+
     async update({productId,updateProductInput}:IUdate){
         const product = await this.productRepository.findOne({id:productId})
         const newProduct = {...product, ...updateProductInput};
