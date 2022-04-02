@@ -49,16 +49,16 @@ export class Product{
     updatedAt:Date
 
     @ManyToOne(() => Brand,{cascade:true, onDelete: 'CASCADE' })
-    @Field(() => Brand)
+    @Field(() => Brand,{nullable:true})
     brand:Brand
 
 
     @ManyToOne(() => SubCategory, (subCategory) => subCategory.product)
-    @Field(() => SubCategory)
+    @Field(() => SubCategory,{nullable:true})
     subCategory:SubCategory
 
     @ManyToOne(() => User,{cascade:true, onDelete: 'CASCADE' })
-    @Field(() => User)
+    @Field(() => User,{nullable:true})
     user:User
 
     @OneToMany((type) => ProductLike, (productLike) => productLike.product)
