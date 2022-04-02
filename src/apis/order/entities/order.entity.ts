@@ -4,7 +4,7 @@ import { User } from "src/apis/user/entities/user.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 export enum ORDER_STATUS_ENUM {
-  // 결재완료, 검수중, 배송중, 배송완료, 취소 
+  // 결제완료, 검수중, 배송중, 배송완료, 취소 
     PAYMENT = 'PAYMENT',
     EXAMINATION = 'EXAMINATION',
     ONTHEWAY = 'ONTHEWAY',
@@ -25,21 +25,19 @@ export class Order{
 
     @Column()
     @Field(() => String)
-    impUid:string
-
-    @Column()
-    @Field(() => Int,{nullable:true})
-    price?:number
+    impUid:string 
 
     @Column({ type: 'enum', enum: ORDER_STATUS_ENUM })
     @Field(() => ORDER_STATUS_ENUM)
     status: ORDER_STATUS_ENUM;
  
+
     @CreateDateColumn()
+    @Field(()=>Date)
     createdAt:Date
 
     @DeleteDateColumn()
-    deltedAt:Date
+    deletedAt:Date
 
     @ManyToOne(() => Product)
     @Field(() => Product)
