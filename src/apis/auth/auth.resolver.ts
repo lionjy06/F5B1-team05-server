@@ -1,88 +1,76 @@
 import {
-  BadRequestException,
   UnauthorizedException,
+  UnprocessableEntityException,
   UseGuards,
 } from '@nestjs/common';
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
 import { UserService } from '../user/user.service';
-import { AuthService } from './auth.service';
 import * as bcrypt from 'bcrypt';
+import { AuthService } from './auth.service';
+import {
+  GqlAuthAccessGuard,
+  GqlAuthRefreshGuard,
+} from 'src/common/auth/gql-auth.guard';
 import { CurrentUser, ICurrentUser } from 'src/common/auth/gql-user.param';
-import { GqlAuthAccessGuard, GqlAuthRefreshGuard } from 'src/common/auth/gql-auth.guard';
 import * as jwt from 'jsonwebtoken';
-import { Cache } from 'cache-manager';
-import { CACHE_MANAGER, Inject } from '@nestjs/common';
-
+import { access } from 'fs';
+import { Token } from 'graphql';
 
 @Resolver()
 export class AuthResolver {
   constructor(
-    private readonly authService: AuthService,
     private readonly userService: UserService,
-    @Inject(CACHE_MANAGER)
-    private readonly cacheManager: Cache,
+    private readonly authService: AuthService,
   ) {}
 
   @Mutation(() => String)
   async login(
-    @Args('email') email: string,
+    @Args('email') email: string, //
     @Args('password') password: string,
     @Context() context: any,
-
   ) {
-    const user = await this.userService.findEmail({email});
-    const isAuthenticated = await bcrypt.compare(password, user.password);
+    const user = await this.userService.findemail({ email });
+    if (!user)
+      throw new UnprocessableEntityException('email이 존재하지 않습니다.');
+
+    const isAuthenticated = await bcrypt.compare(password, user.password); //user.password - 해쉬된 비밀번호
     if (!isAuthenticated)
-      throw new BadRequestException('비밀번호가 일치하지 않습니다.');
+      throw new UnauthorizedException('비밀번호가 틀렸습니다!!!');
+    await this.authService.setRefreshToken({ user, res: context.res });
 
-  
-
-    const refreshToken = await this.authService.setRefreshToken({ user, res: context.res });
-    console.log('avxxzz',refreshToken)    
-
-    const accessToken = await this.authService.getAccessToken({ user });
-    return accessToken;
+    return await this.authService.getAccessToken({ user });
   }
 
-  @UseGuards(GqlAuthAccessGuard)
+  @UseGuards(GqlAuthRefreshGuard)
+  @Mutation(() => String)
+  async resotreAccessToken(@CurrentUser() currentUser: ICurrentUser) {
+    return this.authService.getAccessToken({ user: currentUser });
+  }
+
+  @UseGuards(GqlAuthAccessGuard) // 로그인 한 사람만 이 API에 접근가능함
   @Mutation(() => String)
   async logout(
     @Context() context: any,
     @CurrentUser() currentUser: ICurrentUser,
   ) {
-    console.log('this is logout', context.req.headers)
-    const refreshToken = context.req.headers.cookie.split('refreshToken=')[1];
-    const accessToken = context.req.headers.authorization.replace(
+    const refreshToken = context.req.headers.cookie.replace(
+      'refreshToken=',
+      '',
+    );
+    console.log('+++++++++++', context.req.headers);
+    const accesstoken = context.req.headers.authorization.replace(
       'Bearer ',
       '',
     );
-    
-    let access;
-    let refresh;
     try {
-      access = jwt.verify(accessToken, 'myAccesskey');
-      refresh = jwt.verify(refreshToken, 'myRefreshKey');
-    } catch (error) {
-      throw new UnauthorizedException('에러납니까?');
+      jwt.verify(refreshToken, 'myRefreshkey');
+    } catch {
+      throw new UnauthorizedException('토큰검증 실패');
     }
 
-    await this.cacheManager.set(
-      `refreshToken:${refreshToken}`,refreshToken,
-      { ttl: refresh.exp - Math.floor(Date.now() / 1000) + 60 * 60 },
-    );
+    //console.log(context.req.refreshToken);
+    await this.authService.logout({ refreshToken, currentUser ,accesstoken});
 
-    return await this.cacheManager.set(`accessToken:${accessToken}`, accessToken, {
-      ttl: access.exp - Math.floor(Date.now() / 1000) + 60 * 60,
-    });
-
-    
-    return '성공이다';
-  }
-
-
-  @UseGuards(GqlAuthRefreshGuard)
-  @Mutation(() => String)
-  restoreAccessToken(@CurrentUser() currentUser: ICurrentUser) {
-    return this.authService.getAccessToken({ user: currentUser });
+    return '성공';
   }
 }

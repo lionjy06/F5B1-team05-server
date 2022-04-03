@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { JwtAccessStrategy } from 'src/common/auth/jwt-access.strategy';
+import { jwtAccessStrategy } from 'src/common/auth/jwt-access.strategy';
 import { JwtRefreshStrategy } from 'src/common/auth/jwt-refresh.strategy';
 import { JwtGoogleStrategy } from 'src/common/auth/jwt-social-google.strategy';
 import { JwtKakaoStrategy } from 'src/common/auth/jwt-social-kakao';
@@ -17,7 +17,7 @@ import { AuthService } from './auth.service';
     TypeOrmModule.forFeature([User]),
   ],
   providers: [
-    JwtAccessStrategy,
+    jwtAccessStrategy,
     JwtKakaoStrategy,
     JwtGoogleStrategy,
     JwtRefreshStrategy,
