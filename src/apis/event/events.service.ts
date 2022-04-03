@@ -31,12 +31,7 @@ export class EventService{
 
     async fetchChat({roomId}){
 
-        const room = await getRepository(Event)
-        .createQueryBuilder('event')
-        .leftJoinAndSelect('event.user','user')
-        .where('event.roomId = :roomId',{roomId})
-        .orderBy('event.createdAt','DESC')
-        .getMany()
+        const room = await this.eventRepository.find({where:{roomId:roomId}})
         
         return room
     }
@@ -57,5 +52,20 @@ export class EventService{
         const event = await this.eventRepository.findOne({where:{roomId:roomId}})
         const chatLog = `${event.chatLog}${currentUser.id}:${updateChat}\n`
         return await this.eventRepository.save({...event,chatLog})
+    }
+
+    async joinSeller({currentUser}){
+        const product = await this.productRepository.findOne({where:{user:currentUser.id},relations:['user']})
+        const rooms = await this.eventRepository.find({where:{user:currentUser.id},relations:['user']})
+
+        return {
+            product:product,
+            rooms:rooms
+        }
+    }
+
+    async loginUser({currentUser}){
+        const rooms = await this.eventRepository.find({where:{user:currentUser.id},relations:['user']})
+        return rooms
     }
 }
