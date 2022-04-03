@@ -11,7 +11,8 @@ export class AuthService {
 
     @Inject(CACHE_MANAGER)
     private readonly cacheManager: Cache,
-  ) {}  
+  ) {}
+
 
   getAccessToken({ user }) {
     console.log(user.id);
