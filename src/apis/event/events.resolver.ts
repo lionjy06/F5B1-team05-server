@@ -45,13 +45,13 @@ export class EventResolver{
     }
 
 
-    @UseGuards(GqlAuthAccessGuard)
-    @Mutation(() => String)
-    async loginUser(
-        @CurrentUser() currentUser:ICurrentUser
-    ){
-        return await this.eventService.loginUser({currentUser})
-    }
+    // @UseGuards(GqlAuthAccessGuard)
+    // @Mutation(() => String)
+    // async loginUser(
+    //     @CurrentUser() currentUser:ICurrentUser
+    // ){
+    //     return await this.eventService.loginUser({currentUser})
+    // }
 
 
     @UseGuards(GqlAuthAccessGuard)

@@ -55,17 +55,25 @@ export class EventService{
     }
 
     async joinSeller({currentUser}){
-        const product = await this.productRepository.findOne({where:{user:currentUser.id},relations:['user']})
-        const rooms = await this.eventRepository.find({where:{user:currentUser.id},relations:['user']})
+        // const product = await this.productRepository.findOne({where:{user:currentUser.id},relations:['user']})
+        // const rooms = await this.eventRepository.find({where:{user:currentUser.id},relations:['user']})
 
-        return {
-            product:product,
-            rooms:rooms
-        }
+        const room = await getRepository(Event)
+        .createQueryBuilder('event')
+        .leftJoinAndSelect('event.user','user')
+        .leftJoinAndSelect('event.product','product')
+        .where('user.id = :id',{id:currentUser.id})
+        .getMany()
+
+        return room
     }
 
-    async loginUser({currentUser}){
-        const rooms = await this.eventRepository.find({where:{user:currentUser.id},relations:['user']})
-        return rooms
-    }
+    // async loginUser({currentUser}){
+    //     const rooms = await this.eventRepository.find({where:{user:currentUser.id},relations:['user']})
+    //     return rooms
+    // }
+
+    // async checkChatRoom({currentUser}){
+    //     const user = await this.eventRepository.findOne({where:{user:currentUser.id},relations:['user']})
+    // }
 }
