@@ -40,7 +40,7 @@ export class AuthResolver {
     const refreshToken = await this.authService.setRefreshToken({ user, res: context.res });
     console.log('avxxzz',refreshToken)    
 
-    const accessToken = this.authService.getAccessToken({ user });
+    const accessToken = await this.authService.getAccessToken({ user });
     return accessToken;
   }
 
@@ -60,7 +60,7 @@ export class AuthResolver {
     let access;
     let refresh;
     try {
-      access = jwt.verify(accessToken, 'myAccessKey');
+      access = jwt.verify(accessToken, 'myAccesskey');
       refresh = jwt.verify(refreshToken, 'myRefreshKey');
     } catch (error) {
       throw new UnauthorizedException('에러납니까?');
@@ -71,7 +71,7 @@ export class AuthResolver {
       { ttl: refresh.exp - Math.floor(Date.now() / 1000) + 60 * 60 },
     );
 
-    await this.cacheManager.set(`accessToken:${accessToken}`, accessToken, {
+    return await this.cacheManager.set(`accessToken:${accessToken}`, accessToken, {
       ttl: access.exp - Math.floor(Date.now() / 1000) + 60 * 60,
     });
 

@@ -139,6 +139,7 @@ type Event {
 
 type Query {
   fetchChat(roomId: String!): [Event!]!
+  joinSeller: [Event!]!
   fetchProductLike: [Product!]!
   fetchAdminQuerys: [Admin!]!
   fetchAdminQuery(userQueryId: String!, adminId: String!): Admin!
@@ -173,7 +174,6 @@ type Query {
 type Mutation {
   createChat(productId: String!): Event!
   updateChat(roomId: String!, updateChat: String!): Event!
-  joinSeller: Event!
   createLike(productId: String!): ProductLike!
   replyAdminQuery(contents: String!, userQueryId: String!): Admin!
   deleteAdminQuery(adminId: String!): Boolean!

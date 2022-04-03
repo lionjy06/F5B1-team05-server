@@ -108,7 +108,7 @@ export class ProductService{
 
         const subCategory = await getRepository(Product)
         .createQueryBuilder('product')
-        .leftJoinAndSelect('product.subCategory','subCategdfory')
+        .leftJoinAndSelect('product.subCategory','subCategory')
         .leftJoinAndSelect('product.brand','brand')
         .leftJoinAndSelect('product.user','user')
         .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
