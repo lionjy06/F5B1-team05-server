@@ -18,7 +18,6 @@ export class AuthService {
       'Set-Cookie',
       `refreshToken=${refreshToken}; path=/; domain=.project5-sos.shop; SameSite=None; Secure;httpOnly`) 
   
-    return refreshToken
     }
 
   getAccessToken({ user }) {

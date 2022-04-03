@@ -62,8 +62,12 @@ export class EventService{
         .createQueryBuilder('event')
         .leftJoinAndSelect('event.user','user')
         .leftJoinAndSelect('event.product','product')
-        .where('user.id = :id',{id:currentUser.id})
+        .leftJoinAndSelect('product.user','seller')
+        .where('seller.id = :id',{id:currentUser.id})
         .getMany()
+
+
+        console.log('this is room!!!', room.forEach((ele)=>console.log(ele.roomId)))
 
         return room
     }

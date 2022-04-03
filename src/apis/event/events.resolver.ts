@@ -55,7 +55,7 @@ export class EventResolver{
 
 
     @UseGuards(GqlAuthAccessGuard)
-    @Mutation(() => Event)
+    @Query(() => [Event])
     async joinSeller(
         @CurrentUser() currentUser:ICurrentUser,
         
