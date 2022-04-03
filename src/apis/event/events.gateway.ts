@@ -1,77 +1,82 @@
-import { IoAdapter } from "@nestjs/platform-socket.io";
-import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
-import { Server, Socket} from 'socket.io'
-import { CurrentUser } from "src/common/auth/gql-user.param";
-import { EventResolver } from "./events.resolver";
-import { EventService } from "./events.service";
-import { onlineMap } from "./onlineMap";
+// import { IoAdapter } from "@nestjs/platform-socket.io";
+// import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
+// import { Server, Socket} from 'socket.io'
+// import { CurrentUser } from "src/common/auth/gql-user.param";
+// import { EventResolver } from "./events.resolver";
+// import { EventService } from "./events.service";
+// import { onlineMap } from "./onlineMap";
 
-@WebSocketGateway({namespace:/\/ws-.+/})
-export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-    constructor(
-        private readonly eventResolver:EventResolver
-    ){}
-    @WebSocketServer() public server:Server
+// @WebSocketGateway({
+//     cors:{
+//         origin:'http://localhost:3000',
+         
+//     },
+//     namespace:/./})
+// export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+//     constructor(
+//         private readonly eventResolver:EventResolver
+//     ){}
+//     @WebSocketServer() public server:Server
 
-    @SubscribeMessage('message')
-    handleMessage(client:any, payload: any):string{
-        return 'hello world'
-    }
+//     @SubscribeMessage('message')
+//     handleMessage(client:any, payload: any):string{
+//         return 'hello world'
+//     }
 
-    // @SubscribeMessage('login')
-    // async loginUser(
-    //     @MessageBody() data:{currentUser},
-    //     @ConnectedSocket() socket:Socket
-    // ){
-    //     const {currentUser} = data
-    //     const roomInfo = await this.eventResolver.loginUser(currentUser)
-    //     let roomArr = []
-    //     roomInfo.forEach((ele) => roomArr.push(ele.roomId))
-    //     socket.emit('roomArr',roomArr)
-    // }
-
-
-    @SubscribeMessage('createChat')
-    async createChat(
-        @MessageBody() data: {productId, currentUser},
-        @ConnectedSocket() socket:Socket
-    ){
-        const { productId, currentUser} = data
-
-        const roomInfo = await this.eventResolver.createChat(productId,currentUser)
-        socket.join(roomInfo.roomId)
-        socket.emit('roomInfo',roomInfo)
-    }
+//     // @SubscribeMessage('login')
+//     // async loginUser(
+//     //     @MessageBody() data:{currentUser},
+//     //     @ConnectedSocket() socket:Socket
+//     // ){
+//     //     const {currentUser} = data
+//     //     const roomInfo = await this.eventResolver.loginUser(currentUser)
+//     //     let roomArr = []
+//     //     roomInfo.forEach((ele) => roomArr.push(ele.roomId))
+//     //     socket.emit('roomArr',roomArr)
+//     // }
 
 
-    @SubscribeMessage('updateChat')
-    async updateChat(
-        @MessageBody() data: {roomId, updateChat, currentUser},
-        @ConnectedSocket() socket:Socket
-    ){
-        const { roomId, updateChat, currentUser } = data
-        const chat = await this.eventResolver.updateChat(roomId,updateChat,currentUser)
-        console.log('this is ')
-        socket.emit('chat',chat.chatLog)
-    }
+//     @SubscribeMessage('createChat')
+//     async createChat(
+//         @MessageBody() data: {productId, currentUser},
+//         @ConnectedSocket() socket:Socket
+//     ){
+//         const { productId, currentUser} = data
 
-    @SubscribeMessage('joinSeller')
-    async joinSeller(
-        @MessageBody() data: {currentUser, roomId},
-        @ConnectedSocket() socket:Socket
-    ){
-        const { currentUser, roomId } = data
+//         const roomInfo = await this.eventResolver.createChat(productId,currentUser)
+//         socket.join(roomInfo.roomId)
+//         socket.emit('roomInfo',roomInfo)
+//     }
 
-        socket.join(roomId)
-        await this.eventResolver.fetchChat(roomId)
-        const roomArr = []
-        const sellerInfo = await this.eventResolver.joinSeller(currentUser)
-        sellerInfo.forEach((ele) => roomArr.push(ele.roomId))
+
+//     @SubscribeMessage('updateChat')
+//     async updateChat(
+//         @MessageBody() data: {roomId, updateChat, currentUser},
+//         @ConnectedSocket() socket:Socket
+//     ){
+//         const { roomId, updateChat, currentUser } = data
+//         const chat = await this.eventResolver.updateChat(roomId,updateChat,currentUser)
+//         console.log('this is ')
+//         socket.emit('chat',chat.chatLog)
+//     }
+
+//     @SubscribeMessage('joinSeller')
+//     async joinSeller(
+//         @MessageBody() data: {currentUser, roomId},
+//         @ConnectedSocket() socket:Socket
+//     ){
+//         const { currentUser, roomId } = data
+
+//         socket.join(roomId)
+//         await this.eventResolver.fetchChat(roomId)
+//         const roomArr = []
+//         const sellerInfo = await this.eventResolver.joinSeller(currentUser)
+//         sellerInfo.forEach((ele) => roomArr.push(ele.roomId))
         
 
-        socket.emit('sellerInfo',roomArr)
+//         socket.emit('sellerInfo',roomArr)
 
-    }
+    // }
 
     // @SubscribeMessage('login')
     // handleLogin(
@@ -116,23 +121,23 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     //     socket.emit('chatLogs',chat)
     // }
 
-    afterInit( server: Server):any {
-        console.log('websocket server init')
-    }
+//     afterInit( server: Server):any {
+//         console.log('websocket server init')
+//     }
 
-    handleConnection(@ConnectedSocket() socket: Socket):any {
-        console.log('connected', socket.nsp.name)
-        if(!onlineMap[socket.nsp.name]){
-            onlineMap[socket.nsp.name] = {}
-        }
+//     handleConnection(@ConnectedSocket() socket: Socket):any {
+//         console.log('connected', socket.nsp.name)
+//         if(!onlineMap[socket.nsp.name]){
+//             onlineMap[socket.nsp.name] = {}
+//         }
 
-        socket.emit('hello', socket.nsp.name)
-    }
+//         socket.emit('hello', socket.nsp.name)
+//     }
 
-    handleDisconnect(@ConnectedSocket() socket:Socket):any {
-        console.log('disconnected', socket.nsp.name)
-        const newNameSapace = socket.nsp
-        delete onlineMap[socket.nsp.name][socket.id];
-        newNameSapace.emit('onlineList',Object.values(onlineMap[socket.nsp.name]))
-    }
-}
+//     handleDisconnect(@ConnectedSocket() socket:Socket):any {
+//         console.log('disconnected', socket.nsp.name)
+//         const newNameSapace = socket.nsp
+//         delete onlineMap[socket.nsp.name][socket.id];
+//         newNameSapace.emit('onlineList',Object.values(onlineMap[socket.nsp.name]))
+//     }
+// }
