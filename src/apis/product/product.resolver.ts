@@ -26,7 +26,7 @@ export class ProductResolver{
     ){} 
 
     @Query(() => [Product])
-    async fetchProducts(){
+    async OnDevelop(){//fetchProducts
         const result = await this.elasticsearchService.search({
             index: 'testproduct8',
             query: {
@@ -54,8 +54,8 @@ export class ProductResolver{
         return returnVal;
     }
 
-    @Query(() => [Product])
-    async fetchProductsByKeyword(
+    // @Query(() => [Product])
+    async OnDevelop2( //fetchProductsByKeyword
         @Args('searchKeyword') searchKeyword: string,
     ){
         // 1. 레디스에 캐시되어 있는지 확인하기
@@ -88,6 +88,29 @@ export class ProductResolver{
         // return await this.productSerivce.findAll()
     }
 
+    @Query(() => [Product])
+    async fetchProductBySearch(
+        @Args('name') name:string, 
+    ){
+        return await this.productSerivce.findBySearch({name})
+    }
+
+    @Query(() => [Product])
+    async fetchProductByMainCatSubCatBrandPriceName(
+        @Args('mainCategoryName', { nullable: true }) mainCategoryName?:string,
+        @Args('subCategoryName', { nullable: true }) subCategoryName?:string,
+        @Args('brandName', { nullable: true }) brandName?:string,
+        @Args('productName', { nullable: true }) productName?:string, 
+        @Args('minPrice', { nullable: true }) minPrice?:number,
+        @Args('maxPrice', { nullable: true }) maxPrice?:number, 
+    ){
+        return await this.productSerivce.findByRadio({mainCategoryName, subCategoryName, brandName, productName, minPrice, maxPrice})
+    }
+
+    @Query(() => [Product])
+    async fetchAllProduct(){
+        return await this.productSerivce.fetchAllProduct()
+    }
     @Query(() => Product)
     async fetchProduct(
         @Args('productId') productId:string, 
@@ -138,8 +161,5 @@ export class ProductResolver{
         return await this.productSerivce.delete({productId})
     }
 
-    @Query(() => [Product])
-    async fetchAllProduct(){
-        return await this.productSerivce.fetchAllProduct()
-    }
+   
 }

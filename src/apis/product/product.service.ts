@@ -60,16 +60,55 @@ export class ProductService{
         .leftJoinAndSelect('product.user','user')
         .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
         .orderBy('product.createdAt','DESC')
-        .getMany()
-
+        .getMany() 
         // return subCategory
     } 
-    
+     
+    async findBySearch({name}){ // 검색에서 찾기
+
+        const result = await getRepository(Product)
+        .createQueryBuilder('product')
+        .leftJoinAndSelect('product.subCategory','subCategory')
+        .leftJoinAndSelect('product.brand','brand')
+        .leftJoinAndSelect('product.user','user')
+        .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
+        .orWhere('product.name like :name2',{name2: '%' + name  + '%'}) 
+        .orWhere('brand.name like :brandName',{brandName: '%' + name + '%'})
+        .orWhere('subCategory.name like :subCategoryName',{subCategoryName: '%' + name + '%'})
+        .orWhere('mainCategory.name like :mainCategoryName',{mainCategoryName: '%' + name + '%'})
+        .orderBy('product.createdAt','ASC')
+        .getMany()
+        console.log("========findBySearch==========");
+        console.log(result);
+        return await result 
+    }
+
+    async findByRadio({mainCategoryName, subCategoryName, brandName, productName, minPrice, maxPrice}){
+
+            const result = await getRepository(Product)
+            .createQueryBuilder('product')
+            .leftJoinAndSelect('product.subCategory','subCategory')
+            .leftJoinAndSelect('product.brand','brand')
+            .leftJoinAndSelect('product.user','user')
+            .leftJoinAndSelect('subCategory.mainCategory','mainCategory') 
+            .where('mainCategory.name = :mainCategoryName2',{mainCategoryName2 : mainCategoryName})
+            .orWhere('subCategory.name = :subCategoryName2',{subCategoryName2: subCategoryName})
+            .orWhere('brand.name = :brandName2',{brandName2: brandName})
+            .orWhere('product.name like:name',{name: '%' + productName + '%'})
+            .orWhere('product.price >= :price',{price: minPrice})  // from
+            .orWhere('product.price <= :price',{price: maxPrice})  // to 
+            .orderBy('product.createdAt','ASC')
+            .getMany()
+            
+            console.log("========findByRadio==========");
+            console.log(result);
+            return await result 
+        }
     async findOne({productId}){
 
         const subCategory = await getRepository(Product)
         .createQueryBuilder('product')
-        .leftJoinAndSelect('product.subCategory','subCategory')
+        .leftJoinAndSelect('product.subCategory','subCategdfory')
         .leftJoinAndSelect('product.brand','brand')
         .leftJoinAndSelect('product.user','user')
         .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
