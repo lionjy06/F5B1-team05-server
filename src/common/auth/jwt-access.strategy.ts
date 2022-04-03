@@ -1,41 +1,36 @@
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { Cache } from 'cache-manager';
+
+import { PassportStrategy } from '@nestjs/passport';
 import {
-  Injectable,
   CACHE_MANAGER,
   Inject,
-  UnprocessableEntityException,
+  Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
-import { PassportStrategy } from '@nestjs/passport';
+import { Cache } from 'cache-manager';
 
 @Injectable()
-export class JwtAccessStrategy extends PassportStrategy(Strategy, 'access') {
+export class jwtAccessStrategy extends PassportStrategy(Strategy, 'access') {
   constructor(
     @Inject(CACHE_MANAGER)
     private readonly cacheManager: Cache,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: 'myAccesskey',
+      secretOrKey: 'myAccessKey',
       passReqToCallback: true,
-    
     });
   }
 
-
-  async validate(req, payload: any) {
-    console.log('12312313111333222payload',payload)
-    const accessToken = req.headers.authorization.replace('Bearer ', '');
-    console.log('111111', accessToken);
-    const confirm = await this.cacheManager.get(`accessToken:${accessToken}`);
-    if (confirm)
-      throw new UnprocessableEntityException('로그아웃을 생활화합시다');
+  async validate(req, payload) {
+    const accesstoken = req.headers.authorization.replace('Bearer ', '');
+    const check = await this.cacheManager.get(`accesstoken:${accesstoken}`);
+    if (check) throw new UnauthorizedException('이미 로그아웃 되었습니다.');
     return {
-      
       id: payload.sub,
       email: payload.email,
+      role: payload.role,
       exp: payload.exp,
-      role:payload.role
     };
   }
 }

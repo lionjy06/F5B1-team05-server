@@ -1,12 +1,8 @@
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { Cache } from 'cache-manager';
-import {
-  Injectable,
-  CACHE_MANAGER,
-  Inject,
-  UnprocessableEntityException,
-} from '@nestjs/common';
-import { PassportStrategy } from '@nestjs/passport';
+import { CACHE_MANAGER, Inject } from '@nestjs/common';
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
@@ -16,31 +12,25 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
   ) {
     super({
       jwtFromRequest: (req) => {
-        console.log("-------------------")
-        console.log(req.headers)
-        console.log("-------------------")
         const cookies = req.headers.cookie;
-        
-        console.log('this is req.headers',req.headers)
-
-      
-        
+        console.log(cookies);
+        return cookies.replace('refreshToken=', '');
       },
-      secretOrKey: 'myRefreshKey',
+      secretOrKey: 'myRefreshkey',
       passReqToCallback: true,
     });
   }
-
-
   async validate(req, payload: any) {
-    const refreshToken = req.headers.authorization.replace('refreshToken=', '');
-    console.log('111111', refreshToken);
-    const confirm = await this.cacheManager.get(`refreshToken:${refreshToken}`);
-    if (confirm) throw new UnprocessableEntityException('로그아웃 되었슴다');
+    //console.log('1111111111', req.headers);
+    const refreshToken = req.headers.cookie.replace('refreshToken=', '');
+    const check = await this.cacheManager.get(`refreshToken:${refreshToken}`);
+
+    if (check)
+      throw new UnauthorizedException('이미 로그아웃이 된 상태입니다.');
+
     return {
       id: payload.sub,
       email: payload.email,
-      exp: payload.exp,
     };
   }
 }

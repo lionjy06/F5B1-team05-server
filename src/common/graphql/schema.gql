@@ -189,8 +189,8 @@ type Mutation {
   deleteUserQuery(adminQueryId: String!): Boolean!
   updateUserQuery(adminQueryId: String!, updatedAdminQueryInput: UpdateAdminQueryInput!): AdminQuery!
   login(email: String!, password: String!): String!
+  resotreAccessToken: String!
   logout: String!
-  restoreAccessToken: String!
   tokenMaker(phoneNum: String!): String!
   tokenValidate(phoneNum: String!, token: String!): Boolean!
   updateToAdmin(userId: String!): User!

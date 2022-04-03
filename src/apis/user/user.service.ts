@@ -41,6 +41,10 @@ export class UserService {
     }
   }
 
+  async findemail({ email }) {
+    return await this.userRepository.findOne({ email });
+  }
+
   async getToken(myCount){
     try{
 
