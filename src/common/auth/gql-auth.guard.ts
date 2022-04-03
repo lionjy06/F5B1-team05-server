@@ -17,6 +17,7 @@ export class GqlAuthAccessGuard extends AuthGuard(`access`) {
 export class GqlAuthRefreshGuard extends AuthGuard(`refresh`) {
   getRequest(context: ExecutionContext) {
     console.log('this is context',context)
+    console.log('--------------------------------------------------------------------------')
     const ctx = GqlExecutionContext.create(context);
     console.log('referesh 체크',ctx.getContext().req)
     return ctx.getContext().req;
