@@ -75,9 +75,9 @@ type Product {
   view: Int!
   like: Int!
   urls: String
-  brand: Brand!
-  subCategory: SubCategory!
-  user: User!
+  brand: Brand
+  subCategory: SubCategory
+  user: User
 }
 
 type SubCategory {
@@ -173,6 +173,8 @@ type Query {
 type Mutation {
   createChat(productId: String!): Event!
   updateChat(roomId: String!, updateChat: String!): Event!
+  loginUser: String!
+  joinSeller: Event!
   createLike(productId: String!): ProductLike!
   replyAdminQuery(contents: String!, userQueryId: String!): Admin!
   deleteAdminQuery(adminId: String!): Boolean!

@@ -1,3 +1,4 @@
+import { IoAdapter } from "@nestjs/platform-socket.io";
 import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Server, Socket} from 'socket.io'
 import { CurrentUser } from "src/common/auth/gql-user.param";
@@ -17,6 +18,19 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
         return 'hello world'
     }
 
+    @SubscribeMessage('login')
+    async loginUser(
+        @MessageBody() data:{currentUser},
+        @ConnectedSocket() socket:Socket
+    ){
+        const {currentUser} = data
+        const roomInfo = await this.eventResolver.loginUser(currentUser)
+        let roomArr = []
+        roomInfo.forEach((ele) => roomArr.push(ele.roomId))
+        socket.emit('roomArr',roomArr)
+    }
+
+
     @SubscribeMessage('createChat')
     async createChat(
         @MessageBody() data: {productId, currentUser},
@@ -29,21 +43,50 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
         socket.emit('roomInfo',roomInfo.roomId)
     }
 
-    @SubscribeMessage('login')
-    handleLogin(
-        @MessageBody() data: {id: number; channels: number[]},
+
+    @SubscribeMessage('updateChat')
+    async updateChat(
+        @MessageBody() data: {roomId, updateChat, currentUser},
         @ConnectedSocket() socket:Socket
     ){
-        const newNameSapace = socket.nsp
-        console.log('login', newNameSapace)
-        onlineMap[socket.nsp.name][socket.id] = data.id
-        newNameSapace.emit('onlineLine',Object.values(onlineMap[socket.nsp.name]))
-
-        data.channels.forEach((channel:number)=>{
-            console.log('join', socket.nsp.name, channel)
-            socket.join(`${socket.nsp.name}--${channel}`)
-        })
+        const { roomId, updateChat, currentUser } = data
+        const chat = await this.eventResolver.updateChat(roomId,updateChat,currentUser)
+        console.log('this is ')
+        socket.emit('chat',chat.chatLog)
     }
+
+    @SubscribeMessage('joinSeller')
+    async joinSeller(
+        @MessageBody() data: {currentUser, roomId},
+        @ConnectedSocket() socket:Socket
+    ){
+        const { currentUser, roomId } = data
+
+        socket.join(roomId)
+
+        const sellerInfo = await this.eventResolver.joinSeller(currentUser)
+        
+        
+
+        socket.emit('sellerInfo',{sellerInfo})
+
+    }
+
+    // @SubscribeMessage('login')
+    // handleLogin(
+    //     @MessageBody() data: {id: number; channels: number[]},
+    //     @ConnectedSocket() socket:Socket
+    // ){
+    //     const newNameSapace = socket.nsp
+    //     console.log('login', newNameSapace)
+    //     onlineMap[socket.nsp.name][socket.id] = data.id
+    //     newNameSapace.emit('onlineLine',Object.values(onlineMap[socket.nsp.name]))
+
+    //     data.channels.forEach((channel:number)=>{
+    //         console.log('join', socket.nsp.name, channel)
+    //         socket.join(`${socket.nsp.name}--${channel}`)
+    //     })
+    // }
 
     // @SubscribeMessage('new_message')
     // async createChat(

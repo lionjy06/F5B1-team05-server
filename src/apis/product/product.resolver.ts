@@ -4,8 +4,11 @@ import { ElasticsearchService } from "@nestjs/elasticsearch";
 import { Resolver,Query, Mutation, Args  } from "@nestjs/graphql";
 import { query } from "express";
 import { GqlAuthAccessGuard } from "src/common/auth/gql-auth.guard";
+import { RolesGuard } from "src/common/auth/gql-role.guard";
+import { Roles } from "src/common/auth/gql-role.param";
 import { CurrentUser, ICurrentUser } from "src/common/auth/gql-user.param";
 import { MainCategory } from "../mainCategory/entities/mainCategory.entity";
+import { Role } from "../user/entities/user.entity";
 
 import { CreateProductInput } from "./dto/createProductInput";
 import { UpdateProductInput } from "./dto/updateProductIntput";
@@ -125,7 +128,8 @@ export class ProductResolver{
       return this.productSerivce.update({ productId, updateProductInput });
     }
 
-    @UseGuards(GqlAuthAccessGuard)
+    @Roles(Role.ADMIN,Role.USER)
+    @UseGuards(GqlAuthAccessGuard,RolesGuard)
     @Mutation(() => Boolean)
     async deleteProduct(
         @Args('productId') productId:string
