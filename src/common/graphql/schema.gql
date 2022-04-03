@@ -75,9 +75,9 @@ type Product {
   view: Int!
   like: Int!
   urls: String
-  brand: Brand!
-  subCategory: SubCategory!
-  user: User!
+  brand: Brand
+  subCategory: SubCategory
+  user: User
 }
 
 type SubCategory {
@@ -162,12 +162,13 @@ type Query {
   fetchSubCategorys: [SubCategory!]!
   fetchMainCategoryItem(name: String!): MainCategory!
   fetchMainCategorysItem: [MainCategory!]!
-  fetchProducts: [Product!]!
-  fetchProductsByKeyword(searchKeyword: String!): [Product!]!
+  OnDevelop: [Product!]!
+  fetchProductBySearch(name: String!): [Product!]!
+  fetchProductByMainCatSubCatBrandPriceName(mainCategoryName: String, subCategoryName: String, brandName: String, productName: String, minPrice: Float, maxPrice: Float): [Product!]!
+  fetchAllProduct: [Product!]!
   fetchProduct(productId: String!): Product!
   fetchProductRelateMainCategory(name: String!): [Product!]!
   fetchSellerProduct(userId: String!): [Product!]!
-  fetchAllProduct: [Product!]!
 }
 
 type Mutation {

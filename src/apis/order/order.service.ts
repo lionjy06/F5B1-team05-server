@@ -94,10 +94,7 @@ export class OrderService{
             const products = await this.productRepository.find({
                 relations:['user']
             }) 
-
-            const sellerUser = products.map(val => { 
-                return val.user
-            })  
+ 
             orders.map((val, i) => { 
                 products.map(proVal => { 
                     if(val.product.id === proVal.id){ 
