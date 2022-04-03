@@ -23,13 +23,10 @@ import { ProductLikeModule } from './apis/productLike/productLike.module';
 import { EventsModule } from './apis/event/events.module';
 // import { Admin } from './apis/admin/entities/admin.entity';
 import { AdminModule } from './apis/admin/admin.module';
-import { TransactionModule } from './apis/transaction/transaction.module';
 // import { ChatModule } from './apis/chat/chat.module';
 
 @Module({
   imports: [
-
-    TransactionModule,
     EventsModule,
     ProductLikeModule,
     AdminModule,
@@ -51,7 +48,7 @@ import { TransactionModule } from './apis/transaction/transaction.module';
       autoSchemaFile: 'src/common/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
       cors:{
-        origin:"https://youthluxury.shop", 
+        origin:"http://localhost:3000", 
         credential:true
       }
     }),
