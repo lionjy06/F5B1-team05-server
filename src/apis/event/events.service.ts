@@ -31,7 +31,15 @@ export class EventService{
 
     async fetchChat({roomId}){
 
-        const room = await this.eventRepository.find({where:{roomId:roomId}})
+        const room = await getRepository(Event)
+        .createQueryBuilder('event')
+        .leftJoinAndSelect('event.user','user')
+        .leftJoinAndSelect('event.product','product')
+        .leftJoinAndSelect('prudct.user','seller')
+        .where('event.roomId = :roomId',{roomId})
+        .getOne()
+
+        // const room = await this.eventRepository.find({where:{roomId:roomId},relations:['user']})
         
         return room
     }
