@@ -13,7 +13,6 @@ export class AuthService {
     private readonly cacheManager: Cache,
   ) {}
 
-
   getAccessToken({ user }) {
     console.log(user.id);
     return this.jwtService.sign(
@@ -27,9 +26,8 @@ export class AuthService {
       { email: user.email, sub: user.id, role: user.role },
       { secret: 'myRefreshkey', expiresIn: '2w' },
     );
-
-    console.log('111111aaa11',refreshToken);
-    res.setHeader('Access-Control-Allow-Origin', 'https://youthluxury.shop');
+    console.log(refreshToken);
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader(
       'Set-Cookie',
       `refreshToken=${refreshToken}; path=/; domain=.project5-sos.shop; SameSite=None; Secure;httpOnly`,

@@ -35,7 +35,7 @@ export class TransactionResovler{
                 }catch{
                     throw new error
                 }
-
+            
 
                 return await this.transactionService.createTransaction({impuid,amount,currentUser})
         } 
@@ -59,6 +59,4 @@ export class TransactionResovler{
         }
 
 
-
 }
-
