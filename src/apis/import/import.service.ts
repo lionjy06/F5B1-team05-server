@@ -50,7 +50,7 @@ export class IamportService {
 
   async cancle({ impUid }) {
     const isIMP = await this.transactionRepository.findOne({ impUid });
-    const { status, id, createdAt, ...rest } = isIMP;
+    const { status, id, createdAt,amount, ...rest } = isIMP;
 
     console.log('11111111111111111111111111');
     const token = await axios.post('https://api.iamport.kr/users/getToken', {
@@ -76,6 +76,7 @@ export class IamportService {
       const cancleUpdate = await this.transactionRepository.create({
         impUid,
         createdAt,
+        amount:-amount,
         status: TRANSACTION_STATUS_ENUM.CANCEL,
         ...rest,
       });
@@ -93,9 +94,10 @@ export class IamportService {
     const { status, ...rest } = order
     if(order.status !== 'CANCEL'){
         let statusEnum:TRANSACTION_STATUS_ENUM;
-            if(status === "EXAMINATION") statusEnum = TRANSACTION_STATUS_ENUM.EXAMINATION;
-            else if(status === "ONTHEWAY") statusEnum = TRANSACTION_STATUS_ENUM.ONTHEWAY;
-            else if(status === "DELIVERED") statusEnum = TRANSACTION_STATUS_ENUM.DELIVERED;
+            if (statusCode === "PAYMENT") statusEnum = TRANSACTION_STATUS_ENUM.PAYMENT;
+            else if(statusCode === "EXAMINATION") statusEnum = TRANSACTION_STATUS_ENUM.EXAMINATION;
+            else if(statusCode === "ONTHEWAY") statusEnum = TRANSACTION_STATUS_ENUM.ONTHEWAY;
+            else if(statusCode === "DELIVERED") statusEnum = TRANSACTION_STATUS_ENUM.DELIVERED;
             else {
                 console.log("없는 ENUM 입니다.");
                 throw new ConflictException("적절한 OrderEnum이 아닙니다");}
