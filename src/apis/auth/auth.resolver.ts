@@ -50,6 +50,7 @@ export class AuthResolver {
     @Context() context: any,
     @CurrentUser() currentUser: ICurrentUser,
   ) {
+    console.log('this is logout', context.req.headers)
     const refreshToken = context.req.headers.cookie.split('refreshToken=')[1];
     const accessToken = context.req.headers.authorization.replace(
       'Bearer ',

@@ -23,10 +23,6 @@ export class ProductLike{
     @Field(() => Boolean)
     islike: Boolean;
   
-    @Column({ default: false })
-    @Field(() => Boolean)
-    isdislike: Boolean;
-  
     @CreateDateColumn()
     createAt: Date;
   

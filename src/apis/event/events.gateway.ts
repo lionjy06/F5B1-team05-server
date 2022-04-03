@@ -18,17 +18,17 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
         return 'hello world'
     }
 
-    @SubscribeMessage('login')
-    async loginUser(
-        @MessageBody() data:{currentUser},
-        @ConnectedSocket() socket:Socket
-    ){
-        const {currentUser} = data
-        const roomInfo = await this.eventResolver.loginUser(currentUser)
-        let roomArr = []
-        roomInfo.forEach((ele) => roomArr.push(ele.roomId))
-        socket.emit('roomArr',roomArr)
-    }
+    // @SubscribeMessage('login')
+    // async loginUser(
+    //     @MessageBody() data:{currentUser},
+    //     @ConnectedSocket() socket:Socket
+    // ){
+    //     const {currentUser} = data
+    //     const roomInfo = await this.eventResolver.loginUser(currentUser)
+    //     let roomArr = []
+    //     roomInfo.forEach((ele) => roomArr.push(ele.roomId))
+    //     socket.emit('roomArr',roomArr)
+    // }
 
 
     @SubscribeMessage('createChat')
@@ -40,7 +40,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
         const roomInfo = await this.eventResolver.createChat(productId,currentUser)
         socket.join(roomInfo.roomId)
-        socket.emit('roomInfo',roomInfo.roomId)
+        socket.emit('roomInfo',roomInfo)
     }
 
 
@@ -63,12 +63,13 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
         const { currentUser, roomId } = data
 
         socket.join(roomId)
-
+        await this.eventResolver.fetchChat(roomId)
+        const roomArr = []
         const sellerInfo = await this.eventResolver.joinSeller(currentUser)
-        
+        sellerInfo.forEach((ele) => roomArr.push(ele.roomId))
         
 
-        socket.emit('sellerInfo',{sellerInfo})
+        socket.emit('sellerInfo',roomArr)
 
     }
 

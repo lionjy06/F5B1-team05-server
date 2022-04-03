@@ -25,14 +25,19 @@ export class ProductLikeService{
     ){}
 
     async findProductLike({currentUser}){
-        return await getRepository(Product)
+        const product =  await getRepository(Product)
         .createQueryBuilder('product')
+        .leftJoinAndSelect('product.user','productUser')
         .leftJoinAndSelect('product.productLike','productLike')
-        .leftJoinAndSelect('productLike.user','productUser')
+        // .leftJoinAndSelect('productLike.user','productUser')
         .leftJoinAndSelect('productLike.user','user')
         .where('productLike.islike',{islike:true})
+        .andWhere('productUser.id = :id',{id:currentUser.id})
         .andWhere('user.id = :id',{id:currentUser.id})
         .getMany()
+
+        console.log('this is findProductLike', product)
+        return product
     }
 
     async like({productId,currentUser}){

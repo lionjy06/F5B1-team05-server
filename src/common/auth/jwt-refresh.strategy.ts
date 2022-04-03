@@ -23,9 +23,8 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
         
         console.log('this is req.headers',req.headers)
 
-       // console.log('this is req header',req.headers)
-        console.log('123123111', cookies)
-        return cookies.replace('refreshToken=', '');
+      
+        
       },
       secretOrKey: 'myRefreshKey',
       passReqToCallback: true,
