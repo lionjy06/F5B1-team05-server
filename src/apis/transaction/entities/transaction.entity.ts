@@ -31,6 +31,10 @@ export class Transaction{
     @Field(() => TRANSACTION_STATUS_ENUM)
     status: TRANSACTION_STATUS_ENUM;
 
+    @Column()
+    @Field(() => Int)
+    amount:number
+
     @CreateDateColumn()
     @Field(()=>Date)
     createdAt:Date

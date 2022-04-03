@@ -1,32 +1,49 @@
-import { Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { UserService } from '../user/user.service';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly userService: UserService,
 
+    @Inject(CACHE_MANAGER)
+    private readonly cacheManager: Cache,
+  ) {}
 
-
-  setRefreshToken({ user, res }) {
-    const refreshToken = this.jwtService.sign(
-      { email: user.email, sub: user.id, role:user.role },
-      { secret: 'myRefreshKey', expiresIn: '2w' },
+  getAccessToken({ user }) {
+    console.log(user.id);
+    return this.jwtService.sign(
+      { email: user.email, sub: user.id, role: user.role },
+      { secret: 'myAccessKey', expiresIn: '2h' },
     );
-    console.log('111111aaa11',refreshToken);
+  }
+
+  async setRefreshToken({ user, res }) {
+    const refreshToken = await this.jwtService.sign(
+      { email: user.email, sub: user.id, role: user.role },
+      { secret: 'myRefreshkey', expiresIn: '2w' },
+    );
+    console.log(refreshToken);
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader(
       'Set-Cookie',
-      `refreshToken=${refreshToken}; path=/; domain=.project5-sos.shop; SameSite=None; Secure;httpOnly`) 
-  
-    }
-
-  getAccessToken({ user }) {
-    const accessToken = this.jwtService.sign(
-      
-      { email: user.email, sub: user.id, role:user.role },
-      { secret: 'myAccesskey', expiresIn: '5h' },
-      
+      `refreshToken=${refreshToken}; path=/; domain=.project5-sos.shop; SameSite=None; Secure;httpOnly`,
     );
-    return accessToken;
+  }
+
+  async logout({ refreshToken, currentUser, accesstoken }) {
+    const User = {
+      refreshToken: refreshToken,
+      ...currentUser,
+    };
+    await this.cacheManager.set(`accesstoken:${accesstoken}`, User, {
+      ttl: User.exp,
+    });
+    return await this.cacheManager.set(`refreshToken:${refreshToken}`, User, {
+      ttl: User.exp,
+    });
   }
 }
