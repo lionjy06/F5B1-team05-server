@@ -25,8 +25,9 @@ export class TransactionService{
         async fetchTransactionAll(){
             return await getRepository(Transaction)
             .createQueryBuilder('transaction')
+            .leftJoinAndSelect('transaction.user','user')
             .leftJoinAndSelect('transaction.product','product')
-            .leftJoinAndSelect('product.user','user')
+            .leftJoinAndSelect('product.user','seller')
             .orderBy('transaction.createdAt','DESC')
             .getMany();
         }

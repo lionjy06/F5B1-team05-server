@@ -256,7 +256,7 @@ async updateToAdmin({userId}){
   }
 
   async deleteUser({currentUser}){
-    const result = await this.userRepository.delete({id:currentUser.id})
+    const result = await this.userRepository.softDelete({id:currentUser.id})
     
    
     return result.affected ? true : false

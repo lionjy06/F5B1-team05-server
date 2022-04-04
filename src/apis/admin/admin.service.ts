@@ -45,7 +45,7 @@ export class AdminService{
         .createQueryBuilder('admin')
         .leftJoinAndSelect('admin.userQuery','userQuery')
         .leftJoinAndSelect('userQuery.user','user')
-        .where('admin.user = :user',{user:currentUser.id})
+        .where('user.id = :id',{id:currentUser.id})
         .getMany()
 
         console.log('this is admin',admin)

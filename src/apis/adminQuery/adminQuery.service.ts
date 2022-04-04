@@ -30,7 +30,7 @@ export class AdminQueryService{
     ){}
 
     
-    async create({title,contents,img,currentUser,adminCategoryId}){
+    async create({title,contents,currentUser,img,adminCategoryId}){
         const user = await this.userRepository.findOne({where:{id:currentUser.id}})
         const adminCategory = await this.adminCategoryRepository.findOne({where:{adminCategory_id:adminCategoryId}})
         return await this.adminQueryRepository.save({title,contents,img,user,adminCategory})
@@ -38,6 +38,11 @@ export class AdminQueryService{
 
     async findAll({currentUser,adminCategoryId}){
         return this.adminQueryRepository.find({where:{user:currentUser.id,adminCategory:adminCategoryId},relations:['user','adminCategory']})
+    }
+
+    async findAllUserQuries(){
+        
+        return await this.adminQueryRepository.find()
     }
 
     async findOne({adminQueryId,currentUser,adminCategoryId}){

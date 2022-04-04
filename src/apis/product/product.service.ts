@@ -184,7 +184,7 @@ export class ProductService{
     }
 
     async delete({productId}){
-        const result = await this.productRepository.delete({product_id:productId})
+        const result = await this.productRepository.softDelete({product_id:productId})
         return result.affected ? true: false
     }
 }
