@@ -9,6 +9,7 @@ import { onlineMap } from "./onlineMap";
 @WebSocketGateway({
     cors:{
         origin:'http://localhost:3000',
+        credential:true
          
     },})
 export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
@@ -40,6 +41,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
         @MessageBody() data: {productId, currentUser},
         @ConnectedSocket() socket:Socket
     ){
+        
         const { productId, currentUser} = data
         console.log('this is for socket test',productId)
         const roomInfo = await this.eventResolver.createChat(productId,currentUser)
