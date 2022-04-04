@@ -23,6 +23,7 @@ import { ProductLikeModule } from './apis/productLike/productLike.module';
 import { EventsModule } from './apis/event/events.module';
 // import { Admin } from './apis/admin/entities/admin.entity';
 import { AdminModule } from './apis/admin/admin.module';
+import { TransactionModule } from './apis/transaction/transaction.module';
 // import { ChatModule } from './apis/chat/chat.module';
 
 @Module({
@@ -43,6 +44,7 @@ import { AdminModule } from './apis/admin/admin.module';
     SubCategoryModule,
     MainCategoryModule,
     ProductModule,
+    TransactionModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'src/common/graphql/schema.gql',

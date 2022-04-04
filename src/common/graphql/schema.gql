@@ -137,6 +137,24 @@ type Event {
   product: Product!
 }
 
+type Transaction {
+  id: String!
+  impUid: String!
+  status: TRANSACTION_STATUS_ENUM!
+  amount: Int!
+  createdAt: DateTime!
+  product: Product!
+  user: User!
+}
+
+enum TRANSACTION_STATUS_ENUM {
+  PAYMENT
+  EXAMINATION
+  ONTHEWAY
+  DELIVERED
+  CANCEL
+}
+
 type Query {
   fetchChat(roomId: String!): [Event!]!
   joinSeller: [Event!]!
@@ -169,6 +187,7 @@ type Query {
   fetchProduct(productId: String!): Product!
   fetchProductRelateMainCategory(name: String!): [Product!]!
   fetchSellerProduct(userId: String!): [Product!]!
+  fetchimpuidwithproductiduserid(productid: String!): Transaction!
 }
 
 type Mutation {
@@ -189,7 +208,7 @@ type Mutation {
   deleteUserQuery(adminQueryId: String!): Boolean!
   updateUserQuery(adminQueryId: String!, updatedAdminQueryInput: UpdateAdminQueryInput!): AdminQuery!
   login(email: String!, password: String!): String!
-  resotreAccessToken: String!
+  restoreAccessToken: String!
   logout: String!
   tokenMaker(phoneNum: String!): String!
   tokenValidate(phoneNum: String!, token: String!): Boolean!
@@ -208,6 +227,9 @@ type Mutation {
   createProduct(createProductInput: CreateProductInput!): Product!
   updateProduct(productId: String!, updateProductInput: UpdateProductInput!): Product!
   deleteProduct(productId: String!): Boolean!
+  createtransaction(impuid: String!, amount: Float!): Transaction!
+  cancletransaction(impuid: String!): Transaction!
+  updatetransaction(impuid: String!, statusCode: String!): Transaction!
 }
 
 input CreateUserAddrInput {
