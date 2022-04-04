@@ -28,11 +28,11 @@ export class ReviewService{
    ){}
     async create({content,ratings,img,productId,userId,currentUser}){
         
-        const buyer = await this.userRepository.findOne({where:{id:currentUser.id}})
-        const product = await this.productRepository.findOne({where:{id:productId},relations:['user']})
+        const buyer = await this.userRepository.findOne({where:{user_id:currentUser.id}})
+        const product = await this.productRepository.findOne({where:{product_id:productId},relations:['user']})
     
 
-        const review = await  this.reviewRepository.find({where:{id:userId},relations:['user']})
+        const review = await  this.reviewRepository.find({where:{user_id:userId},relations:['user']})
     //    const product = await getRepository(User)
     //     .createQueryBuilder('user')
     //     .leftJoinAndSelect('user.product','product')
@@ -50,8 +50,8 @@ export class ReviewService{
     }
     async findReview({userId}){
         
-        const result = await this.userRepository.find({where:{id:userId},relations:['product']})
-        const numReview = await this.userRepository.find({where:{id:userId},relations:['review']}) 
+        const result = await this.userRepository.find({where:{user_id:userId},relations:['product']})
+        const numReview = await this.userRepository.find({where:{user_id:userId},relations:['review']}) 
         
         console.log('this is result', result)
         console.log('this is numReview', numReview)

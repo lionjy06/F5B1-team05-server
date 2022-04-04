@@ -35,7 +35,7 @@ export class TransactionService{
             return await getRepository(Transaction)
             .createQueryBuilder('transaction')
             .leftJoinAndSelect('transaction.product','product')
-            .where('product.id =:id',{id : productid})
+            .where('product.id =:id',{product_id : productid})
             .orderBy('transaction.createdAt','DESC')
             .getOne();
         }
@@ -48,7 +48,7 @@ export class TransactionService{
             try {
                 const user = await queryRunner.manager.findOne(
                     User,
-                    { id: currentUser.id },
+                    { user_id: currentUser.id },
                     { lock: { mode: 'pessimistic_write' } },
                 );
 

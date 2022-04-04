@@ -112,7 +112,7 @@ export class ProductService{
         .leftJoinAndSelect('product.brand','brand')
         .leftJoinAndSelect('product.user','user')
         .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
-        .where('product.id = :id',{id:productId})
+        .where('product.id = :id',{product_id:productId})
         .orderBy('product.createdAt','ASC')
         .getOne()
         
@@ -131,7 +131,7 @@ export class ProductService{
         const subCategory = await this.subCategoryRepository.findOne({where:{name:subCategoryName},relations:[
             'mainCategory'
         ]})
-        const user = await this.userRepository.findOne({where:{id:currentUser.id}})
+        const user = await this.userRepository.findOne({where:{user_id:currentUser.id}})
         return await this.productRepository.save({...rest,brand,subCategory,user,})
     }
 
@@ -174,14 +174,14 @@ export class ProductService{
 
 
     async update({productId,updateProductInput}:IUdate){
-        const product = await this.productRepository.findOne({id:productId})
+        const product = await this.productRepository.findOne({product_id:productId})
         const newProduct = {...product, ...updateProductInput};
         const updatedProduct = await this.productRepository.save(newProduct)
         return updatedProduct;
     }
 
     async delete({productId}){
-        const result = await this.productRepository.delete({id:productId})
+        const result = await this.productRepository.delete({product_id:productId})
         return result.affected ? true: false
     }
 }

@@ -19,7 +19,7 @@ export class SubCategoryService{
     }
 
     async delete({subCategoryId}){
-        const result = await this.subCategoryRepository.softDelete({id:subCategoryId})
+        const result = await this.subCategoryRepository.softDelete({subCategory_id:subCategoryId})
         return result.affected ? true: false
     }
 
