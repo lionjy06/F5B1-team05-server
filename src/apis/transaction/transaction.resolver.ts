@@ -16,6 +16,13 @@ export class TransactionResovler{
 
     ){}
 
+        @UseGuards(GqlAuthAccessGuard)
+        @Query(() => [Transaction])
+        async fetchTransactionAll(){
+            return await this.transactionService.fetchTransactionAll()
+        }
+
+        @UseGuards(GqlAuthAccessGuard)
         @Query(() => Transaction)
         async fetchimpuidwithproductiduserid(
             @Args('productid') productid:string,

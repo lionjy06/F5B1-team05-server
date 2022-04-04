@@ -45,9 +45,9 @@ export class EventService{
     }
 
     async createChat({productId,currentUser}){
-        const product = await this.productRepository.findOne({where:{id:productId},relations:['user']})
-        const user = await this.userRepository.findOne({where:{id:currentUser.id}})
-
+        const product = await this.productRepository.findOne({where:{id:productId}})
+        const user = await this.userRepository.findOne({where:{id:currentUser}})
+        console.log('user email',user)
         const token = String(Math.floor(Math.random()*(10**6))).padStart(6,'0')
 
         const roomId = token + user.email
