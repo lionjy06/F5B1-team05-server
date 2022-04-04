@@ -23,7 +23,7 @@ export class UserAddrService{
 
     async create({createUserAddrInput,currentUser}:ICreate){
         
-        const user = await this.userRepository.findOne({where:{userAddr_id:currentUser.id}})
+        const user = await this.userRepository.findOne({where:{id:currentUser.id}})
 
         return await this.userAddrRepository.save({...createUserAddrInput, user})
     }

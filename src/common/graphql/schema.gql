@@ -82,7 +82,7 @@ type Product {
 type SubCategory {
   subCategory_id: String!
   name: String!
-  mainCategory: MainCategory!
+  mainCategory: MainCategory
 }
 
 type MainCategory {
@@ -154,6 +154,7 @@ type Query {
   fetchAdminCategorys: [AdminCategory!]!
   fetchUserQuerys(adminCategoryId: String!): [AdminQuery!]!
   fetchUserQuery(adminQueryId: String!, adminCategoryId: String!): AdminQuery!
+  fetchusersearch(search: String!): User!
   fetchUser: User!
   fetchUsers: [User!]!
   fetchUserByEmail(email: String!): User!
@@ -164,7 +165,7 @@ type Query {
   fetchSubCategorys: [SubCategory!]!
   fetchMainCategoryItem(name: String!): MainCategory!
   fetchMainCategorysItem: [MainCategory!]!
-  OnDevelop: [Product!]!
+  fetchproductsearch(searchKeyword: String!): [Product!]!
   fetchProductBySearch(name: String!): [Product!]!
   fetchProductByMainCatSubCatBrandPriceName(mainCategoryName: String, subCategoryName: String, brandName: String, productName: String, minPrice: Float, maxPrice: Float): [Product!]!
   fetchAllProduct: [Product!]!

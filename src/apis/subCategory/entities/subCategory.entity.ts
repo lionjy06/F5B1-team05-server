@@ -23,6 +23,6 @@ export class SubCategory{
     product:Product[]
 
     @ManyToOne(() => MainCategory, (mainCategory)=>mainCategory.subCategory)
-    @Field(() => MainCategory)
+    @Field(() => MainCategory,{nullable:true})
     mainCategory:MainCategory
 }
