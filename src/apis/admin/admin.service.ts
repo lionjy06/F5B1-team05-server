@@ -72,7 +72,7 @@ export class AdminService{
     }
 
     async delete({adminId}){
-        const result = await this.adminRepository.softDelete({id:adminId})
+        const result = await this.adminRepository.softDelete({admin_id:adminId})
         return result.affected ? true:false
     }
 }

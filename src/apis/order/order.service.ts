@@ -36,7 +36,7 @@ export class OrderService{
             } 
     
             // 물품 있는 건지 확인
-            const product = await this.productRepository.findOne({id:productId});
+            const product = await this.productRepository.findOne({product_id:productId});
             if(!product) {
                 console.log("없는 물품 입니다.");
                 throw new ConflictException('물품이 없습니다');

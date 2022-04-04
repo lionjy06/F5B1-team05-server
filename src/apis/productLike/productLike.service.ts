@@ -32,8 +32,8 @@ export class ProductLikeService{
         // .leftJoinAndSelect('productLike.user','productUser')
         .leftJoinAndSelect('productLike.user','user')
         .where('productLike.islike',{islike:true})
-        .andWhere('productUser.id = :id',{id:currentUser.id})
-        .andWhere('user.id = :id',{id:currentUser.id})
+        .andWhere('productUser.id = :id',{user_id:currentUser.id})
+        .andWhere('user.id = :id',{user_id:currentUser.id})
         .getMany()
 
         console.log('this is findProductLike', product)
@@ -48,12 +48,12 @@ export class ProductLikeService{
         
         try{
             const product = await queryRunner.manager.findOne(Product,
-                {id:productId},
+                {product_id:productId},
                 {lock:{mode : 'pessimistic_write'}}
                 )
 
             const user = await queryRunner.manager.findOne(User,{
-                id:currentUser.id
+                user_id:currentUser.id
             })    
             const productLike = await queryRunner.manager.findOne(ProductLike,{
                 user:currentUser.id,

@@ -24,7 +24,7 @@ export class AdminCategoryService{
     }
 
     async delete({adminCategoryId}){
-        const result = await this.adminCategoryRepository.delete({id:adminCategoryId})
+        const result = await this.adminCategoryRepository.delete({adminCategory_id:adminCategoryId})
         return result.affected ? true:false
     }
 //
