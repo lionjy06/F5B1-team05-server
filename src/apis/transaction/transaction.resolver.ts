@@ -29,6 +29,7 @@ export class TransactionResovler{
             @Args('impuid') impuid:string,
             @Args('amount') amount:number,
             @CurrentUser() currentUser: ICurrentUser,
+            @Args('productid') productid:string
             ){
                 try{
                     const getToken = await this.importService.getToken({impUid:impuid})
@@ -37,7 +38,7 @@ export class TransactionResovler{
                 }
             
 
-                return await this.transactionService.createTransaction({impuid,amount,currentUser})
+                return await this.transactionService.createTransaction({impuid,amount,currentUser,productid})
         } 
 
         @UseGuards(GqlAuthAccessGuard) // 로그인 한 사람만 이 API에 접근가능함
