@@ -57,7 +57,7 @@ export class EventService{
     }
 
     async updateChat({roomId,currentUser,updateChat}){
-        const event = await this.eventRepository.findOne({where:{roomId:roomId}})
+        const event = await this.eventRepository.findOne({where:{roomId},relations:['user','product']})
         const chatLog = `${event.chatLog}${currentUser.id}:${updateChat}\n`
         return await this.eventRepository.save({...event,chatLog})
     }
@@ -73,9 +73,6 @@ export class EventService{
         .leftJoinAndSelect('product.user','seller')
         .where('seller.id = :id',{id:currentUser.id})
         .getMany()
-
-
-        console.log('this is room!!!', room.forEach((ele)=>console.log(ele.roomId)))
 
         return room
     }

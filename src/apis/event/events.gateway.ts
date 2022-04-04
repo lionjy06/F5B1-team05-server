@@ -10,8 +10,7 @@ import { onlineMap } from "./onlineMap";
     cors:{
         origin:'http://localhost:3000',
          
-    },
-    namespace:/./})
+    },})
 export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
     constructor(
         private readonly eventResolver:EventResolver
@@ -42,10 +41,11 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
         @ConnectedSocket() socket:Socket
     ){
         const { productId, currentUser} = data
-
+        console.log('this is for socket test',productId)
         const roomInfo = await this.eventResolver.createChat(productId,currentUser)
+        
         socket.join(roomInfo.roomId)
-        socket.emit('roomInfo',roomInfo)
+        socket.emit('roomInfo',`${roomInfo} 소켓 정보 드립니다.`)
     }
 
 
@@ -56,7 +56,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     ){
         const { roomId, updateChat, currentUser } = data
         const chat = await this.eventResolver.updateChat(roomId,updateChat,currentUser)
-        console.log('this is ')
+        
         socket.emit('chat',chat.chatLog)
     }
 
