@@ -53,7 +53,7 @@ export class ProductLikeService{
                 )
 
             const user = await queryRunner.manager.findOne(User,{
-                user_id:currentUser.id
+                id:currentUser.id
             })    
             const productLike = await queryRunner.manager.findOne(ProductLike,{
                 user:currentUser.id,

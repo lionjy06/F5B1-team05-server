@@ -93,7 +93,7 @@ export class UserResolver {
   async fetchUser(
     @CurrentUser() currentUser: ICurrentUser, //
   ) {
-    return await this.userService.findOne({ userId: currentUser.id });
+    return await this.userService.findOne({ currentUser });
   }
 
   @Query(() => [User])
@@ -103,9 +103,9 @@ export class UserResolver {
 
   @Query(()=>User)
   async fetchUserByEmail(
-    @Args('userId') userId:string
+    @Args('email') email:string
   ){
-    return await this.userService.findOne({userId})
+    return await this.userService.findEmail({email})
   }
 
 

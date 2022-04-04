@@ -38,7 +38,7 @@ type Review {
 }
 
 type User {
-  user_id: String!
+  id: String!
   role: Role!
   nickname: String!
   name: String!
@@ -99,28 +99,6 @@ type SellerInfo {
   profilePic: String
 }
 
-type Order {
-  id: String!
-  impUid: String!
-  status: ORDER_STATUS_ENUM!
-  createdAt: DateTime!
-  product: Product!
-  user: User!
-}
-
-enum ORDER_STATUS_ENUM {
-  PAYMENT
-  EXAMINATION
-  ONTHEWAY
-  DELIVERED
-  CANCEL
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type File {
   file_id: String!
   urls: String!
@@ -160,6 +138,11 @@ enum TRANSACTION_STATUS_ENUM {
   CANCEL
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Query {
   fetchChat(roomId: String!): [Event!]!
   joinSeller: [Event!]!
@@ -168,16 +151,12 @@ type Query {
   fetchAdminQuery(userQueryId: String!, adminId: String!): Admin!
   fetchUserAddr: UserAddr!
   fetchUserAddrs: [UserAddr!]!
-  fetchOrder(orderId: String!): Order!
-  fetchOrders: [Order]!
-  fetchBuyerOrders: [Order]!
-  fetchSellerOrders: [Order]!
   fetchAdminCategorys: [AdminCategory!]!
   fetchUserQuerys(adminCategoryId: String!): [AdminQuery!]!
   fetchUserQuery(adminQueryId: String!, adminCategoryId: String!): AdminQuery!
   fetchUser: User!
   fetchUsers: [User!]!
-  fetchUserByEmail(userId: String!): User!
+  fetchUserByEmail(email: String!): User!
   fetchReview(userId: String!): SellerInfo!
   fetchBrand(name: String!): Brand!
   fetchBrands: [Brand!]!
@@ -206,8 +185,6 @@ type Mutation {
   updateUserAddr(updateUserAddrInput: UpdateUserAddrInput!): UserAddr!
   deleteUserAddr(userAddrId: String!): Boolean!
   uploadFile(files: [Upload!]!): [File!]!
-  createOrder(impUid: String!, productId: String!, status: String!): Order!
-  deleteOrder(orderId: String!): Boolean!
   createAdminCategory(name: String!): AdminCategory!
   deleteAdminCategory(adminCategoryId: String!): Boolean!
   createUserQuery(title: String!, contents: String!, img: String!, adminCategoryId: String!): AdminQuery!

@@ -15,7 +15,7 @@ import { AuthModule } from './apis/auth/auth.module';
 import { ReviewModule } from './apis/review/review.module';
 import { AdminCateogryModule } from './apis/adminCategory/adminCategory.module';
 import { AdminQueryModule } from './apis/adminQuery/adminQuery.module';
-import { OrderModule } from './apis/order/order.module';
+// import { OrderModule } from './apis/order/order.module';
 
 import { FileModule } from './apis/file/file.module';
 import { UserAddrModule } from './apis/userAddr/userAddr.module';
@@ -34,7 +34,7 @@ import { TransactionModule } from './apis/transaction/transaction.module';
     UserAddrModule,
     // ChatModule,
     FileModule,
-    OrderModule,
+    // OrderModule,
     AdminCateogryModule,
     AdminQueryModule,
     AuthModule,

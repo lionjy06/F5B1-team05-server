@@ -48,7 +48,7 @@ export class TransactionService{
             try {
                 const user = await queryRunner.manager.findOne(
                     User,
-                    { user_id: currentUser.id },
+                    { id: currentUser.id },
                     { lock: { mode: 'pessimistic_write' } },
                 );
 
