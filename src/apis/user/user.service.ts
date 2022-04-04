@@ -105,7 +105,7 @@ export class UserService {
   }
 
 async updateToAdmin({userId}){
-  const user = await this.userRepository.findOne({user_id:userId})
+  const user = await this.userRepository.findOne({id:userId})
   const updatedUser = {...user,role:Role.ADMIN}
   const newUser = await this.userRepository.save(updatedUser)
   return newUser
@@ -152,12 +152,13 @@ async updateToAdmin({userId}){
     });
   }
 
-  async findOne({userId}) {
-    return await this.userRepository.findOne({where:{user_id:userId}});
+  async findOne({currentUser}) {
+    console.log(currentUser)
+    return await this.userRepository.findOne({id:currentUser.id});
   }
 
   async findEmail({email}) {
-    return await this.userRepository.findOne({email});
+    return await this.userRepository.findOne({where:{email}});
   }
 
   async findNick({nickname}){
@@ -227,7 +228,7 @@ async updateToAdmin({userId}){
   }
 
   async updateAccount({userId,updateUserAccountInput}:IUpdateAccount){
-    const user = await this.userRepository.findOne({user_id:userId});
+    const user = await this.userRepository.findOne({id:userId});
     const newUser = {...user, ...updateUserAccountInput};
     const updatedAccount = await this.userRepository.save(newUser)
     return updatedAccount
@@ -246,7 +247,7 @@ async updateToAdmin({userId}){
   }
 
   async deleteUser({currentUser}){
-    const result = await this.userRepository.delete({user_id:currentUser.id})
+    const result = await this.userRepository.delete({id:currentUser.id})
     
    
     return result.affected ? true : false
