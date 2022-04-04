@@ -29,7 +29,7 @@ export class FileService {
       projectId: process.env.STORAGE_PROJECT_ID,
     }).bucket(process.env.STORAGE_BUCKET);
 
-    
+    //
     //일단 파일들을 먼저 받아야함
     const waitedFiles = await Promise.all(files);
     
