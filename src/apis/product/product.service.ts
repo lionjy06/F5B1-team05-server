@@ -112,10 +112,11 @@ export class ProductService{
         .leftJoinAndSelect('product.brand','brand')
         .leftJoinAndSelect('product.user','user')
         .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
-        .where('product.id = :id',{product_id:productId})
-        .orderBy('product.createdAt','ASC')
+        .where('product.product_id = :product_id',{product_id:productId})
         .getOne()
         
+
+        console.log(subCategory)
         return await subCategory
         //
     }
@@ -131,7 +132,7 @@ export class ProductService{
         const subCategory = await this.subCategoryRepository.findOne({where:{name:subCategoryName},relations:[
             'mainCategory'
         ]})
-        const user = await this.userRepository.findOne({where:{user_id:currentUser.id}})
+        const user = await this.userRepository.findOne({where:{id:currentUser.id}})
         return await this.productRepository.save({...rest,brand,subCategory,user,})
     }
 
@@ -154,7 +155,7 @@ export class ProductService{
         console.log('123123',result1)
         // const result = await this.subCategoryRepository.findOne({where:{mainCategory:mainCategory},relations:["mainCategory"]})
         
-       
+        
         return result1
     }
 
@@ -167,6 +168,8 @@ export class ProductService{
         .leftJoinAndSelect('product.user','user')
         .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
         .getMany()
+
+        
 
         return product
 

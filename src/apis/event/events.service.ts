@@ -46,7 +46,7 @@ export class EventService{
 
     async createChat({productId,currentUser}){
         const product = await this.productRepository.findOne({where:{product_id:productId},relations:['user']})
-        const user = await this.userRepository.findOne({where:{user_id:currentUser.id}})
+        const user = await this.userRepository.findOne({where:{id:currentUser.id}})
         console.log('user email',user)
         const token = String(Math.floor(Math.random()*(10**6))).padStart(6,'0')
 
@@ -71,7 +71,7 @@ export class EventService{
         .leftJoinAndSelect('event.user','user')
         .leftJoinAndSelect('event.product','product')
         .leftJoinAndSelect('product.user','seller')
-        .where('seller.id = :id',{user_id:currentUser.id})
+        .where('seller.id = :id',{id:currentUser.id})
         .getMany()
 
         return room

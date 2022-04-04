@@ -44,6 +44,13 @@ export class UserResolver {
     
   }
 
+  @Query(() => User)
+  async fetchusersearch(
+    @Args('search') search:string
+  ){
+    return this.userService.fetchusersearch({search})
+  }
+
   @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => User)
   async updateToAdmin(

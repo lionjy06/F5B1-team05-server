@@ -1,6 +1,6 @@
 import { CACHE_MANAGER, Inject, Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 import { Role, User } from './entities/user.entity';
 import axios from 'axios'
 import * as bcrypt from 'bcrypt';
@@ -193,6 +193,15 @@ async updateToAdmin({userId}){
   `
   }
   
+  async fetchusersearch({search}){
+    return getRepository(User)
+    .createQueryBuilder('user')
+    .leftJoinAndSelect('user.admin','admin')
+    .where('user.name = :name' ,{name : search})
+    .orWhere('user.nickname = :nickname',{nickname:search})
+    .getMany()
+  }
+
   async memberGreeting(user,email, mytemplate){
     // 3. 이메일의 가입환영 템플릿 전송하기
     console.log('work through?')

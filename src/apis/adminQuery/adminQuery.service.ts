@@ -31,7 +31,7 @@ export class AdminQueryService{
 
     
     async create({title,contents,img,currentUser,adminCategoryId}){
-        const user = await this.userRepository.findOne({where:{user_id:currentUser.id}})
+        const user = await this.userRepository.findOne({where:{id:currentUser.id}})
         const adminCategory = await this.adminCategoryRepository.findOne({where:{adminCategory_id:adminCategoryId}})
         return await this.adminQueryRepository.save({title,contents,img,user,adminCategory})
     }
