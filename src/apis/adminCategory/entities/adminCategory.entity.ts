@@ -7,7 +7,7 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedCol
 export class AdminCategory{
     @PrimaryGeneratedColumn('uuid')
     @Field(()=>String)
-    id:string
+    adminCategory_id:string
 
     @Column()
     @Field(() => String)

@@ -21,7 +21,7 @@ export enum TRANSACTION_STATUS_ENUM {
 export class Transaction{
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
-    id:string
+    transaction_id:string
 
     @Column()
     @Field(() => String)

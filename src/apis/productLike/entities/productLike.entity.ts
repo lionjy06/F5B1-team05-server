@@ -9,7 +9,7 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryG
 export class ProductLike{
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
-    id: string;
+    productLike_id: string;
   
     @ManyToOne(() => User, (user) => user.productLike)
     @Field(() => User)

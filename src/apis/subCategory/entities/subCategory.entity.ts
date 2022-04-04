@@ -9,7 +9,7 @@ import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "ty
 export class SubCategory{
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
-    id:string
+    subCategory_id:string
 
     @Column()
     @Field(() => String)

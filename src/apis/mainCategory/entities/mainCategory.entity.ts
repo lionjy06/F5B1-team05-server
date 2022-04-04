@@ -8,7 +8,7 @@ import { Column, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGenerate
 export class MainCategory{
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
-    id:string
+    mainCategory_id:string
 
     @Column()
     @Field(() => String)

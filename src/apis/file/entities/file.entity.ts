@@ -7,7 +7,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 export class File{
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
-    id:string
+    file_id:string
 
     @Column()
     @Field(() => String)

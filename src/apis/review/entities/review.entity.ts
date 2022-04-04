@@ -10,7 +10,7 @@ type ratings = 0 | 1 | 2 | 3 | 4 | 5
 export class Review{
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
-    id:string
+    review_id:string
 
     @Column()
     @Field(() => String)

@@ -10,7 +10,7 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToO
 export class Admin{
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
-    id:string
+    admin_id:string
 
     @Column()
     @Field(() =>String)

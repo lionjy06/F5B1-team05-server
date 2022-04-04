@@ -10,7 +10,7 @@ import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } f
 export class Event{
     @PrimaryGeneratedColumn('uuid')
     @Field(() =>String)
-    id:string
+    event_id:string
 
     @Column()
     @Field(() => String)
