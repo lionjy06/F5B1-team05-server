@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Connection, getRepository, Repository } from "typeorm";
+import { Product } from "../product/entities/product.entity";
 import { User } from "../user/entities/user.entity";
 import { Transaction, TRANSACTION_STATUS_ENUM } from "./entities/transaction.entity";
 
@@ -14,6 +15,9 @@ export class TransactionService{
 
         @InjectRepository(User)
         private readonly userRepository:Repository<User>,
+
+        @InjectRepository(Product)
+        private readonly productRepository:Repository<Product>,
 
         private readonly connection:Connection
     ){}
@@ -29,7 +33,7 @@ export class TransactionService{
             .getOne();
         }
 
-        async createTransaction({impuid,amount,currentUser}){
+        async createTransaction({impuid,amount,currentUser,productid}){
             const queryRunner = await this.connection.createQueryRunner();
             const queryBuiler = await this.connection.createQueryBuilder();
             await queryRunner.connect();
@@ -41,7 +45,9 @@ export class TransactionService{
                     { lock: { mode: 'pessimistic_write' } },
                 );
 
+                const product = await this.productRepository.findOne({where:{id:productid}})
                   const transaction = await this.transactionRepository.create({
+                    product,
                     impUid: impuid,
                     amount: amount,
                     user: user,
