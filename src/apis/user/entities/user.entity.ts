@@ -17,7 +17,7 @@ registerEnumType(Role,{name:'Role'})
 export class User{
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
-    id:string
+    user_id:string
 
 
     @Column({type:'enum', enum:Role, default: Role.USER})
