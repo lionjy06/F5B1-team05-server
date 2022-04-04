@@ -22,7 +22,13 @@ export class TransactionService{
         private readonly connection:Connection
     ){}
 
-
+        async fetchTransactionAll(){
+            return await getRepository(Transaction)
+            .createQueryBuilder('transaction')
+            .leftJoinAndSelect('transaction.product','product')
+            .orderBy('transaction.createdAt','DESC')
+            .getMany();
+        }
 
         async fetchimpuidwithproductiduserid({productid}){
             return await getRepository(Transaction)
