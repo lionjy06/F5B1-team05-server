@@ -31,6 +31,13 @@ export class AdminQueryResolver{
         return this.adminQueryService.create({title,contents,img,currentUser,adminCategoryId})
     }
 
+
+    @Roles(Role.ADMIN)
+    @UseGuards(GqlAuthAccessGuard,RolesGuard)
+    @Query(() => [AdminQuery])
+    async findAllUserQuries(){
+        return await this.adminQueryService.findAllUserQuries()
+    }
     //이건어케하냐??(유저랑 어드민카테고리 못봄)
     @UseGuards(GqlAuthAccessGuard)
     @Query(() => [AdminQuery])

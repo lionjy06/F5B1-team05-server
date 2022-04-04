@@ -28,6 +28,10 @@ export class AdminQuery{
     title:string
 
     @Column()
+    @Field()
+    img:string
+
+    @Column()
     @Field(() => String)
     contents:string
 

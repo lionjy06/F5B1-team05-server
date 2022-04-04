@@ -15,6 +15,7 @@ type AdminCategory {
 type AdminQuery {
   adminQuery_id: String!
   title: String!
+  img: String!
   contents: String!
   adminCategory: AdminCategory!
   user: User!
@@ -152,6 +153,7 @@ type Query {
   fetchUserAddr: UserAddr!
   fetchUserAddrs: [UserAddr!]!
   fetchAdminCategorys: [AdminCategory!]!
+  findAllUserQuries: [AdminQuery!]!
   fetchUserQuerys(adminCategoryId: String!): [AdminQuery!]!
   fetchUserQuery(adminQueryId: String!, adminCategoryId: String!): AdminQuery!
   fetchusersearch(search: String!): User!
