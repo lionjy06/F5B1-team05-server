@@ -40,7 +40,7 @@ export class ProductResolver {
     });
     const returnVal = result.hits.hits.map((val: any) => {
       return {
-        id: val._source.id,
+        product_id: val._source.product_id,
         name: val._source.name,
         price: val._source.price,
         urls: val._source.urls,
