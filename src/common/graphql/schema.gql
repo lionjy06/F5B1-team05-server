@@ -153,7 +153,7 @@ type Query {
   fetchUserAddr: UserAddr!
   fetchUserAddrs: [UserAddr!]!
   fetchAdminCategorys: [AdminCategory!]!
-  findAllUserQuries: [AdminQuery!]!
+  fetchAllUserQuries: [AdminQuery!]!
   fetchUserQuerys(adminCategoryId: String!): [AdminQuery!]!
   fetchUserQuery(adminQueryId: String!, adminCategoryId: String!): AdminQuery!
   fetchusersearch(search: String!): User!
