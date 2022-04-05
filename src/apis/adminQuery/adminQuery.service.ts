@@ -3,7 +3,7 @@ import { Args } from "@nestjs/graphql";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GqlAuthAccessGuard } from "src/common/auth/gql-auth.guard";
 import { CurrentUser, ICurrentUser } from "src/common/auth/gql-user.param";
-import { Repository } from "typeorm";
+import { getRepository, Repository } from "typeorm";
 import { AdminCategory } from "../adminCategory/entities/adminCategory.entity";
 import { User } from "../user/entities/user.entity";
 import { UpdateAdminQueryInput } from "./dto/updateAdminQueryInput";
@@ -41,8 +41,14 @@ export class AdminQueryService{
     }
 
     async findAllUserQuries(){
-        
-        return await this.adminQueryRepository.find()
+
+        const queries = await getRepository(AdminQuery)
+        .createQueryBuilder('adminQuery')
+        .leftJoinAndSelect('adminQuery.adminCategory','adminCategory')
+        .leftJoinAndSelect('adminQuery.user','user')
+        .getMany()
+
+        return queries
     }
 
     async findOne({adminQueryId,currentUser,adminCategoryId}){
