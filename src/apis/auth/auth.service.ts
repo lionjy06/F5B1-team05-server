@@ -27,7 +27,7 @@ export class AuthService {
       { secret: 'myRefreshkey', expiresIn: '2w' },
     );
     console.log(refreshToken);
-    res.setHeader('Access-Control-Allow-Origin', 'https://youthluxury.shop');
+    res.setHeader('Access-Control-Allow-Origin', 'https://www.youthluxury.shop');
     res.setHeader(
       'Set-Cookie',
       `refreshToken=${refreshToken}; path=/; domain=.project5-sos.shop; SameSite=None; Secure;httpOnly`,
