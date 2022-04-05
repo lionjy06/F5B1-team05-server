@@ -15,7 +15,7 @@ interface IUpdate {
     adminQueryId: string;
     updateAdminQueryInput:UpdateAdminQueryInput
   }
-
+//
 @Injectable()
 export class AdminQueryService{
     constructor(
