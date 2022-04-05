@@ -50,7 +50,12 @@ import { TransactionModule } from './apis/transaction/transaction.module';
       autoSchemaFile: 'src/common/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
       cors:{
+<<<<<<< HEAD
         origin:'https://youthluxury.shop', 
+=======
+        // origin:'https://www.youthluxury.shop', 
+        origin:'http://localhost:3000', 
+>>>>>>> 508f4ac65b0a99c63304ae45f8bfb744adbbb503
         credential:true
       }
     }),

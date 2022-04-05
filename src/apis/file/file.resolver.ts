@@ -7,7 +7,7 @@ import { File } from './entities/file.entity';
 export class FileResolver {
   constructor(private fileService: FileService) {}
 
-  @Mutation(() => [File])
+  @Mutation(() => String)
   async uploadFile(
     @Args({ name: 'files', type: () => [GraphQLUpload] }) files: FileUpload[],
   ) {
