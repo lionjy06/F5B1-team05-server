@@ -48,10 +48,12 @@ type User {
   coverPic: String
   phoneNum: String!
   ratingAvg: Int!
+  ratingSum: Int!
   accountOwner: String
   accountNumber: Int
   bank: String
   income: Int
+  numReview: Int!
   admin: [Admin!]!
 }
 
@@ -89,15 +91,6 @@ type SubCategory {
 type MainCategory {
   id: String!
   name: String!
-}
-
-type SellerInfo {
-  reviewNum: Int!
-  ratings: Int!
-  nickname: String!
-  productNum: Int!
-  img: String!
-  profilePic: String
 }
 
 type UserAddr {
@@ -155,7 +148,7 @@ type Query {
   fetchUser: User!
   fetchUsers: [User!]!
   fetchUserByEmail(email: String!): User!
-  fetchReview(userId: String!): SellerInfo!
+  fetchReview: [Review!]!
   fetchBrand(name: String!): Brand!
   fetchBrands: [Brand!]!
   fetchSubCategory(mainCategoryId: String!): SubCategory!
@@ -198,7 +191,8 @@ type Mutation {
   updateUser(updateUserInfo: UpdateUserInfo!): User!
   updateAccount(userId: String!, updateUserAccountInput: UpdateUserAccountInput!): User!
   deleteUser: Boolean!
-  createReview(content: String!, img: String!, ratings: Float!, productId: String!, userId: String!): Review!
+  createReview(content: String!, ratings: Float!, productId: String!, img: String!): Review!
+  deleteReview(reviewId: String!): Boolean!
   createBrand(name: String!): Brand!
   deleteBrand(productImgId: String!): Boolean!
   createSubCategory(name: String!, mainCategoryId: String!): SubCategory!
