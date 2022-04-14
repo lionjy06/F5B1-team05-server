@@ -13,7 +13,7 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToO
 export class Product{
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
-    product_id:string
+    id:string
 
     @Column()
     @Field(() => String)

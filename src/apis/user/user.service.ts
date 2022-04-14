@@ -101,7 +101,7 @@ export class UserService {
     
     
     
-    // console.log(phone + '번호로 인증번호' + token + '를 전송합니다')
+    
   }
 
 async updateToAdmin({userId}){
@@ -229,7 +229,7 @@ async updateToAdmin({userId}){
   
   
   
-    // console.log(`${name}님 가입을 축하드립니다`)
+   
   }
 
   async findAll(){
@@ -244,13 +244,11 @@ async updateToAdmin({userId}){
   }
 
   async updateUser({currentUser,updateUserInfo}:IUpdateUserInfo){
-    const user = await this.userRepository.findOne({where:{user_id:currentUser.id}})
+    const user = await this.userRepository.findOne({where:{id:currentUser.id}})
     const {nickname, password} = updateUserInfo
     const hashedPassword = await bcrypt.hash(password,5)
     const aaa = {nickname,password:hashedPassword}
     const newUser = {...user,...aaa}
-    console.log('this is password',user.password)
-    console.log('----------',newUser.password)
     const result = await this.userRepository.save(newUser)
     return result
   }

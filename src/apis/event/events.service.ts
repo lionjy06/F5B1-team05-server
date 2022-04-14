@@ -24,28 +24,21 @@ export class EventService{
         
     ){}
 
-    // async createChat({currentUser,chatLog}){
-    //     const user = await this.userRepository.findOne({where:{id:currentUser.id}})
-    //     return await this.eventRepository.save({user,chatLog})
-    // }
-
     async fetchChat({roomId}){
 
         const room = await getRepository(Event)
         .createQueryBuilder('event')
         .leftJoinAndSelect('event.user','user')
         .leftJoinAndSelect('event.product','product')
-        .leftJoinAndSelect('prudct.user','seller')
+        .leftJoinAndSelect('product.user','seller')
         .where('event.roomId = :roomId',{roomId})
         .getOne()
-
-        // const room = await this.eventRepository.find({where:{roomId:roomId},relations:['user']})
         
         return room
     }
 
     async createChat({productId,currentUser}){
-        const product = await this.productRepository.findOne({where:{product_id:productId},relations:['user']})
+        const product = await this.productRepository.findOne({where:{id:productId},relations:['user']})
         const user = await this.userRepository.findOne({where:{id:currentUser.id}})
         console.log('user email',user)
         const token = String(Math.floor(Math.random()*(10**6))).padStart(6,'0')
@@ -63,9 +56,7 @@ export class EventService{
     }
 
     async joinSeller({currentUser}){
-        // const product = await this.productRepository.findOne({where:{user:currentUser.id},relations:['user']})
-        // const rooms = await this.eventRepository.find({where:{user:currentUser.id},relations:['user']})
-
+       
         const room = await getRepository(Event)
         .createQueryBuilder('event')
         .leftJoinAndSelect('event.user','user')
@@ -76,13 +67,4 @@ export class EventService{
 
         return room
     }
-
-    // async loginUser({currentUser}){
-    //     const rooms = await this.eventRepository.find({where:{user:currentUser.id},relations:['user']})
-    //     return rooms
-    // }
-
-    // async checkChatRoom({currentUser}){
-    //     const user = await this.eventRepository.findOne({where:{user:currentUser.id},relations:['user']})
-    // }
 }

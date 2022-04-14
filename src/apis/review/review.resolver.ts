@@ -1,54 +1,46 @@
-import { UseGuards } from "@nestjs/common";
-import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
+import {  UseGuards } from "@nestjs/common";
+import { Args, Mutation, Resolver,Query } from "@nestjs/graphql";
 import { GqlAuthAccessGuard } from "src/common/auth/gql-auth.guard";
+import { RolesGuard } from "src/common/auth/gql-role.guard";
+import { Roles } from "src/common/auth/gql-role.param";
 import { CurrentUser, ICurrentUser } from "src/common/auth/gql-user.param";
-import { getRepository } from "typeorm";
-import { ProductService } from "../product/product.service";
-import { SellerInfo } from "../sellerInfo/sellerInfo.entities.ts/sellerInfo.entity";
-import { User } from "../user/entities/user.entity";
-import { UserService } from "../user/user.service";
-import { CreateReviewInput } from "./dto/createReviewInput";
+import { Role } from "../user/entities/user.entity";
 import { Review } from "./entities/review.entity";
 import { ReviewService } from "./review.service";
 
 @Resolver()
 export class ReviewResolver{
     constructor(
-        private readonly reviewService:ReviewService,
-        private readonly userService:UserService,
-        private readonly productService: ProductService
+        private readonly reviewService:ReviewService
     ){}
-                                                                                                                                                                                                
+
     @UseGuards(GqlAuthAccessGuard)
     @Mutation(() => Review)
     async createReview(
-        
-        @Args('content') content:string,
-        @Args('img') img:string,
+        @CurrentUser() currentUser:ICurrentUser,
+        @Args('content') content: string,
         @Args('ratings') ratings:number,
         @Args('productId') productId:string,
-        @Args('userId') userId:string,
-        @CurrentUser () currentUser : ICurrentUser
-        
+        @Args('img') img:string,
     ){
-
-        // const review = await getRepository(Review)
-        // .createQueryBuilder('review')
-        // .leftJoinAndSelect('review.product','product')
-        // .leftJoinAndSelect('review.user','user')
-        // .where('product.id = :id', {id:productId})
-        // .andWhere('user.id = :id',{id:currentUser.id})
-        // .getMany()
-        // console.log('this is an review query', review)
-
-        return await this.reviewService.create({content,userId,img,ratings,productId,currentUser})
+        return await this.reviewService.createReview({currentUser,content, ratings, productId,img})
     }
 
-    
-    @Query(() => SellerInfo)
+    @UseGuards(GqlAuthAccessGuard)
+    @Query(() => [Review])
     async fetchReview(
-        @Args('userId') userId:string,
+        @CurrentUser() currentUser:ICurrentUser
     ){
-        return await this.reviewService.findReview({userId })
+        return await this.reviewService.fetchReview({currentUser})
+    }
+
+    @Roles(Role.ADMIN, Role.USER)
+    @UseGuards(GqlAuthAccessGuard,RolesGuard)
+    @Mutation(() => Boolean)
+    async deleteReview(
+        
+        @Args('reviewId') reviewId:string
+    ){
+        return await this.reviewService.deleteReview({reviewId})
     }
 }

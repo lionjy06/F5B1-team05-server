@@ -21,7 +21,7 @@ export enum ANSWER_STAUS_ENUM {
 export class AdminQuery{
     @PrimaryGeneratedColumn('uuid')
     @Field(() =>String)
-    adminQuery_id:string
+    id:string
 
     @Column()
     @Field(() =>String)

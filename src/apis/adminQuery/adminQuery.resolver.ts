@@ -38,7 +38,7 @@ export class AdminQueryResolver{
     async fetchAllUserQuries(){
         return await this.adminQueryService.findAllUserQuries()
     }
-    //이건어케하냐??(유저랑 어드민카테고리 못봄)
+    
     @UseGuards(GqlAuthAccessGuard)
     @Query(() => [AdminQuery])
     async fetchUserQuerys(
@@ -48,7 +48,7 @@ export class AdminQueryResolver{
         return this.adminQueryService.findAll({currentUser,adminCategoryId})
     }
     
-    //이건 성공
+    
     
     @UseGuards(GqlAuthAccessGuard)
     @Query(() => AdminQuery)
@@ -78,7 +78,7 @@ export class AdminQueryResolver{
         @Args('updatedAdminQueryInput') updateAdminQueryInput: UpdateAdminQueryInput,
         @CurrentUser() currentUser:ICurrentUser,
     ){
-        //cannot null for non-nullable떠서 adminCategory랑 user다시 설정해줘야됨...
+        
         return await this.adminQueryService.update({adminQueryId,updateAdminQueryInput,currentUser})
     }
 }

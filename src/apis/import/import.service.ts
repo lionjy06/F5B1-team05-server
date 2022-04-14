@@ -50,9 +50,8 @@ export class IamportService {
 
   async cancle({ impUid }) {
     const isIMP = await this.transactionRepository.findOne({ impUid });
-    const { status, transaction_id, createdAt,amount, ...rest } = isIMP;
+    const { status, id, createdAt,amount, ...rest } = isIMP;
 
-    console.log('11111111111111111111111111');
     const token = await axios.post('https://api.iamport.kr/users/getToken', {
       imp_key: process.env.IMP_KEY,
       imp_secret: process.env.IMP_SECRET,

@@ -22,18 +22,17 @@ export class FileService {
     private readonly fileRepository: Repository<File>
   ){}
   async upload({ files }: IUpload) {
-    // // 스토리지에 이미지 업로드 작업을 하는 함수
+  
     
     const storage = new Storage({
-      keyFilename: process.env.STORAGE_KEY_FILENAME, //key filename을 소유함으로서 권한을 갖게된다
+      keyFilename: process.env.STORAGE_KEY_FILENAME, 
       projectId: process.env.STORAGE_PROJECT_ID,
     }).bucket(process.env.STORAGE_BUCKET);
 
-    //
-    //일단 파일들을 먼저 받아야함
+    
     const waitedFiles = await Promise.all(files);
     
-    //받은 이미지들을 구글 스토리지에 올리기
+    
     const urls = await Promise.all(
       waitedFiles.map((file) => {
         return new Promise((resolve, reject) => {

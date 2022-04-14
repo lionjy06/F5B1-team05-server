@@ -9,15 +9,11 @@ import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "ty
 export class SubCategory{
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
-    subCategory_id:string
+    id:string
 
     @Column()
     @Field(() => String)
     name:string
-
-    // {cascade:true, onDelete: 'CASCADE' ,eager:true}
-    // 
-    
 
     @OneToMany((type)=>Product, (product) => product.subCategory)
     product:Product[]

@@ -42,7 +42,7 @@ export class TransactionService{
             return await getRepository(Transaction)
             .createQueryBuilder('transaction')
             .leftJoinAndSelect('transaction.product','product')
-            .where('product.product_id =:product_id',{product_id : productid})
+            .where('product.id =:id',{id : productid})
             .orderBy('transaction.createdAt','DESC')
             .getOne();
         }
@@ -59,7 +59,7 @@ export class TransactionService{
                     { lock: { mode: 'pessimistic_write' } },
                 );
 
-                const product = await this.productRepository.findOne({where:{product_id:productid}})
+                const product = await this.productRepository.findOne({where:{id:productid}})
                   const transaction = await this.transactionRepository.create({
                     product,
                     impUid: impuid,

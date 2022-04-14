@@ -29,14 +29,12 @@ export class ProductLikeService{
         .createQueryBuilder('product')
         .leftJoinAndSelect('product.user','productUser')
         .leftJoinAndSelect('product.productLike','productLike')
-        // .leftJoinAndSelect('productLike.user','productUser')
         .leftJoinAndSelect('productLike.user','user')
         .where('productLike.islike',{islike:true})
-        .andWhere('productUser.id = :id',{user_id:currentUser.id})
-        .andWhere('user.id = :id',{user_id:currentUser.id})
+        .andWhere('user.id = :id',{id:currentUser.id})
         .getMany()
 
-        console.log('this is findProductLike', product)
+        
         return product
     }
 
@@ -48,7 +46,7 @@ export class ProductLikeService{
         
         try{
             const product = await queryRunner.manager.findOne(Product,
-                {product_id:productId},
+                {id:productId},
                 {lock:{mode : 'pessimistic_write'}}
                 )
 
@@ -59,6 +57,8 @@ export class ProductLikeService{
                 user:currentUser.id,
                 product:productId
             })
+
+            
 
             if(!productLike){
                 const createLike = await this.productLikeRepository.create({
@@ -75,9 +75,7 @@ export class ProductLikeService{
                 })
 
                 await queryRunner.manager.save(updateProduct)
-
                 const result = await queryRunner.manager.save(createLike)
-                
                 await queryRunner.commitTransaction()
 
                 return result
@@ -86,7 +84,8 @@ export class ProductLikeService{
             if(!productLike.islike){
                 const createLike = await this.productLikeRepository.create({
                     ...productLike,
-                    islike:true
+                    islike:true,
+                    product
                 })
 
                 const like = product.like + 1
@@ -98,14 +97,16 @@ export class ProductLikeService{
 
                 await queryRunner.manager.save(updateProduct)
 
-                const result = await queryRunner.commitTransaction()
+                const result = await queryRunner.manager.save(createLike)
+                await queryRunner.commitTransaction()
                 return result
             }
             const createlike = await this.productLikeRepository.create({
                 ...productLike,
                 islike: false,
+                product
               });
-              const like = product.like; - 1;
+              const like = product.like - 1;
         
               const updateProduct = await this.productRepository.create({
                 ...product,

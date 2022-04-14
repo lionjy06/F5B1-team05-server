@@ -49,9 +49,7 @@ export class ProductService{
     }
 
     async findAll(){
-        // const subCategory= await this.productRepository.find({
-        //     relations:['subCategory','subCategory.mainCategory','brand']
-        // })
+       
         
         return await getRepository(Product)
         .createQueryBuilder('product')
@@ -78,8 +76,7 @@ export class ProductService{
         .orWhere('mainCategory.name like :mainCategoryName',{mainCategoryName: '%' + name + '%'})
         .orderBy('product.createdAt','ASC')
         .getMany()
-        console.log("========findBySearch==========");
-        console.log(result);
+     
         return await result 
     }
 
@@ -100,8 +97,7 @@ export class ProductService{
             .orderBy('product.createdAt','ASC')
             .getMany()
             
-            console.log("========findByRadio==========");
-            console.log(result);
+           
             return await result 
         }
     async findOne({productId}){
@@ -112,11 +108,11 @@ export class ProductService{
         .leftJoinAndSelect('product.brand','brand')
         .leftJoinAndSelect('product.user','user')
         .leftJoinAndSelect('subCategory.mainCategory','mainCategory')
-        .where('product.product_id = :product_id',{product_id:productId})
+        .where('product.id = :id',{id:productId})
         .getOne()
         
 
-        console.log(subCategory)
+        
         return await subCategory
         //
     }
@@ -127,7 +123,7 @@ export class ProductService{
         const {brandName, subCategoryName,...rest} = createProductInput
 
 
-        // const brand = await this.brandRepository.findOne({id:brandId})
+        
         const brand = await this.brandRepository.findOne({where:{name:brandName}})
         const subCategory = await this.subCategoryRepository.findOne({where:{name:subCategoryName},relations:[
             'mainCategory'
@@ -137,13 +133,6 @@ export class ProductService{
     }
 
     async findProductRelateMainCategory({name}){
-        // const result1 = await getConnection()
-        // .createQueryBuilder()
-        // .select('sub_category')
-        // .from(SubCategory,'sub_category')
-        // .where('sub_category.mainCategory = :id',{id:mainCategory})
-        // .getMany()
-        
         const result1 = await getRepository(Product)
             .createQueryBuilder('product')
             .leftJoinAndSelect('product.subCategory','subCategory')
@@ -152,9 +141,6 @@ export class ProductService{
             .orderBy('product.createdAt','ASC')
             .getMany()
 
-        console.log('123123',result1)
-        // const result = await this.subCategoryRepository.findOne({where:{mainCategory:mainCategory},relations:["mainCategory"]})
-        
         
         return result1
     }
@@ -177,14 +163,14 @@ export class ProductService{
 
 
     async update({productId,updateProductInput}:IUdate){
-        const product = await this.productRepository.findOne({product_id:productId})
+        const product = await this.productRepository.findOne({id:productId})
         const newProduct = {...product, ...updateProductInput};
         const updatedProduct = await this.productRepository.save(newProduct)
         return updatedProduct;
     }
 
     async delete({productId}){
-        const result = await this.productRepository.softDelete({product_id:productId})
+        const result = await this.productRepository.softDelete({id:productId})
         return result.affected ? true: false
     }
 }

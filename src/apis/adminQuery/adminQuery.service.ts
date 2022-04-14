@@ -15,7 +15,7 @@ interface IUpdate {
     adminQueryId: string;
     updateAdminQueryInput:UpdateAdminQueryInput
   }
-//
+
 @Injectable()
 export class AdminQueryService{
     constructor(
@@ -32,7 +32,7 @@ export class AdminQueryService{
     
     async create({title,contents,currentUser,img,adminCategoryId}){
         const user = await this.userRepository.findOne({where:{id:currentUser.id}})
-        const adminCategory = await this.adminCategoryRepository.findOne({where:{adminCategory_id:adminCategoryId}})
+        const adminCategory = await this.adminCategoryRepository.findOne({where:{id:adminCategoryId}})
         return await this.adminQueryRepository.save({title,contents,img,user,adminCategory})
     }
 
@@ -52,12 +52,12 @@ export class AdminQueryService{
     }
 
     async findOne({adminQueryId,currentUser,adminCategoryId}){
-        return await this.adminQueryRepository.findOne({where:{adminQuery_id:adminQueryId,adminCategory:adminCategoryId,user:currentUser.id},relations:['adminCategory','user']})
+        return await this.adminQueryRepository.findOne({where:{id:adminQueryId,adminCategory:adminCategoryId,user:currentUser.id},relations:['adminCategory','user']})
     }
 
     async delete({adminQueryId,currentUser}){
 
-        const query = await this.adminQueryRepository.findOne({where:{adminQuery_id:adminQueryId},relations:['user']})
+        const query = await this.adminQueryRepository.findOne({where:{id:adminQueryId},relations:['user']})
         
         if(query.user.id !== currentUser.id){
             throw new UnprocessableEntityException('당신의 문의 사항이 아니므로 삭제 할수없습니다')
@@ -70,7 +70,7 @@ export class AdminQueryService{
 
     async update({adminQueryId,updateAdminQueryInput,currentUser}:IUpdate){
         
-        const adminQuery = await this.adminQueryRepository.findOne({where:{adminQuery_id:adminQueryId},relations:['user','adminCategory']})
+        const adminQuery = await this.adminQueryRepository.findOne({where:{id:adminQueryId},relations:['user','adminCategory']})
         if(adminQuery.user.id !== currentUser.id){
             throw new UnprocessableEntityException('당신의 문의 사항이 아니므로 수정 할수없습니다')
         }

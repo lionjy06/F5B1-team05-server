@@ -8,7 +8,7 @@ import { Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } f
 export class UserAddr{
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
-    userAddr_id:string
+    id:string
 
     @Column()
     @Field(() => String)

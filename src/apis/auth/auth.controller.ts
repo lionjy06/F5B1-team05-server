@@ -22,19 +22,6 @@ export class AuthController {
   ) {}
 
 
-  // async combine(req, res) {
-  //   let user = await this.userService.findEmail({ email: req.user.email });
-
-  //   if (!user) {
-  //     const { password, ...rest } = req.user;
-  //     const createUser = { ...rest, hashedPassword: password };
-
-  //     user = await this.userService.create({ ...createUser });
-  //   }
-  //   console.log(user);
-  // }
-
-
   @Get('/login/google')
   @UseGuards(AuthGuard('google'))
   async loginGoogle(

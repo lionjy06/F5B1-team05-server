@@ -10,13 +10,13 @@ type ratings = 0 | 1 | 2 | 3 | 4 | 5
 export class Review{
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
-    review_id:string
+    id:string
 
     @Column()
     @Field(() => String)
     content:string
 
-    @Column()
+    @Column({nullable:true})
     @Field(() => String,{nullable:true})
     img?:string
 
@@ -30,14 +30,12 @@ export class Review{
     @DeleteDateColumn()
     deletedAt:Date
 
-    
-
     @ManyToOne(() => User)
     @Field(() => User)
     user:User
 
-    @JoinColumn()
-    @OneToOne(() => Product)
+    
+    @ManyToOne(() => Product)
     @Field(() => Product)
     product:Product
 }

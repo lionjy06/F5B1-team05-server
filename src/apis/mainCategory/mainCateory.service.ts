@@ -14,7 +14,7 @@ export class MainCategoryService{
     }
 
     async delete({mainCategoryId}){
-        const result = await this.mainCategoryRepository.softDelete({mainCategory_id:mainCategoryId})
+        const result = await this.mainCategoryRepository.softDelete({id:mainCategoryId})
         return result.affected ? true: false
     }
 
@@ -28,7 +28,7 @@ export class MainCategoryService{
     }
 
     async findById({id:mainCategoryId}){
-        return this.mainCategoryRepository.findOne({mainCategory_id:mainCategoryId})
+        return this.mainCategoryRepository.findOne({id:mainCategoryId})
     }
 
    

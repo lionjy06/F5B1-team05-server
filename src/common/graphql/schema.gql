@@ -3,17 +3,17 @@
 # ------------------------------------------------------
 
 type Brand {
-  brand_id: String!
+  id: String!
   name: String!
 }
 
 type AdminCategory {
-  adminCategory_id: String!
+  id: String!
   name: String!
 }
 
 type AdminQuery {
-  adminQuery_id: String!
+  id: String!
   title: String!
   img: String!
   contents: String!
@@ -23,14 +23,14 @@ type AdminQuery {
 }
 
 type Admin {
-  admin_id: String!
+  id: String!
   contents: String!
   userQuery: AdminQuery!
   user: User!
 }
 
 type Review {
-  review_id: String!
+  id: String!
   content: String!
   img: String
   ratings: Int!
@@ -61,14 +61,14 @@ enum Role {
 }
 
 type ProductLike {
-  productLike_id: String!
+  id: String!
   user: User!
   product: Product!
   islike: Boolean!
 }
 
 type Product {
-  product_id: String!
+  id: String!
   name: String!
   description: String!
   price: Int!
@@ -81,13 +81,13 @@ type Product {
 }
 
 type SubCategory {
-  subCategory_id: String!
+  id: String!
   name: String!
   mainCategory: MainCategory
 }
 
 type MainCategory {
-  mainCategory_id: String!
+  id: String!
   name: String!
 }
 
@@ -100,13 +100,8 @@ type SellerInfo {
   profilePic: String
 }
 
-type File {
-  file_id: String!
-  urls: String!
-}
-
 type UserAddr {
-  userAddr_id: String!
+  id: String!
   address: String!
   addressDetail: String!
   zipCode: String!
@@ -114,7 +109,7 @@ type UserAddr {
 }
 
 type Event {
-  event_id: String!
+  id: String!
   roomId: String!
   chatLog: String!
   user: User!
@@ -122,7 +117,7 @@ type Event {
 }
 
 type Transaction {
-  transaction_id: String!
+  id: String!
   impUid: String!
   status: TRANSACTION_STATUS_ENUM!
   amount: Int!
@@ -187,7 +182,7 @@ type Mutation {
   createUserAddr(createUserAddrInput: CreateUserAddrInput!): UserAddr!
   updateUserAddr(updateUserAddrInput: UpdateUserAddrInput!): UserAddr!
   deleteUserAddr(userAddrId: String!): Boolean!
-  uploadFile(files: [Upload!]!): [File!]!
+  uploadFile(files: [Upload!]!): String!
   createAdminCategory(name: String!): AdminCategory!
   deleteAdminCategory(adminCategoryId: String!): Boolean!
   createUserQuery(title: String!, contents: String!, img: String!, adminCategoryId: String!): AdminQuery!

@@ -24,7 +24,6 @@ export class ProductResolver {
 
   @Query(() => [Product])
   async fetchproductsearch(
-    //fetchProductsByKeyword
     @Args("searchKeyword") searchKeyword: string
   ) {
     const result = await this.elasticsearchService.search({

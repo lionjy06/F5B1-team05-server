@@ -15,16 +15,15 @@ export class AdminCategoryService{
     ){}
     async create({name}){
         const checkName = await this.adminCategoryRepository.findOne({where:{name}})
-        console.log(checkName)
+
         if(checkName){
-            console.log('????----',name)
             throw new ConflictException('이미 존재하는 문의 타입입니다.')
         }
         return await this.adminCategoryRepository.save({name})
     }
 
     async delete({adminCategoryId}){
-        const result = await this.adminCategoryRepository.delete({adminCategory_id:adminCategoryId})
+        const result = await this.adminCategoryRepository.delete({id:adminCategoryId})
         return result.affected ? true:false
     }
 //

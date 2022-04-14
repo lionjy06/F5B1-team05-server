@@ -56,6 +56,10 @@ export class User{
     @Field(()=>Int)
     ratingAvg:number
 
+    @Column({default:0})
+    @Field(() => Int)
+    ratingSum:number
+
     @Column({nullable:true})
     @Field(()=>String,{nullable:true})
     accountOwner?:string
@@ -72,6 +76,12 @@ export class User{
     @Field(()=>Int,{nullable:true})
     income?:number
     
+    @Column({default:0})
+    @Field(() => Int)
+    numReview:number
+
+    
+
     @CreateDateColumn()
     createdAt:Date
 

@@ -15,7 +15,7 @@ export class BrandService{
     }
 
     async delete({id:productImgId}){
-        const result = await this.brandRepository.softDelete({brand_id:productImgId})
+        const result = await this.brandRepository.softDelete({id:productImgId})
         return result.affected ? true: false
     }
 

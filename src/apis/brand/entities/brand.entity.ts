@@ -7,7 +7,7 @@ import { Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from "typeor
 export class Brand{
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
-    brand_id:string
+    id:string
 
     @Column()
     @Field(() => String)

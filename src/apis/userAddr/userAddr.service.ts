@@ -36,7 +36,7 @@ export class UserAddrService{
     }
 
     async delete({userAddrId}){
-        const result = await this.userAddrRepository.softDelete({userAddr_id:userAddrId})
+        const result = await this.userAddrRepository.softDelete({id:userAddrId})
         result.affected ? true: false
     }
 
