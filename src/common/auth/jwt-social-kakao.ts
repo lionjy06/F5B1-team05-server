@@ -11,18 +11,19 @@ export class JwtKakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     super({
       clientID: process.env.KAKAO_CLIENT_ID,
       clientSecret: process.env.KAKAO_CLIENT_SECRET,
-      callbackURL: 'http://localhost:3000/login/kakao',
+      callbackURL: process.env.KAKAO_CALLBACK_URL,
       scope: ['profile_image', 'account_email','profile_nickname'],
     });
   }
 
   async validate(accessToken: String, refreshToken: String, profile: Profile) {
-    console.log('this is kakako profile',profile);
-    console.log('nick', JSON.parse(profile._raw).properties.nickname)
+    
     return {
       email: profile._json.kakao_account.email,
       name: profile.displayName,
-    
+      password: profile.id,
+      phoneNum:"*",
+      nickname:"anonymouse"
     };
   }
 }

@@ -17,16 +17,15 @@ export class AuthService {
     console.log(user.id);
     return this.jwtService.sign(
       { email: user.email, sub: user.id, role: user.role },
-      { secret: 'myAccessKey', expiresIn: '2h' },
+      { secret: process.env.ACCESS_KEY, expiresIn: '2h' },
     );
   }
 
   async setRefreshToken({ user, res }) {
     const refreshToken = await this.jwtService.sign(
       { email: user.email, sub: user.id, role: user.role },
-      { secret: 'myRefreshkey', expiresIn: '2w' },
+      { secret: process.env.REFRESH_KEY, expiresIn: '2w' },
     );
-    console.log(refreshToken);
     res.setHeader('Access-Control-Allow-Origin', 'https://youthluxury.shop');
     res.setHeader(
       'Set-Cookie',
