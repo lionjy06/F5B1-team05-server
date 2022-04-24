@@ -21,7 +21,7 @@ export class jwtAccessStrategy extends PassportStrategy(Strategy, 'access') {
       passReqToCallback: true,
     });
   }
-
+//
   async validate(req, payload) {
     
     const accesstoken = req.headers.authorization.replace('Bearer ', '');
