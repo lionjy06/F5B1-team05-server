@@ -17,14 +17,16 @@ export class jwtAccessStrategy extends PassportStrategy(Strategy, 'access') {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: 'myAccessKey',
+      secretOrKey: process.env.ACCESS_KEY,
       passReqToCallback: true,
     });
   }
 
   async validate(req, payload) {
+    
     const accesstoken = req.headers.authorization.replace('Bearer ', '');
     const check = await this.cacheManager.get(`accesstoken:${accesstoken}`);
+    
     if (check) throw new UnauthorizedException('이미 로그아웃 되었습니다.');
     return {
       id: payload.sub,

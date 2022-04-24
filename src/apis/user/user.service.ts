@@ -36,7 +36,7 @@ export class UserService {
       return true
     }catch(error){
       if(phoneNum.length !== 10 || phoneNum.length !== 11){
-        throw new UnprocessableEntityException('제대로된 번호가 아닌듯함')
+        throw new UnprocessableEntityException('올바른 번호가 아닙니다.')
       }
     }
   }
@@ -63,7 +63,7 @@ export class UserService {
       let result = String(Math.floor(Math.random()*(10**myCount))).padStart(myCount,'0')
       return result
     }catch(error){
-      throw new UnprocessableEntityException('getToken에서 에러낫다고!!')
+      throw new UnprocessableEntityException('토큰생성에 실패하였습니다.')
     }
   }
 
@@ -118,9 +118,9 @@ async updateToAdmin({userId}){
     
     const tokenRedis = await this.cacheManger.set(`phoneNum:${phoneNum}`,token,{ttl:300})
     const sendToken = await this.sendTokenToSMS(phoneNum,token)
-    return '됫다됫닼ㅋㅋㅋ'
+    return '성공'
   } else{
-    throw new UnprocessableEntityException('토큰을 만들지 못했어용')
+    throw new UnprocessableEntityException('토큰을 만드는데 실패하였습니다.')
   }
  }
 
@@ -167,7 +167,7 @@ async updateToAdmin({userId}){
 
 
   checkValidationEmail (myUser){
-    // 1. email이 정상인지 확인(이메일의 존재여부, 골뱅이 포함여부)
+   
     if(myUser === '' || !myUser.includes('@')){
       console.log('잘못된 형태의 이메일 입니다. 다시 확인 부탁드립니다.')
       return false
@@ -184,7 +184,7 @@ async updateToAdmin({userId}){
     <html>
       <head></head>
       <body>
-        <h1>${name}님 가입을 환영합니다. 항상 좋은 서비스를 제공해드리는 SOSO가 되도록 하겠습니다</h1>
+        <h1>${name}님 가입을 환영합니다. 항상 좋은 서비스를 제공해드리는 Youth&Luxury가 되도록 하겠습니다</h1>
         
                
   
@@ -203,15 +203,14 @@ async updateToAdmin({userId}){
   }
 
   async memberGreeting(user,email, mytemplate){
-    // 3. 이메일의 가입환영 템플릿 전송하기
-    console.log('work through?')
+  
     const appKey = process.env.EMAIL_APP_KEY
     const sender = process.env.EMAIL_SENDER
     const XsecretKey = process.env.EMAIL_XSECRET_KEY
     await axios.post(`https://api-mail.cloud.toast.com/email/v2.0/appKeys/${appKey}/sender/mail`, 
     {
       senderAddress: sender,
-      title:`[회사이름] 안녕하세요 ${user}님. 가입을 환영합니다.`,
+      title:`[Youth&Luxury] 안녕하세요 ${user}님. 가입을 환영합니다.`,
       body:mytemplate,
       
       receiverList:[
