@@ -25,7 +25,7 @@ export class AuthResolver {
 
   @Mutation(() => String)
   async login(
-    @Args('email') email: string, //
+    @Args('email') email: string, 
     @Args('password') password: string,
     @Context() context: any,
   ) {
@@ -47,7 +47,7 @@ export class AuthResolver {
     return this.authService.getAccessToken({ user: currentUser });
   }
 
-  @UseGuards(GqlAuthAccessGuard) // 로그인 한 사람만 이 API에 접근가능함
+  @UseGuards(GqlAuthAccessGuard) 
   @Mutation(() => String)
   async logout(
     @Context() context: any,
@@ -68,7 +68,7 @@ export class AuthResolver {
       throw new UnauthorizedException('토큰검증 실패');
     }
 
-    //console.log(context.req.refreshToken);
+  
     await this.authService.logout({ refreshToken, currentUser ,accesstoken});
 
     return '성공';

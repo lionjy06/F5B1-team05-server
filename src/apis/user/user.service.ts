@@ -90,18 +90,11 @@ export class UserService {
         }
       }
     )
-    console.log(result)
     return '성공'
     } catch (error) {
       
       throw new UnprocessableEntityException('토큰 발송에 실패')
     }
-  
-  
-    
-    
-    
-    
   }
 
 async updateToAdmin({userId}){
@@ -225,10 +218,6 @@ async updateToAdmin({userId}){
      }
     }
   )
-  
-  
-  
-   
   }
 
   async findAll(){
