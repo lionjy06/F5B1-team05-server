@@ -74,7 +74,7 @@ export class ProductResolver {
       maxPrice,
     });
   }
-
+//
   @Query(() => [Product])
   async fetchAllProduct() {
     return await this.productSerivce.fetchAllProduct();
