@@ -31,7 +31,7 @@
 서비스흐름(flow chart)
 ---
 ![KakaoTalk_Photo_2022-04-23-15-56-22-1](https://user-images.githubusercontent.com/79198426/165024862-02a6c499-ad52-4d84-b3a7-d5636bcb9196.jpeg)
-<img width="685" alt="스크린샷 2022-04-25 오후 4 57 49" src="https://user-images.githubusercontent.com/79198426/165045423-1d5bdbae-fc1a-4ae9-9b7d-9f93e7f5ddcd.png">
+
 
 * 위 서비스의 흐름에 관한 상세한 설명은 아래에서 하도록 하겠습니다.
   - ERD 및 API 소개
