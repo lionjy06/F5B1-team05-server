@@ -10,7 +10,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.use(graphqlUploadExpress())
   app.enableCors({
-    origin:'https://www.youth-luxury.shop',
+    origin:'https://youth-luxury.shop',
     credentials:true
   })
   await app.listen(3000);
