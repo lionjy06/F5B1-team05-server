@@ -31,6 +31,7 @@
 서비스흐름(flow chart)
 ---
 ![KakaoTalk_Photo_2022-04-23-15-56-22-1](https://user-images.githubusercontent.com/79198426/165024862-02a6c499-ad52-4d84-b3a7-d5636bcb9196.jpeg)
+<img width="685" alt="스크린샷 2022-04-25 오후 4 57 49" src="https://user-images.githubusercontent.com/79198426/165045423-1d5bdbae-fc1a-4ae9-9b7d-9f93e7f5ddcd.png">
 
 * 위 서비스의 흐름에 관한 상세한 설명은 아래에서 하도록 하겠습니다.
   - ERD 및 API 소개
@@ -101,5 +102,63 @@ Youth&Luxury는 중고 명품을 쉽고 상태를 빠르게 파악하기 위해 
 
 <img width="1279" alt="스크린샷 2022-04-25 오후 4 23 35" src="https://user-images.githubusercontent.com/79198426/165040172-9be1ad90-dcd9-4ac3-a62f-6130784b748c.png">
 
+<br>
      
-      
+USER LOGIN
+로그인을 하였을 때 데이터베이스의 hashed password와 bcrypt와의 match 가 이루어지면 accesstoken과 refresh token이 발급되도록 JWT를 이용하여 구성하였습니다.   
+
+<img width="1229" alt="refreshToken" src="https://user-images.githubusercontent.com/79198426/165045284-c1ba8664-c1e4-4d56-a74f-5354f3fd2365.png">
+
+<img width="685" alt="스크린샷 2022-04-25 오후 4 57 49" src="https://user-images.githubusercontent.com/79198426/165045450-9008fd57-8cc0-4eb2-b50e-18c96ff6a7b4.png">
+
+<br>
+<b>USER LOGOUT</b>
+<br>
+로그아웃을 하였을 때 저장된 쿠키의 refresh token의 값을 RediS에 BLACKLIST로 등록하여 같은 정보를 담고 있을 시 이를 Validate 에서 검증하도록 진행하였습니다
+
+```
+ async logout({ refreshToken, currentUser, accesstoken }) {
+    const User = {
+      refreshToken: refreshToken,
+      ...currentUser,
+    };
+    await this.cacheManager.set(`accesstoken:${accesstoken}`, User, {
+      ttl: User.exp,
+    });
+    return await this.cacheManager.set(`refreshToken:${refreshToken}`, User, {
+      ttl: User.exp,
+    });
+  }
+  ```
+  <img width="442" alt="스크린샷 2022-04-25 오후 5 03 50" src="https://user-images.githubusercontent.com/79198426/165046405-648f0f80-553e-4b3f-9484-9d279432d032.png">
+
+<br>
+<b>Strategy 및 권한</b>
+로그인하였을 때 accesstoken의 주기를 짧게주고 refreshtoken을 통해 다시 재발급받는 형식으로 진행하었습니다. 따라서 accessToken의 strategy 와 refreshToken에 대한 strategy 를 사용하여서 guard를 통해 권한을 분기하여 유저의 정보를 사용하도록 하였습니다.
+
+<br>
+<b>Role에 따른 권한분기</b>
+<br>
+관리자 페이지에서 다룰수 있는 api를 일반 유저가 접근했을 때는 아래와 같은 에러가 발생합니다
+<img width="434" alt="스크린샷 2022-04-25 오후 5 10 12" src="https://user-images.githubusercontent.com/79198426/165047571-cbd9905d-573a-4915-a48a-cb7d49798d16.png">
+
+```
+    @Roles(Role.ADMIN)
+    @UseGuards(GqlAuthAccessGuard, RolesGuard)
+    @Mutation(() => AdminCategory)
+    async createAdminCategory(
+        @Args('name') name:string
+    ){
+        
+        return await this.adminCategoryService.create({name})
+    }
+```
+위와 같이 롤을 설정하게 되면 접근이 가능하여 일반유저는 불가능하지만 관리자는 실행가능한 api가 실행된다.
+<img width="502" alt="스크린샷 2022-04-25 오후 5 14 40" src="https://user-images.githubusercontent.com/79198426/165048284-8ab5a828-307c-4dac-9295-d446330e3851.png">
+
+
+
+
+
+
+
