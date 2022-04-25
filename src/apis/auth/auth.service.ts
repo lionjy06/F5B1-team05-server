@@ -26,7 +26,7 @@ export class AuthService {
       { email: user.email, sub: user.id, role: user.role },
       { secret: process.env.REFRESH_KEY, expiresIn: '2w' },
     );
-    res.setHeader('Access-Control-Allow-Origin', 'https://youthluxury.shop');
+    res.setHeader('Access-Control-Allow-Origin', 'https://www.youth-luxury.shop');
     res.setHeader(
       'Set-Cookie',
       `refreshToken=${refreshToken}; path=/; domain=.mybackend.project5-sos.shop; SameSite=None; Secure;httpOnly`,
