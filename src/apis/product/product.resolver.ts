@@ -122,3 +122,4 @@ export class ProductResolver {
     return await this.productSerivce.delete({ productId });
   }
 }
+//
