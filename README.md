@@ -213,7 +213,13 @@ describe('UserService', () => {
 5. 로드밸런스를 기준 프론트엔드를 https 로 설정하고 구글에서 지원하는 ssl을 사용하여 보안을 강화하였습니다.
 6. DNS와 로드밸런스를 연결하여 클라이언트로 받아오는 트래픽을 로드밸런스가 인스턴스 그룹에 부하분산 할 수 있도록 설정했습니다.
 
+## 배포 flow chart
 
+<img width="958" alt="스크린샷 2022-04-26 오후 6 36 17" src="https://user-images.githubusercontent.com/79198426/165270645-34b4412d-74a9-4bfb-8591-dff92a68baf8.png">
+
+
+
+## 실제 설정 스크린샷
 <img width="571" alt="스크린샷 2022-04-26 오후 5 58 52" src="https://user-images.githubusercontent.com/79198426/165267282-927cce0f-c7c2-41c4-abc3-4e5d749496bd.png">
 
 
