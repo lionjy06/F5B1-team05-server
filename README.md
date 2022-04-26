@@ -36,9 +36,9 @@
 * 위 서비스의 흐름에 관한 상세한 설명은 아래에서 하도록 하겠습니다.
   - ERD 및 API 소개
   - 관리자와 유저 Role에 따라 달라지는 권한분기를 위한 API개발
-  - socket.io를 통한 실시간 통신
+  - jest를 활용한 유저 생성 api Unit test 
   - Loadbalancing을 통한 부하분산 구성과 보안을 위한 https설정을 완료한 배포
-  - 주요서비스에 사용되는 API에 대한 jest를 활용한 Unit test   
+  
 
 <br>
 
@@ -157,18 +157,73 @@ USER LOGIN
 <img width="502" alt="스크린샷 2022-04-25 오후 5 14 40" src="https://user-images.githubusercontent.com/79198426/165048284-8ab5a828-307c-4dac-9295-d446330e3851.png">
 
 <br>
-# Socket을 통한 실시간 통신
 
-상품거래에 있어 판매자와 구매자의 신뢰와 편의성을 위해 서로간의 정보를 빠르게 주고 받기에 용이한 채팅을 구현하여 서비스의 질을 높히기위해 노력했습니다.
+# Jest를 활용한 User 생성 unit test
 
+회원가입시 생성되는 유저를 담당하는 api에 대한 간단한 unit test를 실시하여 추후에 있을 테스트에 시간 절약을 꾀했습니다.
+
+```
+describe('UserService', () => {
+    let userService : UserService;
+
+    beforeEach(async () => {
+        const userModule = await Test.createTestingModule({
+            providers: [
+                UserService,
+                {
+                    provide: getRepositoryToken(User),
+                    useClass: MockUserRepository,
+                },
+                {
+                    provide: CACHE_MANAGER,
+                    useFactory: jest.fn(),
+                },
+            ],
+        }).compile()
+
+        userService = userModule.get<UserService>(UserService)
+    })
+
+    describe('create', () => {
+        it('회원가입', async () => {
+            const myDB = {
+                email:'jyjjyj06@naver.com',
+                password:"1234",
+                name:"양진영",
+                phoneNum:'01011112222',
+                nickname:"hahaha"
+            }
+            try{
+                const {email, password, name, phoneNum, nickname} = myDB
+                const hashedPassword = await bcrypt.hash(password, 5);
+                userService.create({email, hashedPassword, name, phoneNum, nickname})
+            } catch(error){
+                expect(error).toBeInstanceOf(ConflictException)
+            }
+        })
+    })
+})
+```
+<img width="382" alt="스크린샷 2022-04-26 오후 5 52 01" src="https://user-images.githubusercontent.com/79198426/165261921-a16c2c57-d547-49ad-903a-d4bfb6fcd0e3.png">
 <br>
-채팅구현 로직
-1. 판매자와 구매자의 1:1 채팅방을 만들어야 하기 때문에 구매자가 판매자와의 채팅을 시도할시 먼저 자신의 email + token(랜덤6자리수)로 만들어진 방을 만들고 들어간다.
-2. 해당 판매자에게 socket을 이용하여 자신이 만든 방 정보를 준다.
-3. 판매자는 자신이 하나 또는 여러 구매자로 부터 받은 방정보를 배열에 저장해둔다.
-4. 특정 구매자와 채팅을 위해서는 배열에 담겨있는 방정보를 찾아와 그안에 담겨진 채팅로그를 fetch한다.
-5. 다른 구매자와의 채팅을 원한다면 또 배열에 담긴 방정보를 찾아와 그안에 담겨진 로그를 fetch한다.
-6. 채팅이 이루어진다면 새로운 채팅을 올릴때마다 db에 저장하고 채팅내용을 프론트사이드에 보내주어 돔조작으로 채팅이 보여지도록 한다.
+
+# Loadbalancing을 통한 부하분산 구성과 보안을 위한 https설정을 완료한 배포
+1. GCP를 이용하여 배포를 하였습니다. 
+2. 배포시 서비스의 안정성과 보안성을 강화하여 트래픽이 몰렸을시 하나의 서버에 과한 부하를 막기 위해 배포되었던 인스턴스들을 그룹으로 묶었습니다.
+3. 그룹화 한 인스턴스와 로드밸런스를 연결하여 round-robin 방식으로 트래픽을 분산했습니다.
+4. 로드밸런스를 기준 백엔드를 TCP 3000으로 연결하고 주기적으로 health-checking할수있게 설정해두었습니다.
+5. 로드밸런스를 기준 프론트엔드를 https 로 설정하고 구글에서 지원하는 ssl을 사용하여 보안을 강화하였습니다.
+6. DNS와 로드밸런스를 연결하여 클라이언트로 받아오는 트래픽을 로드밸런스가 인스턴스 그룹에 부하분산 할 수 있도록 설정했습니다.
+
+
+<img width="571" alt="스크린샷 2022-04-26 오후 5 58 52" src="https://user-images.githubusercontent.com/79198426/165264656-1b625648-90a7-4d74-8d0b-5d466c435e36.png">
+
+
+<img width="516" alt="스크린샷 2022-04-26 오후 5 58 22" src="https://user-images.githubusercontent.com/79198426/165264987-178cecc4-bf95-42fc-8ab1-f3e0305fecbd.png">
+
+<img width="601" alt="스크린샷 2022-04-26 오후 5 59 27" src="https://user-images.githubusercontent.com/79198426/165265050-45e8f8bd-ea9a-4713-8208-f23cba2229e6.png">
+
+
 
 
 
