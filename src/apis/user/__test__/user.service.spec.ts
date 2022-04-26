@@ -84,45 +84,5 @@ describe('UserService', () => {
                 expect(error).toBeInstanceOf(ConflictException)
             }
         })
-        // it('회원등록 잘됫는지 검증', async () => {
-        //     const myDB = {
-        //         email:'jyjjyj06@naver.com',
-        //         password:"1234",
-        //         name:"양진영",
-        //         phoneNum:'01011112222',
-        //         nickname:"hahaha"
-        //     }
-            
-        //     try{
-        //     const {email, password, name, phoneNum, nickname} = myDB
-        //     const hashedPassword = password
-        //     const result = await userService.create({email, hashedPassword, name, phoneNum, nickname}) 
-        //     expect(result).toStrictEqual({email:'jyjjyj06@naver.com',
-        //     password:"1234",
-        //     name:"양진영",
-        //     phoneNum:'01011112222',
-        //     nickname:"hahaha"})
-        //     } catch(error){
-        //         expect(error).toBeInstanceOf(ConflictException)
-        //     }
-            
-        // })
-        // it('findEmail', async () => {
-        //     const myDB = {
-        //         email:'jyjjyj06@naver.com',
-        //         password:"1234",
-        //         name:"양진영",
-        //         phoneNum:'01011112222',
-        //         nickname:"hahaha"
-        //     }
-        //     const email = 'jyjjyj06@naver.com'
-            
-        //     const result = await userService.findemail({email})
-        //     try{
-        //         expect(result).toStrictEqual({...myDB})
-        //     }catch(error){
-        //         expect(error).toBeInstanceOf(ConflictException)
-        //     }
-        // })
     })
 })
