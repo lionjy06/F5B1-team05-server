@@ -93,16 +93,6 @@ async sendTokenToSMS(phone, token){
 <img width="364" alt="스크린샷 2022-04-25 오후 3 04 47" src="https://user-images.githubusercontent.com/79198426/165029740-4e9fbfe1-07f8-4dda-82c4-04a1db43baed.png">
 
 <br>
-
-<b>Product fetch</b>
-<br>
-Youth&Luxury는 중고 명품을 쉽고 상태를 빠르게 파악하기 위해 한눈에 상품에 관련된 모든 정보를 확인할수 있어야합니다. 상품에 관련된 정보를 다른 테이블에서 가져오기 위해 querybuilder를 사용하여 
-직접적으로 연결되지 않은 테이블과 연결을 성공시켰습니다. querybuilder를 이용하여 연결한 테이블들은 fetch가 가능해져 필요한 데이터들을 가져올수 있게 하였습니다.
-
-
-<img width="1279" alt="스크린샷 2022-04-25 오후 4 23 35" src="https://user-images.githubusercontent.com/79198426/165040172-9be1ad90-dcd9-4ac3-a62f-6130784b748c.png">
-
-<br>
      
 USER LOGIN
 로그인을 하였을 때 데이터베이스의 hashed password와 bcrypt와의 match 가 이루어지면 accesstoken과 refresh token이 발급되도록 JWT를 이용하여 구성하였습니다.   
@@ -157,6 +147,14 @@ USER LOGIN
 <img width="502" alt="스크린샷 2022-04-25 오후 5 14 40" src="https://user-images.githubusercontent.com/79198426/165048284-8ab5a828-307c-4dac-9295-d446330e3851.png">
 
 <br>
+
+<b>Product fetch</b>
+<br>
+Youth&Luxury는 중고 명품을 쉽고 상태를 빠르게 파악하기 위해 한눈에 상품에 관련된 모든 정보를 확인할수 있어야합니다. 상품에 관련된 정보를 다른 테이블에서 가져오기 위해 querybuilder를 사용하여 
+직접적으로 연결되지 않은 테이블과 연결을 성공시켰습니다. querybuilder를 이용하여 연결한 테이블들은 fetch가 가능해져 필요한 데이터들을 가져올수 있게 하였습니다.
+
+
+<img width="1279" alt="스크린샷 2022-04-25 오후 4 23 35" src="https://user-images.githubusercontent.com/79198426/165040172-9be1ad90-dcd9-4ac3-a62f-6130784b748c.png">
 
 # Jest를 활용한 User 생성 unit test
 
