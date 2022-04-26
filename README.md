@@ -216,12 +216,7 @@ describe('UserService', () => {
 6. DNS와 로드밸런스를 연결하여 클라이언트로 받아오는 트래픽을 로드밸런스가 인스턴스 그룹에 부하분산 할 수 있도록 설정했습니다.
 
 
-<img width="571" alt="스크린샷 2022-04-26 오후 5 58 52" src="https://user-images.githubusercontent.com/79198426/165264656-1b625648-90a7-4d74-8d0b-5d466c435e36.png">
 
-
-<img width="516" alt="스크린샷 2022-04-26 오후 5 58 22" src="https://user-images.githubusercontent.com/79198426/165264987-178cecc4-bf95-42fc-8ab1-f3e0305fecbd.png">
-
-<img width="601" alt="스크린샷 2022-04-26 오후 5 59 27" src="https://user-images.githubusercontent.com/79198426/165265050-45e8f8bd-ea9a-4713-8208-f23cba2229e6.png">
 
 
 
