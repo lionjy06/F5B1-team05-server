@@ -1,8 +1,8 @@
 import { Field, Int, ObjectType, registerEnumType } from "@nestjs/graphql";
-import { Admin } from "src/apis/admin/entities/admin.entity";
-import { Product } from "src/apis/product/entities/product.entity";
-import { ProductLike } from "src/apis/productLike/entities/productLike.entity";
-import { Review } from "src/apis/review/entities/review.entity";
+import { Admin } from "../../admin/entities/admin.entity";
+import { Product } from "../../product/entities/product.entity";
+import { ProductLike } from "../../productLike/entities/productLike.entity";
+import { Review } from "../../review/entities/review.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 export enum Role {

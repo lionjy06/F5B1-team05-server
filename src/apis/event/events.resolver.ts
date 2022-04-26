@@ -44,16 +44,6 @@ export class EventResolver{
         return await this.eventService.updateChat({roomId, updateChat,currentUser})
     }
 
-
-    // @UseGuards(GqlAuthAccessGuard)
-    // @Mutation(() => String)
-    // async loginUser(
-    //     @CurrentUser() currentUser:ICurrentUser
-    // ){
-    //     return await this.eventService.loginUser({currentUser})
-    // }
-
-
     @UseGuards(GqlAuthAccessGuard)
     @Query(() => [Event])
     async joinSeller(
@@ -63,14 +53,5 @@ export class EventResolver{
         return await this.eventService.joinSeller({currentUser})
     }
 
-    // @UseGuards(GqlAuthAccessGuard)
-    // @Mutation(() => Event)
-    // async createChat(
-    //     @Args('roomId') roomId:string,
-    //     @CurrentUser() currentUser:ICurrentUser,
-    //     @Args('chatLog') chatLog:string
-    // ){
-    //     return await this.eventService.createChat({roomId,currentUser,chatLog})
-    // }
 }
 

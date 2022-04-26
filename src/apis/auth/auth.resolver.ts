@@ -57,7 +57,7 @@ export class AuthResolver {
       'refreshToken=',
       '',
     );
-    console.log('+++++++++++', context.req.headers);
+    
     const accesstoken = context.req.headers.authorization.replace(
       'Bearer ',
       '',

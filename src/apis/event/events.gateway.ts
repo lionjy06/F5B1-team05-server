@@ -8,7 +8,7 @@ import { onlineMap } from "./onlineMap";
 
 @WebSocketGateway({
     cors:{
-        origin:'http://localhost:3000',
+        origin:'https://youth-luxury.shop',
         credential:true
          
     },})
