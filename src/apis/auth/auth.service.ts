@@ -13,7 +13,7 @@ export class AuthService {
     private readonly cacheManager: Cache,
   ) {}
 
-  getAccessToken({ user }) {
+  async getAccessToken({ user }) {
     console.log(user.id);
     return this.jwtService.sign(
       { email: user.email, sub: user.id, role: user.role },

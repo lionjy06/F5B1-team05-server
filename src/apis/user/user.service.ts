@@ -135,7 +135,7 @@ async updateToAdmin({userId}){
 
   async create({ hashedPassword, email,nickname, name, phoneNum }) {
     const password = hashedPassword;
-    return await this.userRepository.save({
+    const result =  await this.userRepository.save({
       email,
       password,
       nickname,
@@ -143,6 +143,7 @@ async updateToAdmin({userId}){
       phoneNum,
       
     });
+    return result
   }
 
   async findOne({currentUser}) {

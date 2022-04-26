@@ -1,6 +1,6 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Product } from "src/apis/product/entities/product.entity";
-import { User } from "src/apis/user/entities/user.entity";
+import { Product } from "../../product/entities/product.entity";
+import { User } from "../../user/entities/user.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 type ratings = 0 | 1 | 2 | 3 | 4 | 5  

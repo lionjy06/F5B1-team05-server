@@ -1,6 +1,6 @@
 import { Field,  ObjectType } from "@nestjs/graphql";
-import { MainCategory } from "src/apis/mainCategory/entities/mainCategory.entity";
-import { Product } from "src/apis/product/entities/product.entity";
+import { MainCategory } from "../../mainCategory/entities/mainCategory.entity";
+import { Product } from "../../product/entities/product.entity";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 

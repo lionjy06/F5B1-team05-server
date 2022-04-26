@@ -31,7 +31,7 @@ export class UserResolver {
     ){
     const token = await this.userService.getToken(6)
     const sendToken = await this.userService.createToken(phoneNum, token)
-    return '토큰을 발송했엉ㅇ'
+    return '토큰을 발송했습니다.'
 
   }
 

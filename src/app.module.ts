@@ -24,6 +24,7 @@ import { EventsModule } from './apis/event/events.module';
 // import { Admin } from './apis/admin/entities/admin.entity';
 import { AdminModule } from './apis/admin/admin.module';
 import { TransactionModule } from './apis/transaction/transaction.module';
+import { MongooseModule } from '@nestjs/mongoose';
 // import { ChatModule } from './apis/chat/chat.module';
 
 @Module({
@@ -72,6 +73,7 @@ import { TransactionModule } from './apis/transaction/transaction.module';
       url: 'redis://my_redis:6379',
       isGlobal: true, 
     }),
+    MongooseModule.forRoot('mongodb://localhost/nest')
   ],
 
 })

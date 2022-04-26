@@ -1,5 +1,5 @@
 import { Field, ObjectType } from "@nestjs/graphql";
-import { SubCategory } from "src/apis/subCategory/entities/subCategory.entity";
+import { SubCategory } from "../../subCategory/entities/subCategory.entity";
 import { Column, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 

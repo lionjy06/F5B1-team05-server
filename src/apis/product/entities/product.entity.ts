@@ -1,9 +1,9 @@
  import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Brand } from "src/apis/brand/entities/brand.entity";
-import { ProductLike } from "src/apis/productLike/entities/productLike.entity";
-import { Review } from "src/apis/review/entities/review.entity";
-import { SubCategory } from "src/apis/subCategory/entities/subCategory.entity";
-import { User } from "src/apis/user/entities/user.entity";
+import { Brand } from "../../brand/entities/brand.entity";
+import { ProductLike } from "../../productLike/entities/productLike.entity";
+import { Review } from "../../review/entities/review.entity";
+import { SubCategory } from "../../subCategory/entities/subCategory.entity";
+import { User } from "../../user/entities/user.entity";
 
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 

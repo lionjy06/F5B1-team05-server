@@ -1,6 +1,6 @@
 import { Field, ObjectType } from "@nestjs/graphql";
-import { AdminQuery } from "src/apis/adminQuery/entities/adminQuery.entity";
-import { User } from "src/apis/user/entities/user.entity";
+import { AdminQuery } from "../../adminQuery/entities/adminQuery.entity";
+import { User } from "../../user/entities/user.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 
